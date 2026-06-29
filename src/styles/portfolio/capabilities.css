@@ -1,0 +1,70 @@
+.skills-section {
+  padding: 60px 0;
+  color: #ffffff;
+  background: var(--navy);
+}
+
+.skills-section .section-heading {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.skills-section .section-heading h2 {
+  color: #ffffff;
+}
+
+.skills-section .section-heading > p {
+  color: #b8c0cf;
+}
+
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.capability-group {
+  min-width: 0;
+  padding: 28px 32px;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.capability-group:first-child {
+  padding-left: 0;
+}
+
+.capability-group:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.capability-group > svg {
+  color: #eb6b5f;
+}
+
+.capability-group h3 {
+  margin: 16px 0 18px;
+  font-family: "Presentation", "Noto Sans KR", sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.capability-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.capability-group li {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  margin: 0 8px 10px 0;
+  padding: 0 10px;
+  color: #ffffff;
+  border-color: rgba(235, 107, 95, 0.46);
+  background: rgba(235, 107, 95, 0.14);
+  font-size: 14px;
+  font-weight: 900;
+}

@@ -1,0 +1,55 @@
+.experience-section {
+  padding: 64px 0;
+  background: #ffffff;
+}
+
+.experience-section .section-heading {
+  margin-bottom: 34px;
+}
+
+.timeline {
+  max-width: 930px;
+  margin-left: auto;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 34px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline-row:first-child {
+  padding-top: 0;
+}
+
+.timeline-row time {
+  color: var(--rust);
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-row h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 21px;
+  letter-spacing: 0;
+}
+
+.timeline-position {
+  margin: 7px 0 12px !important;
+  color: var(--ink) !important;
+  font-size: 13px !important;
+  font-weight: 800;
+}
+
+.timeline-row p {
+  max-width: 660px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
