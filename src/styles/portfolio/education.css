@@ -1,0 +1,41 @@
+.education-section {
+  padding: 52px 0;
+  background: var(--soft);
+}
+
+.education-layout {
+  display: grid;
+  grid-template-columns: 0.42fr 1fr;
+  gap: 52px;
+}
+
+.education-detail {
+  padding-top: 6px;
+  border-top: 2px solid var(--navy);
+}
+
+.education-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.education-period {
+  margin: 0 0 8px;
+  color: var(--rust);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.education-item h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.education-item > p:last-child {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}

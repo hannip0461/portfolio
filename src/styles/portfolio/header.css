@@ -1,0 +1,107 @@
+.site-header {
+  position: relative;
+  z-index: 20;
+  background: var(--navy);
+}
+
+.utility-bar {
+  min-height: 34px;
+  color: #ffffff;
+  background: var(--rust);
+  font-size: 12px;
+}
+
+.utility-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+}
+
+.utility-inner a:hover {
+  text-decoration: underline;
+}
+
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 92px;
+  gap: 32px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: max-content;
+  gap: 14px;
+  color: #ffffff;
+}
+
+.brand-mark {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-family: "Presentation", "Noto Sans KR", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+  letter-spacing: 0;
+}
+
+.brand strong {
+  font-family: "Presentation", "Noto Sans KR", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.brand small {
+  margin-top: 4px;
+  color: #adb6c9;
+  font-size: 12px;
+}
+
+.site-nav {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+  gap: 6px;
+}
+
+.site-nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 17px;
+  color: #e3e7ee;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.site-nav a::after {
+  position: absolute;
+  right: 17px;
+  bottom: 22px;
+  left: 17px;
+  height: 2px;
+  background: var(--rust);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}

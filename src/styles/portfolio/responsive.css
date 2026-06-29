@@ -1,0 +1,275 @@
+@media (max-width: 960px) {
+  .page-width {
+    width: min(100% - 36px, 760px);
+  }
+
+  .nav-row {
+    min-height: auto;
+    flex-wrap: wrap;
+    padding: 18px 0 0;
+  }
+
+  .site-nav {
+    width: 100%;
+    min-height: 52px;
+    overflow-x: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .site-nav a {
+    min-width: max-content;
+    padding: 0 14px;
+  }
+
+  .site-nav a:first-child {
+    padding-left: 0;
+  }
+
+  .site-nav a::after {
+    right: 14px;
+    bottom: 0;
+    left: 14px;
+  }
+
+  .site-nav a:first-child::after {
+    left: 0;
+  }
+
+  .hero-inner {
+    min-height: 360px;
+    grid-template-columns: minmax(0, 1fr) 230px;
+    gap: 28px;
+  }
+
+  .hero-copy {
+    padding-left: 0;
+  }
+
+  .hero h1 {
+    font-size: 44px;
+  }
+
+  .hero-statement {
+    font-size: 23px;
+  }
+
+  .hero-portrait {
+    width: 350px;
+    margin-right: -70px;
+  }
+
+  .project-row {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .project-row.reverse .project-media,
+  .project-row.reverse .project-content {
+    order: initial;
+  }
+
+  .supporting-layout,
+  .education-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .supporting-heading {
+    position: static;
+  }
+
+  .capability-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capability-group,
+  .capability-group:first-child,
+  .capability-group:last-child {
+    padding: 22px 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  .capability-group:last-child {
+    border-bottom: 0;
+  }
+
+  .footer-layout {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-width {
+    width: min(100% - 28px, 520px);
+  }
+
+  .utility-bar {
+    display: none;
+  }
+
+  .brand small {
+    font-size: 11px;
+  }
+
+  .hero-inner {
+    display: flex;
+    min-height: 410px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-profile {
+    grid-template-columns: 76px 1fr;
+    gap: 8px 14px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .hero-profile img {
+    grid-row: span 3;
+    width: 76px;
+    height: 76px;
+  }
+
+  .hero-copy {
+    padding: 42px 0 0;
+  }
+
+  .hero h1 {
+    font-size: 44px;
+  }
+
+  .hero-statement {
+    margin-top: 20px;
+    font-size: 23px;
+  }
+
+  .hero-description {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .hero-actions .button-primary {
+    grid-column: 1 / -1;
+  }
+
+  .profile-facts {
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
+  .profile-facts div {
+    min-width: 0;
+  }
+
+  .profile-facts div:nth-child(n + 2) {
+    flex-basis: 100%;
+  }
+
+  .hero-portrait {
+    position: absolute;
+    right: -34px;
+    bottom: -12px;
+    width: 205px;
+    margin: 0;
+    opacity: 0.92;
+  }
+
+  .hero-portrait::before {
+    display: none;
+  }
+
+  .section {
+    padding: 68px 0;
+  }
+
+  .supporting-section,
+  .experience-section,
+  .skills-section,
+  .education-section {
+    padding: 48px 0;
+  }
+
+  .site-footer {
+    padding-top: 48px;
+  }
+
+  .section-heading {
+    display: block;
+    margin-bottom: 28px;
+  }
+
+  .section-heading h2,
+  .supporting-heading h2,
+  .education-layout h2 {
+    font-size: 29px;
+  }
+
+  .section-heading > p {
+    margin-top: 14px;
+    text-align: left;
+  }
+
+  .project-row {
+    padding: 40px 0;
+  }
+
+  .project-content h3 {
+    padding-right: 50px;
+    font-size: 24px;
+  }
+
+  .project-number {
+    font-size: 42px;
+  }
+
+  .project-summary {
+    font-size: 14px;
+  }
+
+  .work-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .timeline-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .footer-layout {
+    gap: 34px;
+    padding-bottom: 40px;
+  }
+
+  .footer-layout h2 {
+    font-size: 29px;
+  }
+
+  .footer-links a {
+    overflow-wrap: anywhere;
+  }
+
+  .floating-top-button {
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+    font-size: 10px;
+  }
+}

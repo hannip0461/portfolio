@@ -1,0 +1,51 @@
+@media (max-width: 1180px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    display: none;
+  }
+
+  .workspace,
+  .workspace:not(.two-col):not(.logs):not(.health):not(.settings):not(.lineage-workspace),
+  .workspace.two-col,
+  .workspace.lineage-workspace,
+  .workspace.logs,
+  .workspace.health,
+  .workspace.settings {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .wide {
+    grid-column: auto;
+  }
+
+  .source-grid,
+  .policy-grid,
+  .situation,
+  .evidence-body,
+  .pipeline,
+  .trace-pipeline,
+  .health-body,
+  .module-grid,
+  .detail-grid,
+  .workspace.logs > .side-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-mini {
+    min-height: 360px;
+  }
+
+  .graph-mini .node {
+    width: 118px;
+  }
+
+  .n1 { left: 24px; top: 28px; }
+  .n2 { left: 112px; top: 116px; }
+  .n3 { right: 18px; top: 28px; }
+  .n4 { right: 18px; top: 196px; }
+  .n5 { left: 24px; bottom: 24px; }
+}
