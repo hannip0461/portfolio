@@ -51,20 +51,30 @@
 }
 
 .capability-group ul {
+  display: grid;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .capability-group li {
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  margin: 0 8px 10px 0;
-  padding: 0 10px;
+  display: grid;
+  gap: 5px;
+  min-height: 0;
+  padding: 12px 0 0;
   color: #ffffff;
-  border-color: rgba(235, 107, 95, 0.46);
-  background: rgba(235, 107, 95, 0.14);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.capability-group li strong {
   font-size: 14px;
   font-weight: 900;
+}
+
+.capability-group li span {
+  color: #c7ceda;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: keep-all;
 }

@@ -120,10 +120,10 @@
 
 .project-proof-list div {
   display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 10px;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
   align-items: start;
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -133,15 +133,15 @@
 
 .project-proof-list dt {
   color: var(--rust);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 900;
 }
 
 .project-proof-list dd {
   margin: 0;
   color: var(--ink);
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.65;
   word-break: keep-all;
 }
 

@@ -21,7 +21,7 @@ const isExternalLink = (link: string) => link.startsWith('http')
           <p class="section-kicker">핵심 프로젝트</p>
           <h2 id="projects-title">주요 프로젝트</h2>
         </div>
-        <p>문제, 역할, 결과를 먼저 확인할 수 있도록 정리한 핵심 프로젝트입니다.</p>
+        <p>프로젝트 의도, 핵심 구현, 결과를 먼저 확인할 수 있도록 정리한 핵심 프로젝트입니다.</p>
       </header>
 
       <article
@@ -46,7 +46,7 @@ const isExternalLink = (link: string) => link.startsWith('http')
           <p class="project-summary">{{ project.summary }}</p>
           <dl class="project-proof-list" aria-label="프로젝트 요약">
             <div>
-              <dt>문제</dt>
+              <dt>{{ project.proof.problemLabel ?? '문제' }}</dt>
               <dd>{{ project.proof.problem }}</dd>
             </div>
             <div>
