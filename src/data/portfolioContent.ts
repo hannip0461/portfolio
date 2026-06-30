@@ -9,6 +9,11 @@ export interface ProjectTerm {
   description: string
 }
 
+export interface ProjectResource {
+  label: string
+  url: string
+}
+
 export interface FeaturedProject {
   number: string
   title: string
@@ -16,6 +21,7 @@ export interface FeaturedProject {
   summary: string
   badge: string
   proof: {
+    problemLabel?: string
     problem: string
     solution: string
     result: string
@@ -26,11 +32,7 @@ export interface FeaturedProject {
     problem: string[]
     approach: string[]
     result: string[]
-    decision: string
-    tradeoff: string
     verification: string
-    ownership: string
-    nextStep: string
   }
   role: string
   stack: string[]
@@ -40,6 +42,7 @@ export interface FeaturedProject {
   terms?: ProjectTerm[]
   link?: string
   linkLabel?: string
+  resources?: ProjectResource[]
 }
 
 export interface AdditionalProject {
@@ -57,7 +60,7 @@ export interface ExperienceItem {
 
 export interface CapabilityGroup {
   title: string
-  items: Array<{ label: string }>
+  items: Array<{ label: string; evidence: string }>
 }
 
 export interface EducationItem {
@@ -68,6 +71,8 @@ export interface EducationItem {
 
 const pagePath = (path: string) => `${import.meta.env.BASE_URL}${path}`
 const assetPath = (path: string) => pagePath(path)
+const neoPath = 'http://127.0.0.1:5182/neo/'
+const neoResources = import.meta.env.DEV ? [{ label: '로컬 NEO 화면', url: neoPath }] : []
 
 export const featuredProjects: FeaturedProject[] = [
   {
@@ -76,42 +81,38 @@ export const featuredProjects: FeaturedProject[] = [
     period: '개인 프로젝트 · 2026',
     badge: '추론 · 판단 근거 · 운영 콘솔',
     summary:
-      '교통 센서/API 입력을 표준 Fact로 정리하고, 자체 추론 엔진 NEO의 판단·근거·추천 조치를 운영 화면에서 따라갈 수 있게 구성한 의사결정 시스템입니다.',
+      '교통 CSV/API/센서 입력을 자체 NEO Rule Engine이 판단 가능한 Fact로 정리하고, Neo4j 추론 계보와 NEMI 근거 검색을 관제 화면에 연결한 지능형 관제 의사결정 시스템입니다.',
     proof: {
-      problem: '형식이 다른 입력과 판단 근거를 한 흐름으로 묶어야 함',
-      solution: 'Fact 정규화와 근거 계보 구조화',
-      result: '입력-규칙-판단-근거-조치 흐름 추적',
+      problemLabel: '개요',
+      problem:
+        '단일 수치나 알람만으로는 현장 상황을 정확히 판단하기 어렵습니다. NEO는 여러 관제 입력을 종합해 위험도를 판단하고, 판단 근거와 대응 가이드까지 함께 제공하는 지능형 관제 시스템입니다.',
+      solution:
+        '입력 데이터, 판단 근거, 대응 절차를 하나의 흐름으로 연결해 관제자가 알람을 검토하고 조치할 수 있게 구성했습니다.',
+      result:
+        '운영자는 단순 알림이 아니라 “왜 위험한지 → 어떤 근거인지 → 어떻게 대응할지”를 따라가며 판단할 수 있습니다.',
     },
     caseStudy: {
-      flow: '원천 입력 → Canonical Fact → NEO 추론 → Decision Package → Neo4j 계보/NEMI 근거 → 운영자 조치',
+      flow: '교통 CSV/API/센서 입력 → Canonical Fact → NEO Rule Engine → 파생 Fact → 위험도/대응 판단 → Neo4j 계보/NEMI 근거 → 관제 화면',
       architecture: [
-        'Sensor/API 입력을 공통 이벤트 형식으로 수집',
-        '교통 이벤트를 NEO 입력용 Canonical Fact로 정규화',
-        'NEO가 Rule, ATMS, CF 기준으로 판단과 지지 근거 생성',
-        'Decision Package에 판단 결과, 우선순위, 추천 조치, match trace를 묶음',
-        'Neo4j로 룰/이벤트/판단 관계를 계보로 저장',
-        'NEMI 근거 검색을 연결해 판단 근거 문서를 함께 확인',
+        '교통량, 속도, 장비 상태, 사고 위험 데이터를 공통 Fact 형식으로 정리',
+        'KB 기반 Rule이 입력 Fact를 만들고, 파생 Fact를 다음 Rule의 판단 근거로 사용',
+        '위험도, 상태, 대응 가이드 Fact를 단계적으로 생성',
+        'Neo4j는 Event, Fact, Rule, Decision 관계를 계보로 연결',
+        'NEMI는 VectorDB/RAG로 SOP, 사고 이력, VMS 가이드, 장비 매뉴얼 근거를 제공',
       ],
-      problem: [
-        '센서/API 입력마다 형식·신뢰도·발생 주기가 달라 그대로는 NEO 추론 입력으로 쓰기 어려웠습니다.',
-        'NEO 판단에는 Rule, ATMS, CF, Neo4j 관계, NEMI 근거가 함께 쓰이므로 화면에서도 이 관계가 끊기지 않아야 했습니다.',
-      ],
+      problem: [],
       approach: [
-        '원천 입력을 Canonical Fact로 바꿔 NEO가 받는 데이터 경계를 고정했습니다.',
-        'NEO 판단 결과를 Rule match, ATMS 정합성, CF, priority, action이 포함된 Decision Package로 묶었습니다.',
-        'Neo4j는 룰/이벤트/판단 관계를 추적하고, NEMI는 관련 근거를 찾는 역할로 분리했습니다.',
-        '운영 화면은 판단 결과 → 입력 Fact → 적용 Rule → 근거 → 추천 조치를 같은 흐름에서 읽도록 정리했습니다.',
+        '입력 데이터를 출처, 시간, 자산 기준으로 정리한 뒤 KB 기반 Rule로 Fact를 생성했습니다.',
+        '생성된 Fact를 다시 Rule에 적용해 위험도, 상태, 대응 가이드 Fact를 단계적으로 파생했습니다.',
+        'ATMS/CF로 충돌하는 입력의 신뢰도와 판단 우선순위를 조정했습니다.',
+        'Neo4j로 Event → Fact → Rule → Decision 추론 계보를 시각화했습니다.',
+        'NEMI는 VectorDB/RAG로 SOP, 사고 이력, VMS 가이드, 장비 매뉴얼 근거를 제공했습니다.',
       ],
       result: [
-        '형식이 다른 입력을 표준 Fact로 맞춰 추론 입력 품질을 일정하게 유지했습니다.',
-        '운영자가 입력-규칙-판단-근거-조치 흐름을 따라가며 NEO 판단을 검토할 수 있게 했습니다.',
+        'NEO 판단 결과를 알림으로만 보여주지 않고, 위험 판단 과정과 근거, 대응 가이드를 함께 검토할 수 있는 관제 흐름으로 정리했습니다.',
       ],
-      decision: 'NEO 내부 로직을 그대로 노출하지 않고, 운영자가 검토해야 할 판단 근거 단위로 재구성했습니다.',
-      tradeoff: '화면 정보량은 늘었지만, 관제 상황에서 결정 배경을 확인할 수 있는 구조를 우선했습니다.',
       verification:
-        '샘플 이벤트 기준 입력 → Canonical Fact → Rule match → Decision Package → Neo4j/NEMI 근거 → 화면 표시가 이어지는지 확인했습니다.',
-      ownership: '시스템 아키텍처, NEO 입출력 경계, FastAPI 연동, 운영 화면 구성을 담당했습니다.',
-      nextStep: '실제 운영 로그 기준으로 근거 필터링과 판단 이력 비교를 보강할 수 있습니다.',
+        '샘플 관제 입력 기준 Fact 생성 → 파생 Fact 생성 → 위험도 판단 → 대응 가이드 생성 → 계보/근거 조회 → 화면 표시 흐름 확인',
     },
     role: '시스템 아키텍처, NEO 추론 경계, FastAPI 연동, Frontend 운영 화면',
     stack: ['C/C++', 'Python', 'FastAPI', 'Vue 3', 'Pinia', 'Axios', 'Neo4j', 'VectorDB/RAG'],
@@ -135,7 +136,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     terms: [
-      { term: 'NEO', description: '직접 정의한 자체 규칙 추론 엔진. 공개/통용 프레임워크명이 아닙니다.' },
+      { term: 'NEO', description: '직접 정의한 자체 규칙 추론 엔진으로, Fact/Rule/ATMS/CF 흐름을 묶는 프로젝트 내부 명칭입니다.' },
       {
         term: 'ATMS',
         description:
@@ -146,11 +147,12 @@ export const featuredProjects: FeaturedProject[] = [
         description:
           'Certainty Factor(확신도) 계열. 규칙 기반 전문가 시스템에서 판단의 신뢰 정도를 수치화하는 개념입니다.',
       },
-      { term: 'NEMI', description: '직접 정의한 자체 근거 검색 모듈. VectorDB/RAG 기반 근거 검색을 담당합니다.' },
+      { term: 'NEMI', description: '직접 정의한 자체 근거 검색 모듈로, VectorDB/RAG 기반 근거 검색을 담당하는 프로젝트 내부 명칭입니다.' },
       { term: 'Neo4j', description: '외부 그래프 DB. 룰·이벤트·판단 관계 저장/조회에 사용했습니다.' },
     ],
-    link: pagePath('neo/'),
+    link: import.meta.env.DEV ? neoPath : undefined,
     linkLabel: 'NEO 화면 보기',
+    resources: neoResources,
   },
   {
     number: '02',
@@ -160,41 +162,30 @@ export const featuredProjects: FeaturedProject[] = [
     summary:
       'Jetson Edge AI의 차량/번호판 인식 결과를 통행 이벤트로 표준화하고, Python Ingress·Spring Boot·Vue로 저장, 검수, 운영 조회까지 연결한 스마트 톨링 PoC입니다.',
     proof: {
-      problem: '인식 결과를 운영 이벤트로 연결해야 함',
-      solution: 'Passage Event와 Ingress 경계 설계',
-      result: 'Edge-Backend-관제 흐름 PoC 완성',
+      problemLabel: '개요',
+      problem: '기존 하이패스의 단말기·고정 차선 의존을 줄이고, 위성 기반 위치 활용까지 고려한 완전 무정차 톨링 PoC입니다.',
+      solution: 'Jetson Edge에서 YOLO로 차량·번호판을 탐지하고 OCR로 번호를 인식한 뒤, GPS와 함께 Passage Event로 표준화해 필요한 데이터만 서버로 전송했습니다.',
+      result: 'Edge AI 인식 → 통행 이벤트 생성 → 구간 요금 산정 → 관제 대시보드 조회로 이어지는 흐름을 구현했습니다.',
     },
     caseStudy: {
-      flow: 'Jetson → YOLO/OCR → Protobuf → QUIC/TLS → Backend → Vue 관제',
+      flow: 'Jetson → YOLO/OCR → GPS → Passage Event → WebTransport/QUIC → FastAPI Ingress → Backend → 관제',
       architecture: [
-        'Jetson Edge AI가 차량/번호판 영상을 수집',
+        'Jetson Edge AI가 차량/번호판 영상을 처리',
         'YOLO와 CRNN-OCR로 차량, 번호판, 문자 후보를 추출',
-        '다중 프레임 결과를 Passage Event payload로 표준화',
-        'Python Ingress가 이벤트를 수신해 Backend로 전달',
-        'PostgreSQL에 인식 결과, GPS, 검수/정산 후보, 상태 저장',
+        'Passage Event payload로 인식 결과와 GPS를 표준화',
+        'Python Ingress가 이벤트를 수신해 Spring Backend로 전달',
         'Vue 관제 화면에서 통행 이벤트와 운영 상태를 조회',
       ],
-      problem: [
-        '차량/번호판 인식 결과를 그대로 저장하면 검수, 정산 후보, 관제 조회에서 같은 기준으로 재사용하기 어려웠습니다.',
-        'Edge는 영상 인식에 집중하고 서버는 표준 이벤트를 처리하도록 역할을 나눠야 지연과 운영 부담을 줄일 수 있었습니다.',
-        '번호판 OCR은 프레임별 오차가 있어 단일 프레임 결과보다 다중 프레임 후보를 모아 판단하는 구조가 필요했습니다.',
-      ],
+      problem: [],
       approach: [
-        'YOLO 탐지 결과와 CRNN-OCR 후보를 Passage Event로 묶어 서버 처리 단위를 고정했습니다.',
-        '다중 프레임 OCR 후보를 누적한 뒤 Best-Fit 기준으로 번호판 값을 보정했습니다.',
-        'Protobuf, QUIC/TLS, Python Ingress로 Edge 이벤트를 Backend 저장 흐름에 연결했습니다.',
-        'Backend는 통행 이벤트, 검수/정산 후보, GPS telemetry를 저장하고 Vue 관제 화면에서 조회하도록 구성했습니다.',
-        '팀장으로서 Edge AI, Python Ingress, Backend 구현 범위와 통합 순서를 조율했습니다.',
+        'YOLO/OCR 인식 결과와 GPS를 Passage Event로 묶어 서버가 처리할 최소 단위로 표준화했습니다.',
+        'WebTransport over QUIC/TLS와 FastAPI Ingress로 Edge와 서버 사이의 수신 경계를 구성했습니다.',
+        '운영망 장애 상황은 Watchdog 기반 망 이중화와 재시도 흐름으로 대응하도록 설계했습니다.',
       ],
       result: [
-        '차량 인식 결과가 통행 이벤트 저장, 검수/정산 후보, 관제 조회로 이어지는 PoC 흐름을 완성했습니다.',
-        '모델 출력이 운영 데이터가 되는 end-to-end 흐름을 팀 단위로 검증했습니다.',
+        '단말기 중심 하이패스가 아니라, Edge AI와 위치 데이터를 활용한 무정차 톨링 시나리오를 시연 가능한 형태로 정리했습니다.',
       ],
-      decision: '모델 인식률 지표만 보여주기보다 Edge 이벤트가 검수·정산·관제까지 이어지는 서비스 흐름을 우선했습니다.',
-      tradeoff: '모델 정확도 개선에만 집중하기보다 전송, 저장, 조회까지 연결되는 end-to-end 검증을 먼저 선택했습니다.',
-      verification: '샘플 차량 영상 기준 입력 → YOLO/OCR → Passage Event → Ingress → Backend 저장 → Vue 관제 표시를 단계별로 확인했습니다.',
-      ownership: '팀장으로 프로젝트 총괄, Python/Edge AI, YOLO, Backend 흐름을 담당했습니다.',
-      nextStep: '실차 데이터 다양화, OCR confidence 기준 조정, 재전송 정책을 보강할 수 있습니다.',
+      verification: '샘플 차량 영상 기준 입력 → AI 인식 → 이벤트 전송 → 저장 → 대시보드 표시 단계 확인',
     },
     role: '팀장, 프로젝트 총괄, Python·Edge AI, YOLO, 백엔드',
     stack: ['Jetson', 'YOLO', 'CRNN-OCR', 'FastAPI', 'Spring Boot', 'Vue 3', 'PostgreSQL'],
@@ -214,6 +205,12 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     link: 'https://github.com/teamweb803/straffic_hi-five-1st-project',
     linkLabel: 'GitHub 803 저장소',
+    resources: [
+      { label: 'GitHub 803', url: 'https://github.com/teamweb803/straffic_hi-five-1st-project' },
+      { label: 'Notion 기록', url: 'https://coconut-truck-1db.notion.site/371cdef944a180a8bf3be44fcfcd9701' },
+      { label: 'Docker frontend', url: 'https://hub.docker.com/r/shshj323/hifive-frontend' },
+      { label: 'Docker backend', url: 'https://hub.docker.com/r/shshj323/hifive-backend' },
+    ],
   },
   {
     number: '03',
@@ -221,11 +218,12 @@ export const featuredProjects: FeaturedProject[] = [
     period: '팀 프로젝트 · 2026.03.14–04.12',
     badge: '커머스 · 권한 흐름 · Frontend',
     summary:
-      '상품 탐색, 장바구니, 주문, 고객지원, 관리자 운영까지 권한별 사용 흐름을 연결한 가구 쇼핑몰 웹 애플리케이션입니다.',
+      '상품 탐색, 장바구니, 주문, 고객지원, 관리자 운영까지 사용자와 관리자 흐름을 분리해 연결한 가구 쇼핑몰 웹 애플리케이션입니다.',
     proof: {
-      problem: '권한별 구매·운영 흐름을 분리해야 함',
-      solution: '역할별 화면/API 흐름 정리',
-      result: '브라우저 테스트 59건 PASS',
+      problemLabel: '개요',
+      problem: '가구 상품 탐색만 있는 화면이 아니라, 옵션 선택부터 주문, 고객지원, 관리자 운영까지 이어지는 커머스 흐름을 구현한 프로젝트입니다.',
+      solution: '회원/관리자 권한을 나누고, 상품·옵션·재고 검증 → 주문 저장 → 주문내역/관리자 처리 흐름을 연결했습니다.',
+      result: '구매자와 관리자의 주요 사용 흐름을 한 서비스 안에서 끊기지 않게 시연할 수 있게 했습니다.',
     },
     caseStudy: {
       flow: '상품 탐색 → 장바구니 → 주문/결제 → 고객지원 → 관리자 운영',
@@ -235,28 +233,17 @@ export const featuredProjects: FeaturedProject[] = [
         '장바구니, 주문, 결제 상태를 API와 화면 상태로 연결',
         '리뷰, QnA, 공지사항을 고객지원 흐름에 배치',
         '관리자 대시보드에서 상품, 재고, 회원, 주문, 게시글을 운영',
-        'Swagger 문서와 브라우저 테스트로 통합 검수',
       ],
-      problem: [
-        '비회원 탐색, 회원 구매, 관리자 운영은 접근 권한과 API가 달라 역할별 진입·차단 기준을 먼저 정리해야 했습니다.',
-        '장바구니, 주문, 리뷰, QnA, 공지처럼 상태가 바뀌는 기능이 많아 화면별 동작보다 사용자 시나리오 기준 검증이 필요했습니다.',
-        '프론트엔드/백엔드를 분리 개발해 Swagger 계약과 실제 브라우저 동작을 함께 맞춰야 했습니다.',
-      ],
+      problem: [],
       approach: [
-        '사용자 역할별 핵심 시나리오를 상품 탐색 → 장바구니 → 주문/결제 → 고객지원 → 관리자 처리로 정리했습니다.',
-        'Vue 3, Router, Pinia, Axios로 화면 이동, 전역 상태, API 호출 경계를 분리했습니다.',
-        'JWT 인증, 회원 정보, 주문 상태, 고객지원, 관리자 관리 기능을 사용자 흐름에 맞췄습니다.',
-        'Swagger API 확인 뒤 브라우저에서 사용자 시나리오 기준으로 통합 검수했습니다.',
+        '상품 목록, 상세, 옵션 선택에서 장바구니로 이어지는 구매 흐름을 구성했습니다.',
+        '주문 생성, 주문내역, 주문 상태 처리를 사용자와 관리자 화면에서 확인할 수 있게 연결했습니다.',
+        '리뷰, QnA, 공지사항을 고객지원과 관리자 운영 흐름에 배치했습니다.',
       ],
       result: [
-        '비회원/회원 구매 흐름과 관리자 운영 흐름을 한 서비스에서 시연 가능한 상태로 완성했습니다.',
-        '브라우저 테스트 59건 PASS로 주요 구매/운영 시나리오가 끊기지 않는지 확인했습니다.',
+        '사용자 구매 흐름과 관리자 운영 흐름을 함께 보여줄 수 있는 쇼핑몰 서비스로 정리했습니다.',
       ],
-      decision: '기능을 병렬로 늘리기보다 상품 탐색에서 주문 완료까지 이어지는 흐름을 우선했습니다.',
-      tradeoff: '세부 UI 연출보다 권한별 흐름과 관리자 운영 기능의 연결성을 먼저 잡았습니다.',
-      verification: '비회원/회원/관리자 기준 브라우저 테스트 59건을 수행했고 PASS 59 / FAIL 0 / BLOCKED 0으로 확인했습니다.',
-      ownership: '팀장으로 프론트엔드 구현, UI 흐름 설계, 종합 검수를 담당했습니다.',
-      nextStep: '주문 상태별 예외 처리, 관리자 통계, 장바구니 UX를 더 개선할 수 있습니다.',
+      verification: '비회원/회원/관리자 시나리오 기준 브라우저 테스트 59건 PASS',
     },
     role: '팀장, 프론트엔드 구현, UI 흐름 설계, 종합 QA',
     stack: ['Vue 3', 'Pinia', 'Axios', 'Spring Boot', 'JPA', 'PostgreSQL', 'Docker'],
@@ -291,6 +278,13 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     link: 'https://github.com/teamweb803/teamweb02',
     linkLabel: 'GitHub 803 저장소',
+    resources: [
+      { label: 'GitHub 803', url: 'https://github.com/teamweb803/teamweb02' },
+      { label: 'Notion 기록', url: 'https://www.notion.so/de296acf563f838584b301756ee05b67' },
+      { label: 'Docker frontend', url: 'https://hub.docker.com/r/kimmj6466/team4-frontend' },
+      { label: 'Docker backend', url: 'https://hub.docker.com/r/kimmj6466/team4-backend' },
+      { label: 'Docker DB', url: 'https://hub.docker.com/r/kimmj6466/team4-db' },
+    ],
   },
   {
     number: '04',
@@ -298,41 +292,32 @@ export const featuredProjects: FeaturedProject[] = [
     period: '팀 프로젝트 · 2026.02.09–03.13',
     badge: '관광 정보 · MVC 확장 · 권한 제어',
     summary:
-      '인천 문화·관광 정적 페이지를 Spring Boot 3와 Thymeleaf 기반 회원/게시판 서비스로 확장한 웹 애플리케이션입니다.',
+      '인천 문화·관광 정보 페이지를 Spring Boot 3와 Thymeleaf 기반 회원/게시판 서비스로 확장한 웹 애플리케이션입니다.',
     proof: {
-      problem: '정적 페이지를 서비스형 웹으로 확장해야 함',
-      solution: 'MVC/DB/권한 흐름 추가',
-      result: '관광+회원+게시판 흐름 완성',
+      problemLabel: '개요',
+      problem: '인천 문화·관광 정보를 단순 소개 페이지가 아니라 회원 참여와 게시판 운영까지 가능한 서비스형 웹으로 확장한 프로젝트입니다.',
+      solution: 'Spring Boot MVC·Thymeleaf·PostgreSQL 기반으로 관광 카테고리, 회원/로그인, 공지·리뷰, 권한 흐름을 연결했습니다.',
+      result: '관광 정보 탐색에서 회원 기능, 게시판, 관리자 운영까지 이어지는 웹 서비스 흐름을 만들었습니다.',
     },
     caseStudy: {
-      flow: '정적 페이지 → Spring Boot MVC/Thymeleaf → PostgreSQL 회원/게시판 → Docker 실행 환경',
+      flow: '관광 정보 카테고리 → Spring MVC/Thymeleaf → 회원·공지·리뷰 → 권한/관리자 → Docker 실행 환경',
       architecture: [
         '관광 정보를 지역/테마/문화/교통 카테고리로 분리',
-        '공통 헤더, 메뉴, 콘텐츠 영역을 정적 페이지로 먼저 구성',
+        '공통 헤더, 메뉴, 콘텐츠 영역을 서비스 화면 기준으로 구성',
         'Spring Boot MVC와 Thymeleaf로 회원/게시판 기능 연결',
         'PostgreSQL에 회원, 공지, 리뷰 데이터를 저장',
         'Docker 이미지로 실행 환경을 정리',
       ],
-      problem: [
-        '정적 관광 정보 페이지에 회원, 게시판, 파일, 권한 기능을 붙여 서비스 흐름으로 확장해야 했습니다.',
-        'Spring Boot 3와 Thymeleaf로 전환하면서 URL, 화면, DB 모델을 MVC 흐름에 맞게 다시 정리해야 했습니다.',
-        '관리자, 작성자, 로그인 사용자에 따라 공지사항과 리뷰의 접근 권한이 달라져야 했습니다.',
-      ],
+      problem: [],
       approach: [
-        '관광 정보 탐색 축을 인천 안내, 테마여행, 문화관광, 교통, 맛집/숙박/쇼핑으로 정리했습니다.',
-        'Spring Boot 3, Thymeleaf, PostgreSQL로 회원가입, 로그인, 마이페이지, 공지, 리뷰 기능을 연결했습니다.',
-        '공지사항은 관리자 권한, 리뷰는 로그인 사용자와 작성자 본인 권한 기준으로 제어했습니다.',
-        '검색과 파일 첨부를 추가해 단순 소개 페이지를 회원/게시판 서비스로 확장했습니다.',
+        '지역, 테마, 문화, 교통 기준의 관광 서브페이지와 공통 레이아웃을 구성했습니다.',
+        '회원가입, 로그인, 마이페이지 흐름을 Spring MVC와 Thymeleaf 화면으로 연결했습니다.',
+        '공지, 리뷰, 관리자 권한을 DB와 화면 흐름 기준으로 분리했습니다.',
       ],
       result: [
-        '정적 관광 페이지를 회원/게시판/관리 기능이 포함된 웹 애플리케이션으로 확장했습니다.',
-        'DB 연동, 권한 제어, 파일 업로드를 포함한 Spring Boot MVC 구현 경험을 정리했습니다.',
+        '정적 정보 페이지를 회원 참여와 운영 관리가 가능한 Spring Boot MVC 서비스로 정리했습니다.',
       ],
-      decision: '관광 정보 소개에 그치지 않고 회원/게시판 기능을 붙여 서비스 형태로 확장했습니다.',
-      tradeoff: '시각 연출보다 MVC 구조, DB 연동, 권한 제어를 안정적으로 구현하는 쪽을 우선했습니다.',
-      verification: '비회원 접근, 회원가입/로그인, 마이페이지, 리뷰 게시판, 관리자 기능, 관광 서브페이지 흐름을 기준으로 확인했습니다.',
-      ownership: '팀리더로 화면 구조, 공통 UI, 주요 페이지 구성, 서비스 확장 흐름을 담당했습니다.',
-      nextStep: '관광 데이터 검색/필터, 관리자 콘텐츠 관리, 반응형 세부 화면을 강화할 수 있습니다.',
+      verification: '비회원 접근, 회원가입/로그인, 마이페이지, 리뷰 게시판, 관리자 기능, 관광 서브페이지 흐름 확인',
     },
     role: '팀장, 웹 퍼블리싱, 화면 구조 설계, 공통 UI, 주요 페이지 구성',
     stack: ['Spring Boot 3', 'Thymeleaf', 'PostgreSQL', 'HTML5', 'CSS', 'JavaScript', 'Docker'],
@@ -357,6 +342,11 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     link: 'https://github.com/teamweb802/teamweb01',
     linkLabel: 'GitHub 802 저장소',
+    resources: [
+      { label: 'GitHub Pages', url: 'https://teamweb802.github.io/teamweb01/' },
+      { label: 'GitHub 802', url: 'https://github.com/teamweb802/teamweb01' },
+      { label: 'Notion 기록', url: 'https://www.notion.so/15972bc8fbb78217aaa601ec207feadf?source=copy_link' },
+    ],
   },
 ]
 
@@ -399,32 +389,31 @@ export const capabilities: CapabilityGroup[] = [
   {
     title: 'Reasoning & AI',
     items: [
-      { label: 'NEO Rule Engine' },
-      { label: 'Ontology' },
-      { label: 'ATMS / CF' },
-      { label: 'YOLO' },
-      { label: 'CRNN-OCR' },
+      { label: 'NEO Rule Engine', evidence: 'Fact, Rule, ATMS/CF, Decision Package 흐름으로 판단 근거를 구조화' },
+      { label: 'Ontology / Neo4j', evidence: '룰·이벤트·판단 관계를 그래프 계보로 추적' },
+      { label: 'NEMI RAG', evidence: 'VectorDB/RAG 방향의 근거 검색 모듈로 판단 설명 보강' },
+      { label: 'YOLO', evidence: 'HI-FIVE 차량/번호판 후보 탐지에 적용' },
+      { label: 'CRNN-OCR', evidence: '다중 프레임 번호판 문자 후보 보정 흐름에 사용' },
     ],
   },
   {
     title: 'Backend & Data',
     items: [
-      { label: 'C / C++' },
-      { label: 'Python' },
-      { label: 'FastAPI' },
-      { label: 'Java / Spring Boot' },
-      { label: 'PostgreSQL / MariaDB' },
-      { label: 'Neo4j' },
+      { label: 'C / C++', evidence: '기존 NEO 추론 엔진 유지보수와 로직 분석 경험' },
+      { label: 'Python / FastAPI', evidence: 'Edge Ingress, AI API, 데이터 변환 보조 도구에 활용' },
+      { label: 'Java / Spring Boot', evidence: '회원, 게시판, 주문, 관리자 API와 MVC 서비스 구현' },
+      { label: 'PostgreSQL / MariaDB', evidence: '관광/쇼핑몰/운영 데이터 저장과 권한별 조회 흐름 구성' },
+      { label: 'Swagger / API 계약', evidence: '프론트·백엔드 분리 개발 시 API 확인 기준으로 사용' },
     ],
   },
   {
     title: 'Frontend & Infra',
     items: [
-      { label: 'Vue 3' },
-      { label: 'Pinia' },
-      { label: 'Docker' },
-      { label: 'Axios' },
-      { label: 'Windows / Linux' },
+      { label: 'Vue 3 / TypeScript', evidence: '포폴/운영 화면을 컴포넌트와 데이터로 분리' },
+      { label: 'Pinia / Axios', evidence: '상태 관리와 API 호출 경계를 화면 흐름에 맞춰 분리' },
+      { label: 'Docker', evidence: '팀 프로젝트 frontend/backend/db 이미지와 실행 환경 정리' },
+      { label: 'GitHub Pages', evidence: '정적 포트폴리오와 데모 페이지 배포' },
+      { label: 'Windows / Linux', evidence: '로컬 개발, 컨테이너 실행, 배포 준비 환경 운용' },
     ],
   },
 ]

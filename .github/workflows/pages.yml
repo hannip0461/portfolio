@@ -24,12 +24,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            apps/neo/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - run: npm ci
-      - run: npm ci --prefix apps/neo
       - run: npm run build:pages
 
       - uses: actions/configure-pages@v5

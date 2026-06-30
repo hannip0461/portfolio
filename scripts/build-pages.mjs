@@ -1,11 +1,11 @@
-import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
 
 const rootDir = process.cwd()
-const neoDir = join(rootDir, 'apps', 'neo')
 const distDir = join(rootDir, 'dist')
-const neoDistDir = join(neoDir, 'dist')
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1]
+const pagesBasePath = process.env.VITE_BASE_PATH ?? (repoName ? `/${repoName}/` : '/portfolio/')
 
 function runNpm(args, cwd, env = {}) {
   const executable = process.env.npm_execpath ? process.execPath : 'npm'
@@ -22,10 +22,5 @@ function runNpm(args, cwd, env = {}) {
   }
 }
 
-runNpm(['run', 'build'], rootDir, { VITE_BASE_PATH: '/portfolio/' })
-runNpm(['run', 'build'], neoDir, { VITE_BASE_PATH: '/portfolio/neo/' })
-
-rmSync(join(distDir, 'neo'), { recursive: true, force: true })
-mkdirSync(join(distDir, 'neo'), { recursive: true })
-cpSync(neoDistDir, join(distDir, 'neo'), { recursive: true })
+runNpm(['run', 'build'], rootDir, { VITE_BASE_PATH: pagesBasePath })
 writeFileSync(join(distDir, '.nojekyll'), '')

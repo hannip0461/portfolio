@@ -56,36 +56,6 @@
   cursor: pointer;
 }
 
-.project-modal-proof {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid var(--line);
-}
-
-.project-modal-proof div {
-  padding: 20px 24px;
-  border-right: 1px solid var(--line);
-}
-
-.project-modal-proof div:last-child {
-  border-right: 0;
-}
-
-.project-modal-proof strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--rust);
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.project-modal-proof span {
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.65;
-  word-break: keep-all;
-}
-
 .project-term-list {
   padding: 16px 24px;
   border-bottom: 1px solid var(--line);
@@ -145,6 +115,11 @@
 .project-modal-body section:nth-child(2),
 .project-modal-body section:nth-child(4) {
   border-right: 1px solid var(--line);
+}
+
+.project-modal-body section:last-child {
+  grid-column: 1 / -1;
+  border-right: 0;
 }
 
 .project-modal-body h3 {
@@ -379,38 +354,10 @@
   font-weight: 800;
 }
 
-.project-modal-judgement {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  border-top: 1px solid var(--line);
-}
-
-.project-modal-judgement div {
-  padding: 22px 24px;
-  border-right: 1px solid var(--line);
-  background: #fafbfc;
-}
-
-.project-modal-judgement div:last-child {
-  border-right: 0;
-}
-
-.project-modal-judgement h3 {
-  margin: 0 0 10px;
-  color: var(--navy);
-  font-size: 16px;
-}
-
-.project-modal-judgement p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  word-break: keep-all;
-}
-
 .project-modal-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: flex-end;
   padding: 18px 24px 24px;
   border-top: 1px solid var(--line);
@@ -420,6 +367,10 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  background: #ffffff;
   color: var(--navy);
   font-size: 14px;
   font-weight: 900;
@@ -431,18 +382,14 @@
   }
 
   .project-modal-header,
-  .project-modal-proof,
   .project-modal-body,
-  .project-modal-judgement,
   .project-screenshot-strip,
   .architecture-steps,
   .project-term-list dl {
     grid-template-columns: 1fr;
   }
 
-  .project-modal-proof div,
-  .project-modal-body section,
-  .project-modal-judgement div {
+  .project-modal-body section {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }

@@ -25,7 +25,8 @@ defineProps<{
           <h3>{{ group.title }}</h3>
           <ul>
             <li v-for="item in group.items" :key="item.label">
-              {{ item.label }}
+              <strong>{{ item.label }}</strong>
+              <span>{{ item.evidence }}</span>
             </li>
           </ul>
         </section>

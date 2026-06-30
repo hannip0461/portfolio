@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, shallowRef, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef, useTemplateRef } from 'vue'
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from '@lucide/vue'
 import type { FeaturedProject, ProjectScreenshot } from '../../data/portfolioContent'
 
@@ -14,6 +14,11 @@ const emit = defineEmits<{
 const isExternalLink = (link: string) => link.startsWith('http')
 const selectedScreenshot = shallowRef<ProjectScreenshot | null>(null)
 const screenshotStrip = useTemplateRef<HTMLElement>('screenshotStrip')
+const resourceLinks = computed(() => {
+  if (props.project.resources?.length) return props.project.resources
+  if (props.project.link) return [{ label: props.project.linkLabel ?? '프로젝트 링크', url: props.project.link }]
+  return []
+})
 
 const openScreenshot = (shot: ProjectScreenshot) => {
   if (shot.src) selectedScreenshot.value = shot
@@ -69,21 +74,6 @@ onUnmounted(() => {
         </button>
       </header>
 
-      <div class="project-modal-proof">
-        <div>
-          <strong>문제</strong>
-          <span>{{ project.proof.problem }}</span>
-        </div>
-        <div>
-          <strong>해결</strong>
-          <span>{{ project.proof.solution }}</span>
-        </div>
-        <div>
-          <strong>결과</strong>
-          <span>{{ project.proof.result }}</span>
-        </div>
-      </div>
-
       <section class="project-modal-screenshots" aria-label="프로젝트 화면">
         <header>
           <h3>프로젝트 화면</h3>
@@ -114,26 +104,26 @@ onUnmounted(() => {
 
       <div class="project-modal-body">
         <section>
-          <h3>전체 아키텍처</h3>
+          <h3>구조</h3>
           <p class="case-flow">{{ project.caseStudy.flow }}</p>
           <ol class="architecture-steps">
             <li v-for="item in project.caseStudy.architecture" :key="item">{{ item }}</li>
           </ol>
         </section>
-        <section>
-          <h3>문제 원인</h3>
+        <section v-if="project.caseStudy.problem.length">
+          <h3>문제 상황</h3>
           <ul>
             <li v-for="item in props.project.caseStudy.problem" :key="item">{{ item }}</li>
           </ul>
         </section>
         <section>
-          <h3>해결 과정</h3>
+          <h3>구현 과정</h3>
           <ul>
             <li v-for="item in props.project.caseStudy.approach" :key="item">{{ item }}</li>
           </ul>
         </section>
         <section>
-          <h3>테스트</h3>
+          <h3>검증</h3>
           <p>{{ project.caseStudy.verification }}</p>
         </section>
         <section>
@@ -154,36 +144,15 @@ onUnmounted(() => {
         </dl>
       </details>
 
-      <section class="project-modal-judgement" aria-label="개발 판단 근거">
-        <div>
-          <h3>개발 판단</h3>
-          <p>{{ project.caseStudy.decision }}</p>
-        </div>
-        <div>
-          <h3>트레이드오프</h3>
-          <p>{{ project.caseStudy.tradeoff }}</p>
-        </div>
-        <div>
-          <h3>검증 방법</h3>
-          <p>{{ project.caseStudy.verification }}</p>
-        </div>
-        <div>
-          <h3>내 담당</h3>
-          <p>{{ project.caseStudy.ownership }}</p>
-        </div>
-        <div>
-          <h3>확장 방향</h3>
-          <p>{{ project.caseStudy.nextStep }}</p>
-        </div>
-      </section>
-
-      <footer v-if="project.link" class="project-modal-actions">
+      <footer v-if="resourceLinks.length" class="project-modal-actions">
         <a
-          :href="project.link"
-          :target="isExternalLink(project.link) ? '_blank' : undefined"
-          :rel="isExternalLink(project.link) ? 'noreferrer' : undefined"
+          v-for="resource in resourceLinks"
+          :key="resource.url"
+          :href="resource.url"
+          :target="isExternalLink(resource.url) ? '_blank' : undefined"
+          :rel="isExternalLink(resource.url) ? 'noreferrer' : undefined"
         >
-          {{ project.linkLabel }}
+          {{ resource.label }}
           <ArrowUpRight :size="17" aria-hidden="true" />
         </a>
       </footer>
