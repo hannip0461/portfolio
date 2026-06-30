@@ -206,6 +206,7 @@ export const featuredProjects: FeaturedProject[] = [
     link: 'https://github.com/teamweb803/straffic_hi-five-1st-project',
     linkLabel: 'GitHub 803 저장소',
     resources: [
+      { label: '실행 데모', url: 'https://huggingface.co/spaces/hannip0461/hifive-edge-ai-demo' },
       { label: 'GitHub 803', url: 'https://github.com/teamweb803/straffic_hi-five-1st-project' },
       { label: 'Notion 기록', url: 'https://coconut-truck-1db.notion.site/371cdef944a180a8bf3be44fcfcd9701' },
       { label: 'Docker frontend', url: 'https://hub.docker.com/r/shshj323/hifive-frontend' },
