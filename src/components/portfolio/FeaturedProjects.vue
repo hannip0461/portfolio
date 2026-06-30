@@ -11,6 +11,8 @@ const emit = defineEmits<{
 }>()
 
 const isExternalLink = (link: string) => link.startsWith('http')
+const getProjectDemoUrl = (project: FeaturedProject) =>
+  project.resources?.find((resource) => resource.label === '실행 데모')?.url
 </script>
 
 <template>
@@ -77,6 +79,16 @@ const isExternalLink = (link: string) => link.startsWith('http')
               상세 기록 보기
               <ArrowUpRight :size="17" aria-hidden="true" />
             </button>
+            <a
+              v-if="getProjectDemoUrl(project)"
+              class="text-link"
+              :href="getProjectDemoUrl(project)"
+              target="_blank"
+              rel="noreferrer"
+            >
+              실행 데모
+              <ArrowUpRight :size="17" aria-hidden="true" />
+            </a>
             <a
               v-if="project.link"
               class="text-link"
