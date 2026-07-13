@@ -1,4 +1,16 @@
 @media (max-width: 960px) {
+  .site-header {
+    position: relative;
+  }
+
+  #about,
+  #projects,
+  #experience,
+  #skills,
+  #contact {
+    scroll-margin-top: 16px;
+  }
+
   .page-width {
     width: min(100% - 36px, 760px);
   }
@@ -162,16 +174,12 @@
 
   .hero-actions {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     margin-top: 22px;
   }
 
   .hero-actions .button {
     width: 100%;
-  }
-
-  .hero-actions .button-primary {
-    grid-column: 1 / -1;
   }
 
   .profile-facts {
@@ -233,20 +241,42 @@
   }
 
   .project-row {
-    padding: 40px 0;
+    gap: 22px;
+    padding: 34px 0;
   }
 
   .project-content h3 {
-    padding-right: 50px;
     font-size: 24px;
   }
 
   .project-number {
-    font-size: 42px;
+    font-size: 12px;
   }
 
   .project-summary {
     font-size: 14px;
+  }
+
+  .project-snapshot div {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .secondary-projects {
+    padding-top: 44px;
+  }
+
+  .secondary-projects-heading {
+    display: block;
+  }
+
+  .secondary-projects-heading h3 {
+    margin-top: 7px;
+  }
+
+  .secondary-project-grid {
+    grid-template-columns: 1fr;
+    gap: 38px;
   }
 
   .work-row {

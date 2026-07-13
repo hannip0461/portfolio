@@ -1,281 +1,203 @@
 .project-modal-backdrop {
   position: fixed;
-  inset: 0;
   z-index: 100;
+  inset: 0;
   display: grid;
+  overflow: hidden;
+  padding: 24px;
   place-items: center;
-  padding: 28px;
-  background: rgba(11, 18, 28, 0.68);
+  background: rgba(12, 23, 41, 0.68);
 }
 
 .project-modal {
-  width: min(1040px, 100%);
-  max-height: min(760px, calc(100dvh - 56px));
-  overflow: auto;
-  border: 1px solid #d7dce1;
+  position: relative;
+  overflow-y: auto;
+  width: min(1120px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  border: 1px solid #c9d0d8;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0 24px 80px rgba(12, 18, 28, 0.28);
+  box-shadow: 0 24px 70px rgba(8, 18, 34, 0.28);
+  overscroll-behavior: contain;
 }
 
 .project-modal-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  position: sticky;
+  z-index: 12;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 24px;
-  padding: 28px 30px 24px;
+  padding: 20px 28px;
   border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.project-modal-header .section-kicker {
+  margin-bottom: 7px;
 }
 
 .project-modal-header h2 {
-  margin: 6px 0 10px;
+  margin: 0;
   color: var(--navy);
+  font-family: "Presentation", "Noto Sans KR", sans-serif;
   font-size: 30px;
+  font-weight: 850;
   line-height: 1.2;
   word-break: keep-all;
 }
 
-.project-modal-header p:last-child {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
+.project-modal-note {
+  margin: 7px 0 0;
+  color: var(--rust);
+  font-size: 12px;
   font-weight: 800;
 }
 
-.project-modal-note {
-  margin-top: 8px !important;
-  color: var(--rust) !important;
-  font-size: 13px !important;
+.project-modal-close,
+.project-screenshot-controls button,
+.screenshot-lightbox button {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #cbd2d8;
+  border-radius: 3px;
+  color: var(--navy);
+  background: #ffffff;
+  cursor: pointer;
 }
 
 .project-modal-close {
-  display: inline-grid;
   width: 40px;
   height: 40px;
-  place-items: center;
-  border: 1px solid var(--line);
-  background: #ffffff;
-  cursor: pointer;
 }
 
-.project-term-list {
-  padding: 16px 24px;
+.project-modal-close:hover,
+.project-screenshot-controls button:hover:not(:disabled),
+.screenshot-lightbox button:hover:not(:disabled) {
+  border-color: var(--navy);
+}
+
+.project-modal-overview {
+  padding: 22px 28px;
   border-bottom: 1px solid var(--line);
-  background: #fafbfc;
+  background: var(--soft);
 }
 
-.project-term-list summary {
-  cursor: pointer;
+.project-modal-overview > p {
+  max-width: 920px;
+  margin: 0;
   color: var(--navy);
-  font-size: 15px;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.65;
+  word-break: keep-all;
 }
 
-.project-term-list dl {
+.project-modal-overview dl {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 14px 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 32px;
+  margin: 17px 0 0;
+  border-top: 1px solid #cfd5dc;
 }
 
-.project-term-list div {
-  padding: 12px;
-  border: 1px solid #d7dce1;
-  background: #ffffff;
+.project-modal-overview dl div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #cfd5dc;
 }
 
-.project-term-list dt {
-  margin-bottom: 6px;
-  color: var(--rust);
+.project-modal-overview dt {
+  color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
-.project-term-list dd {
+.project-modal-overview dd {
   margin: 0;
   color: var(--ink);
   font-size: 13px;
+  font-weight: 650;
   line-height: 1.55;
   word-break: keep-all;
 }
 
-.project-modal-body {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-}
-
-.project-modal-body section:first-child {
-  grid-column: 1 / -1;
-}
-
-.project-modal-body section {
-  padding: 26px 24px 28px;
-  border-bottom: 1px solid var(--line);
-}
-
-.project-modal-body section:nth-child(2),
-.project-modal-body section:nth-child(4) {
-  border-right: 1px solid var(--line);
-}
-
-.project-modal-body section:last-child {
-  grid-column: 1 / -1;
-  border-right: 0;
-}
-
-.project-modal-body h3 {
-  margin: 0 0 14px;
-  color: var(--navy);
-  font-size: 18px;
-}
-
-.project-modal-body ul {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding-left: 18px;
-}
-
-.project-modal-body li {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  word-break: keep-all;
-}
-
-.project-modal-body p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  word-break: keep-all;
-}
-
-.project-modal-body .case-flow {
-  margin-bottom: 14px;
-  padding: 12px 14px;
-  border: 1px solid #d7dce1;
-  background: #fafbfc;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.6;
-}
-
-.architecture-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  counter-reset: architecture;
-  list-style: none;
-}
-
-.architecture-steps li {
-  position: relative;
-  min-height: 92px;
-  padding: 34px 12px 14px;
-  border: 1px solid #d7dce1;
-  background: #fafbfc;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.6;
-  word-break: keep-all;
-}
-
-.architecture-steps li::before {
-  position: absolute;
-  top: 10px;
-  left: 12px;
-  color: var(--rust);
-  font-size: 12px;
-  font-weight: 900;
-  counter-increment: architecture;
-  content: "0" counter(architecture);
-}
-
 .project-modal-screenshots {
-  padding: 26px 24px 30px;
+  padding: 24px 28px 28px;
   border-bottom: 1px solid var(--line);
 }
 
-.project-modal-screenshots header {
+.project-modal-screenshots > header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  align-items: flex-start;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 14px;
 }
 
-.project-modal-screenshots header > div:not(.project-screenshot-controls) {
-  display: grid;
-  justify-items: end;
-  gap: 10px;
-}
-
-.project-modal-screenshots h3 {
+.project-modal-screenshots h3,
+.project-modal-body h3 {
   margin: 0;
   color: var(--navy);
-  font-size: 18px;
-}
-
-.project-modal-screenshots p {
-  max-width: 520px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-  text-align: right;
-  word-break: keep-all;
+  font-size: 17px;
+  font-weight: 850;
 }
 
 .project-screenshot-controls {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  white-space: nowrap;
+  gap: 7px;
+}
+
+.project-screenshot-controls span {
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
 }
 
 .project-screenshot-controls button {
-  display: inline-grid;
   width: 34px;
   height: 34px;
-  place-items: center;
-  border: 1px solid #cbd2d8;
-  background: #ffffff;
-  color: var(--ink);
-  cursor: pointer;
 }
 
-.project-screenshot-controls button:hover,
-.project-screenshot-controls button:focus-visible {
-  border-color: var(--rust);
-  color: var(--rust);
+.project-screenshot-controls button:disabled,
+.screenshot-lightbox button:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 .project-screenshot-strip {
-  display: flex;
-  gap: 14px;
+  display: grid;
   overflow-x: auto;
-  padding-bottom: 4px;
+  grid-auto-columns: minmax(360px, 58%);
+  grid-auto-flow: column;
+  gap: 16px;
+  padding: 0 0 10px;
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
 }
 
-.project-screenshot {
-  display: grid;
-  flex: 0 0 calc((100% - 14px) / 2);
-  gap: 10px;
-  padding: 0;
-  border: 1px solid #d7dce1;
-  background: #ffffff;
-  color: var(--ink);
-  cursor: pointer;
+.project-screenshot-item {
+  min-width: 0;
   scroll-snap-align: start;
-  text-align: left;
+}
+
+.project-screenshot {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  padding: 0;
+  border: 1px solid #cbd2d8;
+  border-radius: 4px;
+  background: #f4f6f8;
+  cursor: zoom-in;
 }
 
 .project-screenshot:disabled {
@@ -284,135 +206,326 @@
 
 .project-screenshot img,
 .project-screenshot-empty {
-  display: grid;
+  display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  place-items: center;
-  background: #eef1f3;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 800;
+  height: 100%;
   object-fit: contain;
   object-position: top;
+  background: #ffffff;
 }
 
-.project-screenshot small {
+.project-screenshot-item small {
   display: block;
-  min-height: 42px;
-  padding: 0 12px 12px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.project-modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 36px;
+  padding: 0 28px 8px;
+}
+
+.project-modal-body section {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-modal-body section:first-child {
+  grid-column: 1 / -1;
+  border-top: 0;
+}
+
+.project-modal-body ul {
+  display: grid;
+  gap: 9px;
+  margin: 14px 0 0;
+  padding-left: 19px;
+}
+
+.project-modal-body li,
+.project-modal-body p {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.project-modal-body p {
+  margin: 13px 0 0;
+}
+
+.project-modal-body .case-flow {
+  overflow-x: auto;
+  padding: 12px 14px;
+  border-left: 3px solid var(--rust);
+  background: var(--soft);
+  color: var(--navy);
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.architecture-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: architecture-step;
+}
+
+.architecture-steps li {
+  position: relative;
+  min-height: 58px;
+  padding: 12px 0 12px 40px;
+  border-top: 1px solid var(--line);
+  counter-increment: architecture-step;
+}
+
+.architecture-steps li::before {
+  position: absolute;
+  top: 11px;
+  left: 0;
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid #cbd2d8;
+  color: var(--rust);
+  background: #ffffff;
+  content: counter(architecture-step);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.project-term-list {
+  margin: 0 28px 24px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.project-term-list summary {
+  padding: 14px 0;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.project-term-list dl {
+  margin: 0;
+  padding-bottom: 12px;
+}
+
+.project-term-list dl div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-term-list dt {
+  color: var(--rust);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.project-term-list dd {
+  margin: 0;
   color: var(--muted);
   font-size: 13px;
-  line-height: 1.55;
-  word-break: keep-all;
+  line-height: 1.6;
+}
+
+.project-modal-actions {
+  position: sticky;
+  z-index: 11;
+  bottom: 0;
+  display: flex;
+  overflow-x: auto;
+  gap: 9px;
+  padding: 14px 28px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.project-modal-actions a {
+  display: inline-flex;
+  min-height: 38px;
+  min-width: max-content;
+  align-items: center;
+  gap: 7px;
+  padding: 0 13px;
+  border: 1px solid #cbd2d8;
+  border-radius: 3px;
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.project-modal-actions a:hover {
+  border-color: var(--rust);
+  color: var(--rust);
 }
 
 .screenshot-lightbox {
   position: fixed;
+  z-index: 200;
   inset: 0;
-  z-index: 120;
   display: grid;
+  padding: 24px;
   place-items: center;
-  padding: 28px;
-  background: rgba(11, 18, 28, 0.78);
+  background: rgba(5, 12, 24, 0.9);
 }
 
 .screenshot-lightbox figure {
-  position: relative;
-  width: min(1040px, 100%);
+  width: min(1280px, calc(100vw - 48px));
   margin: 0;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 12px;
+  border-radius: 5px;
   background: #ffffff;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+}
+
+.screenshot-lightbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+}
+
+.screenshot-lightbox-toolbar span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .screenshot-lightbox button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: inline-grid;
-  width: 40px;
-  height: 40px;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(11, 18, 28, 0.72);
-  color: #ffffff;
-  cursor: pointer;
+  width: 38px;
+  height: 38px;
+}
+
+.screenshot-lightbox-stage {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 10px;
 }
 
 .screenshot-lightbox img {
   display: block;
   width: 100%;
-  max-height: 78dvh;
+  max-height: calc(100vh - 170px);
   object-fit: contain;
-  background: #eef1f3;
+  background: #f4f6f8;
 }
 
 .screenshot-lightbox figcaption {
-  padding: 14px 16px;
+  padding: 10px 50px 2px;
   color: var(--ink);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 13px;
+  text-align: center;
 }
 
-.project-modal-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-end;
-  padding: 18px 24px 24px;
-  border-top: 1px solid var(--line);
-}
-
-.project-modal-actions a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 34px;
-  padding: 0 10px;
-  border: 1px solid var(--line);
-  background: #ffffff;
-  color: var(--navy);
-  font-size: 14px;
-  font-weight: 900;
-}
-
-@media (max-width: 760px) {
+@media (max-width: 680px) {
   .project-modal-backdrop {
-    padding: 14px;
+    padding: 0;
   }
 
-  .project-modal-header,
-  .project-modal-body,
-  .project-screenshot-strip,
-  .architecture-steps,
-  .project-term-list dl {
+  .project-modal {
+    width: 100vw;
+    max-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .project-modal-header {
+    gap: 14px;
+    padding: 15px 16px;
+  }
+
+  .project-modal-header h2 {
+    font-size: 23px;
+  }
+
+  .project-modal-overview,
+  .project-modal-screenshots {
+    padding: 18px 16px;
+  }
+
+  .project-modal-overview > p {
+    font-size: 14px;
+  }
+
+  .project-modal-overview dl,
+  .project-modal-body {
     grid-template-columns: 1fr;
   }
 
-  .project-modal-body section {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
+  .project-modal-overview dl div {
+    grid-template-columns: 68px minmax(0, 1fr);
   }
 
-  .project-modal-screenshots header {
-    display: block;
+  .project-screenshot-strip {
+    grid-auto-columns: 88%;
   }
 
-  .project-modal-screenshots header > div:not(.project-screenshot-controls) {
-    justify-items: start;
+  .project-modal-body {
+    padding: 0 16px 6px;
   }
 
-  .project-modal-screenshots .project-screenshot-controls {
-    justify-content: flex-start;
-    margin-top: 10px;
+  .project-modal-body section:first-child {
+    grid-column: auto;
   }
 
-  .project-modal-screenshots p {
-    margin-top: 8px;
-    text-align: left;
+  .project-modal-body .case-flow {
+    white-space: normal;
   }
 
-  .project-screenshot {
-    flex-basis: min(84vw, 320px);
+  .architecture-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .project-term-list {
+    margin: 0 16px 18px;
+  }
+
+  .project-term-list dl div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .project-modal-actions {
+    padding: 11px 16px;
+  }
+
+  .screenshot-lightbox {
+    padding: 0;
+  }
+
+  .screenshot-lightbox figure {
+    width: 100vw;
+    padding: 10px;
+    border-radius: 0;
+  }
+
+  .screenshot-lightbox-stage {
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    gap: 5px;
+  }
+
+  .screenshot-lightbox button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .screenshot-lightbox figcaption {
+    padding: 10px 38px 2px;
   }
 }

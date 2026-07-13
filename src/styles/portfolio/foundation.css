@@ -8,7 +8,7 @@
   --navy-light: #29344d;
   --rust: #c83b2f;
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow-x: clip;
   color: var(--ink);
   background: var(--paper);
   font-family:
