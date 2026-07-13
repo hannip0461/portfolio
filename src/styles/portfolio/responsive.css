@@ -46,7 +46,8 @@
   }
 
   .hero h1 {
-    font-size: 44px;
+    font-size: 40px;
+    line-height: 1.12;
   }
 
   .hero-statement {
@@ -134,12 +135,18 @@
     height: 76px;
   }
 
+  .hero-profile a {
+    grid-column: 1 / -1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .hero-copy {
     padding: 42px 0 0;
   }
 
   .hero h1 {
-    font-size: 44px;
+    font-size: 40px;
   }
 
   .hero-statement {
