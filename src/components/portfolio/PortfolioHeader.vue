@@ -10,7 +10,7 @@ const basePath = import.meta.env.BASE_URL
   <header class="site-header">
     <div class="utility-bar">
       <div class="page-width utility-inner">
-        <span>Developer Portfolio · Kim Minjin</span>
+        <span>김민진 · Backend / AI / Full Stack</span>
         <a href="mailto:kimmj646676@gmail.com">kimmj646676@gmail.com</a>
       </div>
     </div>

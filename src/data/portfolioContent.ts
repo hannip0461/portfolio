@@ -15,6 +15,8 @@ export interface ProjectResource {
 }
 
 export interface FeaturedProject {
+  id: string
+  tier: 'primary' | 'secondary'
   number: string
   title: string
   period: string
@@ -75,14 +77,105 @@ const neoOperatorUrl = import.meta.env.VITE_NEO_OPERATOR_URL ?? 'https://3-38-33
 const neoResources = [
   { label: 'NEO 관제 화면', url: neoOperatorUrl },
   {
-    label: 'GitHub 저장소',
+    label: 'NEO 저장소',
     url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator',
   },
 ]
 
 export const featuredProjects: FeaturedProject[] = [
   {
+    id: 'astra',
+    tier: 'primary',
     number: '01',
+    title: 'ASTRA LiveOps Server',
+    period: '개인 프로젝트 · 2026',
+    badge: '분산 상태 정합성 · LiveOps 복구 · 관측성',
+    summary:
+      '네트워크 재시도와 동시 요청에서도 가챠·재화 상태를 일관되게 유지하고, 콘텐츠 롤백과 대상자 보상까지 연결한 수집형 RPG 운영 서버입니다.',
+    proof: {
+      problemLabel: '개요',
+      problem:
+        '수집형 RPG 운영에서는 중복 요청과 콘텐츠 배포 실수가 재화·보상 오류로 이어질 수 있습니다.',
+      solution:
+        'Orleans Grain의 플레이어별 직렬화와 PostgreSQL 원자적 트랜잭션을 중심으로 멱등 처리, 콘텐츠 롤백, 사고 보상 절차를 구성했습니다.',
+      result:
+        '동시성·장애·재시도 상황의 정합성과 운영 복구 흐름을 자동 테스트와 실제 운영 화면으로 검증했습니다.',
+    },
+    caseStudy: {
+      flow: 'HTTP/TCP + Protobuf → ASP.NET Core/Gateway → Orleans Silo → PostgreSQL/Redis → Outbox Worker → Blazor Admin/Elastic',
+      architecture: [
+        'ASP.NET Core API와 TCP + Protobuf Gateway가 공통 command 경계를 구성',
+        'Orleans PlayerAccountGrain이 플레이어별 명령을 직렬화',
+        'PostgreSQL이 상태, 원장, 감사, 멱등 응답과 콘텐츠의 source of truth 역할 수행',
+        'Redis가 사고 보상 대상 조회를 가속하고 PostgreSQL fallback을 유지',
+        'Blazor Admin과 OpenTelemetry/Elastic이 배포·복구·관측 흐름을 제공',
+      ],
+      problem: [
+        '동일 요청의 재전송과 동시 명령이 재화 차감·보상 지급을 중복 처리할 수 있었습니다.',
+        '잘못 배포된 콘텐츠의 영향 대상과 복구 과정을 운영자가 추적할 수 있어야 했습니다.',
+      ],
+      approach: [
+        'Idempotency-Key, 요청 hash와 completed response replay로 동일 요청의 결과를 재사용했습니다.',
+        '재화, 보상, inventory, pity, ledger, audit와 Outbox event를 하나의 PostgreSQL transaction에서 처리했습니다.',
+        'immutable content snapshot과 checksum을 기록하고 이전 version rollback과 대상자 Incident Mail을 연결했습니다.',
+        'Transactional Outbox, OpenTelemetry와 Kibana Dashboard로 비동기 처리와 장애 징후를 추적했습니다.',
+      ],
+      result: [
+        '플레이어 상태 정합성부터 콘텐츠 사고 복구와 운영 감사까지 하나의 실행 가능한 LiveOps 서버로 연결했습니다.',
+        'HTTP/TCP 공통 계약, 2-Silo 구성과 장애 주입 시나리오까지 검증 범위를 확장했습니다.',
+      ],
+      verification:
+        '표준 테스트 91건, 실제 PostgreSQL 테스트 17건, 2-Silo와 HTTP/TCP E2E, failure injection 및 배포 구성 검증',
+    },
+    role: '개인 프로젝트 · 서버 아키텍처, 도메인 정합성, LiveOps 운영, 테스트·배포 구성',
+    stack: ['.NET 10', 'ASP.NET Core', 'Microsoft Orleans', 'PostgreSQL', 'Redis', 'Blazor', 'OpenTelemetry', 'Docker'],
+    image: assetPath('images/project-astra-content-ops.png'),
+    imageAlt: 'ASTRA 콘텐츠 배포와 롤백 운영 화면',
+    screenshots: [
+      {
+        src: assetPath('images/project-astra-content-ops.png'),
+        alt: 'ASTRA 콘텐츠 배포와 롤백 화면',
+        caption: '버전과 checksum을 기록하는 콘텐츠 배포·롤백 화면',
+      },
+      {
+        src: assetPath('images/project-astra-incident-mail.png'),
+        alt: 'ASTRA 사고 대상자 보상 화면',
+        caption: '영향 대상 snapshot과 멱등 보상을 확인하는 Incident Mail 화면',
+      },
+      {
+        src: assetPath('images/project-astra-audit-log.png'),
+        alt: 'ASTRA 운영 감사 로그 화면',
+        caption: '운영 명령과 결과를 추적하는 감사 로그',
+      },
+      {
+        src: assetPath('images/project-astra-outbox.png'),
+        alt: 'ASTRA Transactional Outbox 운영 화면',
+        caption: '재시도와 dead-letter를 관리하는 Outbox 화면',
+      },
+      {
+        src: assetPath('images/project-astra-observability.png'),
+        alt: 'ASTRA Kibana 관측성 대시보드',
+        caption: 'trace와 PostgreSQL 장애 지표를 확인하는 Kibana Dashboard',
+      },
+      {
+        src: assetPath('images/project-astra-operations.png'),
+        alt: 'ASTRA 운영 상태 대시보드',
+        caption: 'API, Silo, Worker와 데이터 계층의 운영 상태 화면',
+      },
+    ],
+    link: 'https://github.com/hannip0461/ASTRA-LiveOps-Server',
+    linkLabel: 'ASTRA 저장소',
+    resources: [
+      { label: 'ASTRA 저장소', url: 'https://github.com/hannip0461/ASTRA-LiveOps-Server' },
+      { label: '프로젝트 종합 문서', url: 'https://github.com/hannip0461/ASTRA-LiveOps-Server/blob/main/docs/project/ASTRA_LiveOps_Project_Overview.pdf' },
+      { label: '아키텍처 도식', url: 'https://github.com/hannip0461/ASTRA-LiveOps-Server/blob/main/docs/project/ASTRA_LiveOps_Architecture_Diagrams.pdf' },
+      { label: 'GitHub Actions CI', url: 'https://github.com/hannip0461/ASTRA-LiveOps-Server/actions/workflows/ci.yml' },
+    ],
+  },
+  {
+    id: 'neo',
+    tier: 'primary',
+    number: '02',
     title: 'NEO ITS / MaaS Decision System',
     period: '개인 프로젝트 · 2026',
     badge: '추론 · 판단 근거 · 운영 콘솔',
@@ -161,7 +254,9 @@ export const featuredProjects: FeaturedProject[] = [
     resources: neoResources,
   },
   {
-    number: '02',
+    id: 'hifive',
+    tier: 'primary',
+    number: '03',
     title: 'HI-FIVE Smart Tolling',
     period: '팀 프로젝트 · 2026.04.27–06.01',
     badge: 'Edge AI · 통행 이벤트 · PoC',
@@ -210,17 +305,19 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     link: 'https://github.com/teamweb803/straffic_hi-five-1st-project',
-    linkLabel: 'GitHub 803 저장소',
+    linkLabel: 'HI-FIVE 저장소',
     resources: [
-      { label: '실행 데모', url: 'https://huggingface.co/spaces/hannip0461/hifive-edge-ai-demo' },
-      { label: 'GitHub 803', url: 'https://github.com/teamweb803/straffic_hi-five-1st-project' },
+      { label: 'HF 실행 데모', url: 'https://huggingface.co/spaces/hannip0461/hifive-edge-ai-demo' },
+      { label: 'HI-FIVE 저장소', url: 'https://github.com/teamweb803/straffic_hi-five-1st-project' },
       { label: 'Notion 기록', url: 'https://coconut-truck-1db.notion.site/371cdef944a180a8bf3be44fcfcd9701' },
       { label: 'Docker frontend', url: 'https://hub.docker.com/r/shshj323/hifive-frontend' },
       { label: 'Docker backend', url: 'https://hub.docker.com/r/shshj323/hifive-backend' },
     ],
   },
   {
-    number: '03',
+    id: 'furniture',
+    tier: 'secondary',
+    number: '04',
     title: '가구 쇼핑몰 웹 애플리케이션',
     period: '팀 프로젝트 · 2026.03.14–04.12',
     badge: '커머스 · 권한 흐름 · Frontend',
@@ -284,9 +381,9 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     link: 'https://github.com/teamweb803/teamweb02',
-    linkLabel: 'GitHub 803 저장소',
+    linkLabel: '가구 쇼핑몰 저장소',
     resources: [
-      { label: 'GitHub 803', url: 'https://github.com/teamweb803/teamweb02' },
+      { label: '가구 쇼핑몰 저장소', url: 'https://github.com/teamweb803/teamweb02' },
       { label: 'Notion 기록', url: 'https://www.notion.so/de296acf563f838584b301756ee05b67' },
       { label: 'Docker frontend', url: 'https://hub.docker.com/r/kimmj6466/team4-frontend' },
       { label: 'Docker backend', url: 'https://hub.docker.com/r/kimmj6466/team4-backend' },
@@ -294,7 +391,9 @@ export const featuredProjects: FeaturedProject[] = [
     ],
   },
   {
-    number: '04',
+    id: 'incheon',
+    tier: 'secondary',
+    number: '05',
     title: '인천 문화·관광 웹 애플리케이션',
     period: '팀 프로젝트 · 2026.02.09–03.13',
     badge: '관광 정보 · MVC 확장 · 권한 제어',
@@ -348,41 +447,18 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     link: 'https://github.com/teamweb802/teamweb01',
-    linkLabel: 'GitHub 802 저장소',
+    linkLabel: '인천 관광 서비스 저장소',
     resources: [
       { label: 'GitHub Pages', url: 'https://teamweb802.github.io/teamweb01/' },
-      { label: 'GitHub 802', url: 'https://github.com/teamweb802/teamweb01' },
+      { label: '인천 관광 서비스 저장소', url: 'https://github.com/teamweb802/teamweb01' },
       { label: 'Notion 기록', url: 'https://www.notion.so/15972bc8fbb78217aaa601ec207feadf?source=copy_link' },
     ],
   },
 ]
 
-export const additionalProjects: AdditionalProject[] = [
-  {
-    title: 'Discord 음악봇',
-    period: '2026.03',
-    detail: 'Discord 음원 재생 제어와 Android 연동 흐름을 구현한 개인 프로젝트',
-  },
-  {
-    title: '개인 NEO 프로젝트',
-    period: '2021.12–2023.11',
-    detail: 'C/C++ 기반 추론 엔진 분석, Python 보조 도구, Database 연계를 다룬 개인 프로젝트',
-  },
-  {
-    title: 'Ontology List + Neo4j',
-    period: '2021.09–10',
-    detail: '온톨로지 관계를 정리하고 Neo4j 그래프 구조로 표현한 팀 프로젝트',
-  },
-]
+export const additionalProjects: AdditionalProject[] = []
 
 export const experience: ExperienceItem[] = [
-  {
-    company: '대영전기',
-    period: '2024.11–2025.12',
-    position: '현장 운영 지원 · 계약직',
-    detail:
-      '현대자동차 울산 현장에서 자재, 인원·근태, 안전·행정 문서 흐름을 지원했습니다.',
-  },
   {
     company: '(주)모아데이타',
     period: '2021.07–2022.12',
@@ -390,27 +466,34 @@ export const experience: ExperienceItem[] = [
     detail:
       'C/C++ NEO 추론 엔진 유지보수, 규칙·온톨로지 로직, MariaDB 연동, Fact 데이터 변환을 담당했습니다.',
   },
+  {
+    company: '대영전기',
+    period: '2024.11–2025.12',
+    position: '현장 운영 지원 · 계약직',
+    detail:
+      '현대자동차 울산 현장에서 자재, 인원·근태, 안전·행정 문서 흐름을 지원했습니다.',
+  },
 ]
 
 export const capabilities: CapabilityGroup[] = [
   {
-    title: 'Reasoning & AI',
+    title: 'Backend & Distributed Systems',
     items: [
-      { label: 'NEO Rule Engine', evidence: 'Fact, Rule, ATMS/CF, Decision Package 흐름으로 판단 근거를 구조화' },
-      { label: 'Ontology / Neo4j', evidence: '룰·이벤트·판단 관계를 그래프 계보로 추적' },
-      { label: 'NEMI RAG', evidence: 'VectorDB/RAG 방향의 근거 검색 모듈로 판단 설명 보강' },
-      { label: 'YOLO', evidence: 'HI-FIVE 차량/번호판 후보 탐지에 적용' },
-      { label: 'CRNN-OCR', evidence: '다중 프레임 번호판 문자 후보 보정 흐름에 사용' },
+      { label: '.NET / Microsoft Orleans', evidence: 'ASTRA의 플레이어별 명령 직렬화와 2-Silo 분산 실행 구성' },
+      { label: 'Java / Spring Boot', evidence: '회원, 게시판, 주문, 관리자 API와 MVC 서비스 구현' },
+      { label: 'Python / FastAPI', evidence: 'Edge Ingress, AI API, NEO 오케스트레이션 경계 구현' },
+      { label: 'PostgreSQL / Redis', evidence: '트랜잭션 정합성, 원장·감사, 멱등 응답과 조회 가속 구성' },
+      { label: 'HTTP / TCP + Protobuf', evidence: 'ASTRA와 HI-FIVE의 전송 경계와 command/event 계약 구성' },
     ],
   },
   {
-    title: 'Backend & Data',
+    title: 'Reasoning & AI',
     items: [
       { label: 'C / C++', evidence: '기존 NEO 추론 엔진 유지보수와 로직 분석 경험' },
-      { label: 'Python / FastAPI', evidence: 'Edge Ingress, AI API, 데이터 변환 보조 도구에 활용' },
-      { label: 'Java / Spring Boot', evidence: '회원, 게시판, 주문, 관리자 API와 MVC 서비스 구현' },
-      { label: 'PostgreSQL / MariaDB', evidence: '관광/쇼핑몰/운영 데이터 저장과 권한별 조회 흐름 구성' },
-      { label: 'Swagger / API 계약', evidence: '프론트·백엔드 분리 개발 시 API 확인 기준으로 사용' },
+      { label: 'NEO Rule Engine', evidence: 'Fact, Rule, ATMS/CF와 Decision 흐름으로 판단 근거 구조화' },
+      { label: 'Ontology / Neo4j', evidence: '룰·이벤트·판단 관계를 그래프 계보로 추적' },
+      { label: 'NEMI RAG', evidence: 'VectorDB/RAG 기반 문서 근거 검색으로 판단 설명 보강' },
+      { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE 차량 번호판 탐지와 문자 판독 파이프라인 구현' },
     ],
   },
   {
@@ -418,9 +501,9 @@ export const capabilities: CapabilityGroup[] = [
     items: [
       { label: 'Vue 3 / TypeScript', evidence: '포폴/운영 화면을 컴포넌트와 데이터로 분리' },
       { label: 'Pinia / Axios', evidence: '상태 관리와 API 호출 경계를 화면 흐름에 맞춰 분리' },
-      { label: 'Docker', evidence: '팀 프로젝트 frontend/backend/db 이미지와 실행 환경 정리' },
-      { label: 'GitHub Pages', evidence: '정적 포트폴리오와 데모 페이지 배포' },
-      { label: 'Windows / Linux', evidence: '로컬 개발, 컨테이너 실행, 배포 준비 환경 운용' },
+      { label: 'Docker / Kubernetes', evidence: '멀티 서비스 이미지, Compose와 Helm 배포 구성 검증' },
+      { label: 'OpenTelemetry / Elastic', evidence: 'API·TCP·DB·Worker trace와 운영 지표 대시보드 구성' },
+      { label: 'GitHub Actions / Pages', evidence: '자동 테스트·이미지 발행과 정적 포트폴리오 배포' },
     ],
   },
 ]
