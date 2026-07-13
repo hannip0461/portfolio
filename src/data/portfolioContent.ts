@@ -71,7 +71,7 @@ export interface EducationItem {
 
 const pagePath = (path: string) => `${import.meta.env.BASE_URL}${path}`
 const assetPath = (path: string) => pagePath(path)
-const neoOperatorUrl = import.meta.env.VITE_NEO_OPERATOR_URL ?? 'http://3.38.33.156/neo'
+const neoOperatorUrl = import.meta.env.VITE_NEO_OPERATOR_URL ?? 'https://3-38-33-156.sslip.io/neo'
 const neoResources = [
   { label: 'NEO 관제 화면', url: neoOperatorUrl },
   {
