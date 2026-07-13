@@ -71,8 +71,14 @@ export interface EducationItem {
 
 const pagePath = (path: string) => `${import.meta.env.BASE_URL}${path}`
 const assetPath = (path: string) => pagePath(path)
-const neoPath = 'http://127.0.0.1:5182/neo/'
-const neoResources = import.meta.env.DEV ? [{ label: '로컬 NEO 화면', url: neoPath }] : []
+const neoOperatorUrl = import.meta.env.VITE_NEO_OPERATOR_URL ?? 'http://3.38.33.156/neo'
+const neoResources = [
+  { label: 'NEO 관제 화면', url: neoOperatorUrl },
+  {
+    label: 'GitHub 저장소',
+    url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator',
+  },
+]
 
 export const featuredProjects: FeaturedProject[] = [
   {
@@ -150,7 +156,7 @@ export const featuredProjects: FeaturedProject[] = [
       { term: 'NEMI', description: '직접 정의한 자체 근거 검색 모듈로, VectorDB/RAG 기반 근거 검색을 담당하는 프로젝트 내부 명칭입니다.' },
       { term: 'Neo4j', description: '외부 그래프 DB. 룰·이벤트·판단 관계 저장/조회에 사용했습니다.' },
     ],
-    link: import.meta.env.DEV ? neoPath : undefined,
+    link: neoOperatorUrl,
     linkLabel: 'NEO 화면 보기',
     resources: neoResources,
   },
