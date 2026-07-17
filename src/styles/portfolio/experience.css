@@ -1,27 +1,40 @@
 .experience-section {
-  padding: 64px 0;
+  padding: 52px 0;
   background: #ffffff;
 }
 
-.experience-section .section-heading {
-  margin-bottom: 34px;
+.experience-layout {
+  display: grid;
+  grid-template-columns: 0.42fr 1fr;
+  gap: 52px;
+}
+
+.experience-heading .section-kicker {
+  margin-bottom: 10px;
+}
+
+.experience-heading h2 {
+  margin: 0;
+  color: var(--navy);
+  font-family: "Presentation", "Noto Sans KR", sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .timeline {
-  max-width: 930px;
-  margin-left: auto;
+  max-width: none;
+  margin: 0;
+  padding-top: 6px;
+  border-top: 2px solid var(--navy);
 }
 
 .timeline-row {
   display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 34px;
-  padding: 24px 0;
+  grid-template-columns: 180px 1fr;
+  gap: 28px;
+  padding: 19px 0;
   border-bottom: 1px solid var(--line);
-}
-
-.timeline-row:first-child {
-  padding-top: 0;
 }
 
 .timeline-row time {
@@ -36,6 +49,7 @@
   color: var(--navy);
   font-size: 21px;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .timeline-position {
@@ -46,10 +60,22 @@
 }
 
 .timeline-row p {
-  max-width: 660px;
+  max-width: 680px;
   margin: 0;
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
+  text-wrap: pretty;
   word-break: keep-all;
+}
+
+@media (max-width: 960px) {
+  .experience-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .experience-heading h2 {
+    font-size: 29px;
+  }
 }

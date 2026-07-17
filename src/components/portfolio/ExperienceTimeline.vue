@@ -8,12 +8,10 @@ defineProps<{
 
 <template>
   <section id="experience" class="section experience-section" aria-labelledby="experience-title">
-    <div class="page-width">
-      <header class="section-heading">
-        <div>
-          <p class="section-kicker">Experience</p>
-          <h2 id="experience-title">경력</h2>
-        </div>
+    <div class="page-width experience-layout">
+      <header class="experience-heading">
+        <p class="section-kicker">Experience</p>
+        <h2 id="experience-title">경력</h2>
       </header>
       <div class="timeline">
         <article v-for="item in items" :key="item.company" class="timeline-row">

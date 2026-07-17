@@ -32,6 +32,7 @@
   color: var(--navy);
   font-size: 18px;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .work-row p {
@@ -39,6 +40,7 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .work-row time {
