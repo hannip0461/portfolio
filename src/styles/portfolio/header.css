@@ -49,15 +49,11 @@
 }
 
 .brand-mark {
-  display: grid;
+  display: block;
+  flex: 0 0 46px;
   width: 46px;
   height: 46px;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  font-family: "Presentation", "Noto Sans KR", sans-serif;
-  font-size: 18px;
-  font-weight: 800;
+  object-fit: cover;
 }
 
 .brand strong,

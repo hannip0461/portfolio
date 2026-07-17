@@ -10,17 +10,24 @@ const basePath = import.meta.env.BASE_URL
   <header class="site-header">
     <div class="utility-bar">
       <div class="page-width utility-inner">
-        <span>김민진 · Backend / AI / Full Stack</span>
+        <span>2026 개발 포트폴리오</span>
         <a href="mailto:kimmj646676@gmail.com">kimmj646676@gmail.com</a>
       </div>
     </div>
 
     <div class="page-width nav-row">
       <a class="brand" :href="basePath" aria-label="김민진 포트폴리오 홈">
-        <span class="brand-mark">KM</span>
+        <img
+          class="brand-mark"
+          :src="`${basePath}images/brand-mj-mark.png?v=3`"
+          alt=""
+          width="46"
+          height="46"
+          aria-hidden="true"
+        />
         <span>
           <strong>김민진</strong>
-          <small>Backend · AI · Full Stack</small>
+          <small>시스템 개발자</small>
         </span>
       </a>
       <nav class="site-nav" aria-label="주요 메뉴">

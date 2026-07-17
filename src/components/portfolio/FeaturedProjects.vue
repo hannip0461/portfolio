@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ArrowUpRight } from '@lucide/vue'
+import { ArrowRight, ArrowUpRight } from '@lucide/vue'
 import type { FeaturedProject } from '../../data/portfolioContent'
 
 const props = defineProps<{
@@ -26,7 +26,7 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
           <p class="section-kicker">Selected Projects</p>
           <h2 id="projects-title">대표 프로젝트</h2>
         </div>
-        <p>각 프로젝트가 무엇을 구현했고 어떤 역량을 증명하는지 먼저 확인할 수 있습니다.</p>
+        <p>분산 서버·교통 관제·Edge AI 프로젝트를 실제 운영 화면과 함께 정리했습니다.</p>
       </header>
 
       <div class="primary-project-list">
@@ -34,7 +34,7 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
           v-for="(project, index) in primaryProjects"
           :key="project.id"
           class="project-row"
-          :class="{ reverse: index % 2 === 1 }"
+          :class="[{ reverse: index % 2 === 1 }, `project-row-${project.id}`]"
         >
           <button
             class="project-media"
@@ -57,27 +57,32 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
               <p class="project-period">{{ project.period }}</p>
             </div>
             <h3>{{ project.title }}</h3>
-            <p class="project-summary">{{ project.summary }}</p>
+            <p class="project-claim">{{ project.claim }}</p>
+            <p class="project-proof">{{ project.proof.result }}</p>
 
             <dl class="project-snapshot" aria-label="프로젝트 핵심 정보">
               <div>
-                <dt>보여주는 역량</dt>
+                <dt>핵심 구현</dt>
                 <dd>{{ project.badge }}</dd>
               </div>
               <div>
-                <dt>담당</dt>
-                <dd>{{ project.role }}</dd>
-              </div>
-              <div>
-                <dt>결과</dt>
-                <dd>{{ project.proof.result }}</dd>
+                <dt>직접 담당</dt>
+                <dd>
+                  <span>{{ project.role }}</span>
+                  <ul v-if="project.rolePhases?.length" class="project-role-phases">
+                    <li v-for="phase in project.rolePhases" :key="phase.label">
+                      <strong>{{ phase.label }}</strong>
+                      <span>{{ phase.detail }}</span>
+                    </li>
+                  </ul>
+                </dd>
               </div>
             </dl>
 
             <div class="project-actions">
               <button class="text-link project-case-button" type="button" @click="emit('openProject', project)">
-                상세 기록
-                <ArrowUpRight :size="17" aria-hidden="true" />
+                상세보기
+                <ArrowRight :size="17" aria-hidden="true" />
               </button>
               <a
                 v-if="getProjectDemoUrl(project)"
@@ -123,7 +128,7 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
             <div class="secondary-project-content">
               <p class="project-period">{{ project.period }}</p>
               <h4>{{ project.title }}</h4>
-              <p>{{ project.summary }}</p>
+              <p class="project-claim">{{ project.claim }}</p>
               <dl class="secondary-project-facts">
                 <div>
                   <dt>역량</dt>
@@ -136,8 +141,8 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
               </dl>
               <div class="project-actions">
                 <button class="text-link project-case-button" type="button" @click="emit('openProject', project)">
-                  상세 기록
-                  <ArrowUpRight :size="17" aria-hidden="true" />
+                  상세보기
+                  <ArrowRight :size="17" aria-hidden="true" />
                 </button>
                 <a
                   v-if="project.link"

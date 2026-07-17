@@ -31,6 +31,7 @@
   color: var(--navy);
   font-size: 22px;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .education-item > p:last-child {
@@ -38,4 +39,5 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
+  text-wrap: pretty;
 }

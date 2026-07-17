@@ -26,6 +26,7 @@
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .section-heading > p {
@@ -35,4 +36,5 @@
   font-size: 14px;
   line-height: 1.65;
   text-align: right;
+  text-wrap: pretty;
 }

@@ -30,13 +30,15 @@
 }
 
 .hero h1 {
+  max-width: 880px;
   margin: 0;
   color: var(--navy);
   font-family: "Presentation", "Noto Sans KR", sans-serif;
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.12;
   letter-spacing: 0;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -48,15 +50,7 @@
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: 0;
-  word-break: keep-all;
-}
-
-.hero-description {
-  max-width: 760px;
-  margin: 18px 0 0;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.75;
+  text-wrap: pretty;
   word-break: keep-all;
 }
 
@@ -67,69 +61,57 @@
   margin-top: 26px;
 }
 
-.hero-profile {
-  display: grid;
-  gap: 12px;
-  align-content: center;
+.hero-evidence {
+  min-width: 0;
   padding-left: 30px;
   border-left: 1px solid var(--line);
 }
 
-.hero-profile img {
-  width: 116px;
-  height: 116px;
-  border: 1px solid var(--line);
-  object-fit: cover;
-  object-position: top;
-  mix-blend-mode: multiply;
-}
-
-.hero-profile strong,
-.hero-profile span {
-  display: block;
-}
-
-.hero-profile strong {
-  color: var(--navy);
-  font-size: 22px;
+.hero-evidence > p {
+  margin: 0 0 12px;
+  color: var(--rust);
+  font-size: 11px;
   font-weight: 900;
 }
 
-.hero-profile span {
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.hero-profile-points {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin: 2px 0 4px;
+.hero-evidence ol {
+  margin: 0;
   padding: 0;
+  border-top: 2px solid var(--navy);
   list-style: none;
 }
 
-.hero-profile-points li {
-  display: inline-flex;
-  min-height: 26px;
-  align-items: center;
-  padding: 0 9px;
-  border: 1px solid #d7dce1;
-  background: #ffffff;
-  color: var(--navy);
-  font-size: 12px;
-  font-weight: 800;
+.hero-evidence li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.hero-profile a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--ink);
-  font-size: 13px;
+.hero-evidence li > span {
+  color: var(--rust);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.hero-evidence strong {
+  display: block;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 900;
   line-height: 1.4;
+}
+
+.hero-evidence li p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  word-break: keep-all;
 }
 
 .button {

@@ -48,6 +48,7 @@
   font-size: 21px;
   font-weight: 800;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .capability-group ul {
@@ -76,5 +77,6 @@
   color: #c7ceda;
   font-size: 13px;
   line-height: 1.6;
+  text-wrap: pretty;
   word-break: keep-all;
 }

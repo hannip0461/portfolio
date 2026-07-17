@@ -18,26 +18,32 @@ import {
 } from '../data/portfolioContent'
 
 const { scrollToTarget, scrollToTop } = usePortfolioScroll()
-const { selectedProject, openProject, closeProject } = usePortfolioProjectModal(featuredProjects)
+const projectOrder = ['neo', 'astra', 'hifive', 'furniture', 'incheon']
+const orderedProjects = [...featuredProjects].sort(
+  (left, right) => projectOrder.indexOf(left.id) - projectOrder.indexOf(right.id),
+)
+const { selectedProject, openProject, closeProject } = usePortfolioProjectModal(orderedProjects)
 </script>
 
 <template>
   <div class="portfolio-page">
-    <a class="skip-link" href="#main-content">본문으로 이동</a>
+    <div :inert="selectedProject ? true : undefined" :aria-hidden="selectedProject ? 'true' : undefined">
+      <a class="skip-link" href="#main-content">본문으로 이동</a>
 
-    <PortfolioHeader @navigate="scrollToTarget" />
+      <PortfolioHeader @navigate="scrollToTarget" />
 
-    <main id="main-content">
-      <PortfolioHero @navigate="scrollToTarget" />
-      <FeaturedProjects :projects="featuredProjects" @open-project="openProject" />
-      <ExperienceTimeline :items="experience" />
-      <CapabilitySection :groups="capabilities" />
-      <EducationSection :items="educationItems" />
-    </main>
+      <main id="main-content">
+        <PortfolioHero @navigate="scrollToTarget" />
+        <FeaturedProjects :projects="orderedProjects" @open-project="openProject" />
+        <ExperienceTimeline :items="experience" />
+        <CapabilitySection :groups="capabilities" />
+        <EducationSection :items="educationItems" />
+      </main>
 
-    <PortfolioFooter @navigate="scrollToTarget" />
+      <PortfolioFooter @navigate="scrollToTarget" />
 
-    <FloatingTopButton @top="scrollToTop" />
+      <FloatingTopButton v-if="!selectedProject" @top="scrollToTop" />
+    </div>
 
     <ProjectCaseStudyModal
       v-if="selectedProject"
