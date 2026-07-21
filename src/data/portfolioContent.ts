@@ -292,15 +292,15 @@ export const featuredProjects: FeaturedProject[] = [
       solution:
         'FastAPI가 입력을 Canonical Fact로 정규화하고, NEO Rule KB·ATMS·CF가 Decision Package를 생성하도록 판단 경계를 분리했습니다. Neo4j와 NEMI는 판단을 바꾸지 않고 관계·문서 근거만 제공합니다.',
       result:
-        'AWS 운영 화면에서 사건 선택 → NEO 판단 → 계보·문서 근거 확인 → 조치 준비 → 감사 이력 재현을 한 흐름으로 확인할 수 있습니다.',
+        '첫 진입부터 저장된 판단 패키지를 읽기 전용으로 재현하고, 새 판단은 선택 기능으로 분리했습니다. 사건 선택 → 판단 → 계보·문서 근거 → 운영자 검토 → 감사 이력을 한 흐름으로 확인할 수 있습니다.',
     },
     caseStudy: {
       requirements: [
         'ITS CSV, 교통 API, CCTV, VMS, TAAS 입력을 규칙이 처리할 공통 Fact로 변환해야 했습니다.',
-        '최종 판단과 함께 사용한 Fact·Rule, KB 버전과 판단 시점의 지식 기준을 재현할 수 있어야 했습니다.',
-        'NEO가 판단하되 최종 조치는 운영자가 근거를 검토하고 승인하는 경계를 유지해야 했습니다.',
+        '최종 판단과 함께 실제 사용한 관측 Fact·Rule, 채택·충돌 근거와 판단 시점의 지식 기준을 재현할 수 있어야 했습니다.',
+        'NEO가 판단하되 운영자가 충돌·데이터 경고와 근거를 확인한 뒤에만 검토를 완료하는 경계를 유지해야 했습니다.',
       ],
-      flow: '관제 입력을 NEO 판단으로 모으고, 읽기 전용 근거 조회와 운영자 승인·감사 경로가 분리되는 구조',
+      flow: '관측 근거 → 적용 규칙 → NEO 판단 → 권고 조치를 주축으로, 채택 근거와 충돌 근거를 분리해 검토하는 구조',
       architectureImage: {
         src: assetPath('images/project-neo-system-architecture-approved.png'),
         alt: 'ITS·CCTV·VMS·TAAS 입력부터 NEO 판단, 읽기 전용 근거, 운영자 승인과 감사 피드백까지 연결한 시스템 구조',
@@ -352,45 +352,45 @@ export const featuredProjects: FeaturedProject[] = [
           evidence: 'Canonical Fact와 Decision Package 계약에 출처·시간·KB/Rule Set 버전·KB SHA-256을 남겨 판단 시점의 기준을 재현할 수 있게 했습니다.',
         },
         {
-          title: '근거 시스템과 자동화가 NEO의 판단 권한을 넘지 않게 하기',
-          context: '최종 알림만으로는 운영자가 어떤 사실과 규칙이 결론에 영향을 줬는지 검토할 수 없고, 자동 조치는 잘못된 판단의 영향도 키울 수 있었습니다.',
-          decision: 'Neo4j 계보와 NEMI 문서 검색은 읽기 전용 근거로 제한하고, 운영자가 판단·근거를 검토한 뒤 승인하거나 보류하도록 제어 경계를 뒀습니다.',
-          evidence: 'AWS 운영 화면에서 사건 선택부터 계보·문서 근거, 조치 준비와 감사 이력까지 순서대로 확인하고 각 상태를 감사 ID로 남겼습니다.',
+          title: '근거 탐색과 운영 검토 완료를 같은 동작으로 취급하지 않기',
+          context: '그래프 노드 선택만으로 검토가 끝났다고 처리하면 충돌 근거나 누락된 데이터 경고를 건너뛴 채 조치 단계로 넘어갈 수 있었습니다.',
+          decision: 'Neo4j의 실제 관계에서 Decision 중심 판단 경로를 계산하되, 노드 선택은 탐색 상태로만 유지했습니다. 충돌·데이터 경고 확인과 명시적 판단 경로 확인을 검토 완료 조건으로 분리했습니다.',
+          evidence: '저장 계보 재조회와 7·30·100노드 응답, 계약 오류 대체 흐름, 키보드·모바일 환경에서 같은 검토 조건이 유지되는지 확인했습니다.',
         },
       ],
       result: [
-        '운영 화면에서 판단 결과와 Neo4j 계보·NEMI 문서 근거를 함께 검토하고, 승인 전에는 조치를 자동 송출하지 않는 흐름을 확인했습니다.',
+        '첫 화면에서 저장된 판단과 대표 현장 증거를 바로 확인하고, Neo4j 판단 경로·NEMI 문서 근거·권고 조치를 순서대로 검토할 수 있게 했습니다.',
         '공개 저장소에는 Canonical Fact·Decision Package 계약과 AWS 배포 기록을 남겨 공개 가능한 범위의 구조와 운영 상태를 확인할 수 있게 했습니다.',
       ],
       verification:
-        'AWS EC2의 주요 화면 경로와 HTTPS/Nginx/Docker Compose 운영 상태를 확인하고, 사건→판단→근거→운영자 검토→감사 흐름을 화면에서 재현했습니다.',
+        'AWS EC2 주요 화면 5종, 저장 판단 재현, 새 판단 실행, Neo4j 저장·재조회, NEMI 연결, 390px 모바일과 브라우저 콘솔 오류 0건을 확인했습니다.',
       verificationBoundary:
         '배포·운영 흐름을 검증한 결과이며, 추론 정확도 수치를 측정한 결과는 아닙니다.',
     },
     role: '개인 프로젝트 · 시스템 아키텍처, NEO 추론 경계, FastAPI·운영 UI, AWS 배포 구현',
     stack: ['C/C++', 'FastAPI', 'Vue 3', 'Neo4j', 'Qdrant', 'AWS EC2', 'Docker'],
     image: assetPath('images/project-neo-dashboard-202607.png'),
-    imageAlt: 'NEO 실시간 교통 관제와 운영자 검토 화면',
+    imageAlt: 'NEO 저장 판단 재현과 운영자 검토 화면',
     screenshots: [
       {
         src: assetPath('images/project-neo-dashboard-202607.png'),
-        alt: 'NEO 실시간 사건 선택과 판단 근거 검토 화면',
-        caption: '사건 선택 → NEO 판단 → 근거 확인 → 조치 준비를 잇는 실시간 관제 화면',
+        alt: 'NEO 저장 판단 패키지와 대표 현장 증거 검토 화면',
+        caption: '저장 판단 재현 → 현장 증거 → 근거 확인 → 운영자 검토를 한 화면에 연결',
       },
       {
         src: assetPath('images/project-neo-lineage-202607.png'),
-        alt: 'NEO Neo4j XAI 판단 계보 화면',
-        caption: 'Fact·Rule·Decision의 직접 연결을 탐색하는 Neo4j XAI 계보',
+        alt: 'NEO Neo4j 전체 판단 계보 화면',
+        caption: '관측 Fact·적용 규칙·NEO 판단·채택·충돌 근거를 실제 관계로 탐색하는 전체 그래프',
       },
       {
         src: assetPath('images/project-neo-logs-202607.png'),
         alt: 'NEO 판단과 조치 감사 이력 화면',
-        caption: '판단·선택 근거·조치 상태를 감사 ID로 재현하는 이력 화면',
+        caption: '사건별 입력·판단·근거·조치를 감사 ID와 함께 재현하는 이력 화면',
       },
       {
         src: assetPath('images/project-neo-health-202607.png'),
         alt: 'NEO 핵심 서비스 상태 화면',
-        caption: 'FastAPI·Neo4j·NEMI·Qdrant 운영 상태 확인 화면',
+        caption: 'FastAPI·NEO·Neo4j·NEMI 연결 상태와 운영 영향을 함께 확인',
       },
     ],
     terms: [
@@ -406,9 +406,9 @@ export const featuredProjects: FeaturedProject[] = [
           'Certainty Factor(확신도) 계열. 규칙 기반 전문가 시스템에서 판단의 신뢰 정도를 수치화하는 개념입니다.',
       },
       { term: 'NEMI', description: '직접 정의한 자체 근거 검색 모듈로, VectorDB/RAG 기반 근거 검색을 담당하는 프로젝트 내부 명칭입니다.' },
-      { term: 'Neo4j', description: '외부 그래프 DB. 룰·이벤트·판단 관계 저장/조회에 사용했습니다.' },
+      { term: 'Neo4j', description: '외부 그래프 DB. 실제 관측 Fact·Rule·Decision 관계 저장과 판단 경로 조회에 사용했습니다.' },
     ],
-    screensTitle: '판단 근거와 감사 이력',
+    screensTitle: '운영 판단과 추적 화면',
     link: neoOperatorUrl,
     linkLabel: 'NEO 화면 보기',
     resources: [
