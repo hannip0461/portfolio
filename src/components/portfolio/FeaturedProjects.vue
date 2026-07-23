@@ -14,8 +14,8 @@ const emit = defineEmits<{
 const primaryProjects = computed(() => props.projects.filter((project) => project.tier === 'primary'))
 const secondaryProjects = computed(() => props.projects.filter((project) => project.tier === 'secondary'))
 const isExternalLink = (link: string) => link.startsWith('http')
-const getProjectDemoUrl = (project: FeaturedProject) =>
-  project.resources?.find((resource) => resource.label.includes('실행 데모'))?.url
+const getProjectDemo = (project: FeaturedProject) =>
+  project.resources?.find((resource) => resource.kind === 'demo')
 </script>
 
 <template>
@@ -85,13 +85,13 @@ const getProjectDemoUrl = (project: FeaturedProject) =>
                 <ArrowRight :size="17" aria-hidden="true" />
               </button>
               <a
-                v-if="getProjectDemoUrl(project)"
-                class="text-link project-demo-link"
-                :href="getProjectDemoUrl(project)"
+                v-if="getProjectDemo(project)"
+                class="text-link"
+                :href="getProjectDemo(project)?.url"
                 target="_blank"
                 rel="noreferrer"
               >
-                HF 실행 데모
+                {{ getProjectDemo(project)?.label }}
                 <ArrowUpRight :size="17" aria-hidden="true" />
               </a>
               <a

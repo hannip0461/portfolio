@@ -72,6 +72,10 @@
   object-position: center 30%;
 }
 
+.project-row-hifive .project-media {
+  aspect-ratio: 16 / 9;
+}
+
 .project-content {
   min-width: 0;
 }
@@ -201,20 +205,6 @@
 
 .text-link:hover {
   color: var(--rust);
-}
-
-.project-demo-link {
-  min-height: 38px;
-  padding: 0 13px;
-  border: 1px solid var(--rust);
-  border-radius: 3px;
-  color: #ffffff;
-  background: var(--rust);
-}
-
-.project-demo-link:hover {
-  color: #ffffff;
-  background: #a92e25;
 }
 
 .secondary-projects {
