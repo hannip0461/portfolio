@@ -46,7 +46,8 @@ const isArchitectureSelected = computed(
   () => Boolean(props.project.caseStudy.architectureImage) && selectedScreenshotIndex.value === props.project.screenshots.length,
 )
 const resourceLinks = computed(() => {
-  if (props.project.resources?.length) return props.project.resources
+  const resources = props.project.resources?.filter((resource) => resource.kind !== 'demo') ?? []
+  if (resources.length) return resources
   if (props.project.link) return [{ label: props.project.linkLabel ?? '프로젝트 링크', url: props.project.link }]
   return []
 })

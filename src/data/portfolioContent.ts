@@ -12,6 +12,7 @@ export interface ProjectTerm {
 export interface ProjectResource {
   label: string
   url: string
+  kind?: 'demo'
 }
 
 export type ProjectArchitectureKind = 'input' | 'transport' | 'core' | 'data' | 'evidence' | 'operation'
@@ -533,7 +534,11 @@ export const featuredProjects: FeaturedProject[] = [
     link: 'https://github.com/hannip0461/straffic_hi-five-1st-project',
     linkLabel: 'HI-FIVE 저장소',
     resources: [
-      { label: '1차 Edge AI 데모', url: 'https://huggingface.co/spaces/hannip0461/hifive-edge-ai-demo' },
+      {
+        label: 'Edge AI 데모 보기',
+        url: 'https://huggingface.co/spaces/hannip0461/hifive-edge-ai-demo',
+        kind: 'demo',
+      },
       { label: '1·2차 통합 저장소', url: 'https://github.com/hannip0461/straffic_hi-five-1st-project' },
       { label: '1·2차 산출물', url: 'https://coconut-truck-1db.notion.site/371cdef944a180a8bf3be44fcfcd9701' },
       { label: '2차 PdM PoC Backend', url: 'https://hub.docker.com/r/kimmj6466/hifive-pdm-backend' },
