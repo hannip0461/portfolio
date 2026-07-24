@@ -7,7 +7,6 @@ apps/neo/dist/
 output/
 outputs/
 smoke/
-README.md
 _backup*/
 fix*.py
 fix*.cjs
