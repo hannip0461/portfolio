@@ -552,7 +552,7 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '04',
     title: 'EduSync Learning API',
-    period: '개인 프로젝트 · 2026.07',
+    period: '개인 프로젝트 · 2026.07.24~07.26',
     claim: '중복·지연·동시 이벤트에서도 학습 진행 상태를 일관되게 유지합니다.',
     badge: '이벤트 멱등성 · SQL Server 동시성 · 레거시 읽기 경계',
     summary:
