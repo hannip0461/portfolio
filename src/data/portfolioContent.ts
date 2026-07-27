@@ -546,7 +546,7 @@ export const featuredProjects: FeaturedProject[] = [
         kind: 'demo',
       },
       { label: '1·2차 통합 저장소', url: 'https://github.com/hannip0461/straffic_hi-five-1st-project' },
-      { label: '1·2차 산출물', url: 'https://coconut-truck-1db.notion.site/371cdef944a180a8bf3be44fcfcd9701' },
+      { label: '1·2차 산출물', url: 'https://app.notion.com/p/HI-FIVE-1-2-3aa96acf563f81ee8200d281cd86dca2' },
       { label: '2차 PdM PoC Backend', url: 'https://hub.docker.com/r/kimmj6466/hifive-pdm-backend' },
       { label: '2차 PdM PoC FastAPI', url: 'https://hub.docker.com/r/kimmj6466/hifive-pdm-fastapi' },
     ],
