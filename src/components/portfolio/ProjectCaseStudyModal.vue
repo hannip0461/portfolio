@@ -180,7 +180,7 @@ onUnmounted(() => {
               <dt>기간</dt>
               <dd>{{ project.period }}</dd>
             </div>
-            <div v-if="project.detailLevel === 'full'">
+            <div>
               <dt>담당 범위</dt>
               <dd>
                 <span>{{ project.role }}</span>
@@ -206,7 +206,6 @@ onUnmounted(() => {
             <span>01</span>
             <div>
               <h3>요구사항</h3>
-              <p>프로젝트가 반드시 만족해야 했던 조건</p>
             </div>
           </header>
           <ul class="case-requirement-list">
@@ -242,7 +241,6 @@ onUnmounted(() => {
               <span>02</span>
               <div>
                 <h3>시스템 구조</h3>
-                <p>핵심 경계와 분기까지 한눈에 보는 처리 흐름</p>
               </div>
             </header>
             <div
@@ -340,7 +338,6 @@ onUnmounted(() => {
             <span>03</span>
             <div>
               <h3>문제와 해결</h3>
-              <p>문제 상황에서 내린 판단과 그 근거</p>
             </div>
           </header>
           <ol v-if="project.caseStudy.decisions?.length" class="decision-list">
@@ -375,7 +372,6 @@ onUnmounted(() => {
             <span>04</span>
             <div>
               <h3>검증과 결과</h3>
-              <p>검증 방법과 확인 결과, 검증하지 않은 범위</p>
             </div>
           </header>
           <div class="verification-result-flow">
@@ -401,11 +397,6 @@ onUnmounted(() => {
         <section class="compact-project-section">
           <h3>프로젝트 목표</h3>
           <p>{{ project.proof.problem }}</p>
-        </section>
-
-        <section class="compact-project-section">
-          <h3>직접 담당</h3>
-          <p>{{ project.role }}</p>
         </section>
 
         <section class="compact-project-section">

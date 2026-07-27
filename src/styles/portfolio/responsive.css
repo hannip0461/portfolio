@@ -139,23 +139,25 @@
   }
 
   .hero-copy {
-    padding: 42px 0 0;
+    padding: 28px 0 0;
   }
 
   .hero h1 {
-    font-size: 34px;
-    line-height: 1.17;
+    font-size: 30px;
+    line-height: 1.16;
   }
 
   .hero-statement {
-    margin-top: 20px;
-    font-size: 23px;
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.45;
   }
 
   .hero-actions {
     display: grid;
-    grid-template-columns: 1fr;
-    margin-top: 22px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 18px;
   }
 
   .hero-actions .button {
@@ -164,9 +166,19 @@
 
   .hero-evidence {
     width: 100%;
-    margin: 32px 0 38px;
+    margin: 24px 0 30px;
     padding-left: 0;
     border-left: 0;
+  }
+
+  .hero-evidence li {
+    padding: 9px 0;
+  }
+
+  .hero-evidence li p {
+    margin-top: 1px;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   .profile-facts {
@@ -244,7 +256,7 @@
     font-size: 14px;
   }
 
-  .project-snapshot div {
+  .project-scan-facts div {
     grid-template-columns: 1fr;
     gap: 5px;
   }

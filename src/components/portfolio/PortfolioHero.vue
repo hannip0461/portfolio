@@ -11,9 +11,9 @@ const emit = defineEmits<{
     <div class="page-width hero-inner">
       <div class="hero-copy">
         <p class="section-kicker">요구사항 · 설계 · 구현 · 운영</p>
-        <h1 id="hero-title">요구사항을 구조로 풀고, 핵심 로직부터 사용자 화면까지 완성하는 개발자 김민진</h1>
+        <h1 id="hero-title">백엔드, AI, 사용자 화면을 직접 구현하는 개발자 김민진</h1>
         <p class="hero-statement">
-          백엔드·분산 시스템·AI·운영 UI를 하나의 흐름으로 연결해, 사용자가 확인하고 조치할 수 있는 결과물로 만듭니다.
+          분산 상태의 정합성을 지키고, 규칙과 Edge AI의 판단 근거를 사용자가 확인하고 조치할 수 있게 만듭니다.
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#projects" @click="emit('navigate', $event, '#projects')">
@@ -34,28 +34,28 @@ const emit = defineEmits<{
             <span>01</span>
             <div>
               <strong>NEO</strong>
-              <p>규칙 판단과 근거 추적</p>
+              <p>관제 신호 통합 → 판단 근거 추적·운영자 승인</p>
             </div>
           </li>
           <li>
             <span>02</span>
             <div>
               <strong>ASTRA</strong>
-              <p>분산 상태 정합성과 운영 복구</p>
+              <p>중복·재시도 → 정합성 유지·운영 복구</p>
             </div>
           </li>
           <li>
             <span>03</span>
             <div>
               <strong>HI-FIVE</strong>
-              <p>Edge AI 이벤트와 품질 분석</p>
+              <p>Edge 통행 처리 → 품질 이상 탐지로 확장</p>
             </div>
           </li>
           <li>
             <span>04</span>
             <div>
               <strong>EduSync</strong>
-              <p>학습 이벤트 정합성과 레거시 연동</p>
+              <p>동시 학습 이벤트 → 원자적 저장·레거시 연동</p>
             </div>
           </li>
         </ol>

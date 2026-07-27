@@ -144,11 +144,11 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '02',
     title: 'ASTRA LiveOps Server',
-    period: '개인 프로젝트 · 2026',
+    period: '개인 프로젝트 · 2026.07.06~07.13',
     claim: '재시도와 동시 요청 속에서도 재화 정합성을 지키고, 운영 사고를 복구합니다.',
     badge: '분산 상태 정합성 · LiveOps 복구 · 관측성',
     summary:
-      '네트워크 재시도와 동시 요청에서도 가챠·재화 상태를 일관되게 유지하고, 콘텐츠 롤백과 대상자 보상까지 연결한 수집형 RPG 운영 서버입니다.',
+      '가챠·재화 명령을 멱등 처리하고, 콘텐츠 배포 버전과 영향 대상을 기록해 롤백과 보상까지 수행하는 수집형 RPG 운영 서버입니다.',
     proof: {
       problemLabel: '개요',
       problem:
@@ -156,13 +156,13 @@ export const featuredProjects: FeaturedProject[] = [
       solution:
         'Orleans Grain의 플레이어별 직렬화와 PostgreSQL 원자적 트랜잭션을 중심으로 멱등 처리, 콘텐츠 롤백, 사고 보상 절차를 구성했습니다.',
       result:
-        '표준 테스트 91건과 실제 PostgreSQL 테스트 17건에서 재시도·동시성·장애 복구 경계를 확인했습니다.',
+        '표준 91건·실제 PostgreSQL 17건 통과 · 재시도·동시성·복구 경계 포함',
     },
     caseStudy: {
       requirements: [
-        '동일 요청이 재전송되어도 재화 차감과 보상이 한 번만 처리되어야 했습니다.',
-        '동시 명령에서도 플레이어 상태, 원장, 감사 기록이 같은 결과를 가리켜야 했습니다.',
-        '잘못 배포된 콘텐츠를 이전 버전으로 되돌리고 영향 대상에게 보상할 수 있어야 했습니다.',
+        '동일 요청 재전송: 재화 차감과 보상은 한 번만 반영',
+        '동시 명령: 플레이어 상태·원장·감사 기록은 같은 결과를 유지',
+        '콘텐츠 배포 사고: 이전 버전으로 되돌리고 영향 대상만 보상',
       ],
       flow: '명령 처리와 PostgreSQL 트랜잭션을 중심으로, 커밋 이후 비동기 처리와 LiveOps 복구 경로가 분기되는 구조',
       architectureImage: {
@@ -224,13 +224,13 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       result: [
-        '동일 요청 재전송과 commit 후 응답 유실에서도 저장된 완료 응답을 재사용하고 재화·보상은 한 번만 처리되는 경로를 확인했습니다.',
-        '콘텐츠 버전·rollback·영향 대상 snapshot·Incident Mail·감사 기록이 하나의 복구 절차로 남는 것을 확인했습니다.',
+        '동일 요청 재전송·commit 후 응답 유실: 저장된 완료 응답 재사용, 재화·보상 1회 반영.',
+        '콘텐츠 버전·rollback·영향 대상 snapshot·Incident Mail·감사 기록을 하나의 복구 절차로 보존.',
       ],
       verification:
-        '표준 테스트 91건과 실제 PostgreSQL 테스트 17건, 2-Silo·HTTP/TCP E2E·failure injection으로 정합성과 복구 경계를 검증했습니다.',
+        '표준 테스트 91건·실제 PostgreSQL 테스트 17건 통과. 2-Silo·HTTP/TCP E2E와 failure injection 포함.',
     },
-    role: '개인 프로젝트 · 서버 아키텍처부터 정합성, 운영 복구, 테스트·배포까지 전 영역 구현',
+    role: '개인 프로젝트 · 서버 아키텍처, 정합성, 운영 복구, 테스트·배포',
     stack: ['.NET 10', 'ASP.NET Core', 'Microsoft Orleans', 'PostgreSQL', 'Redis', 'Blazor', 'OpenTelemetry', 'Docker'],
     image: assetPath('images/project-astra-content-ops.png'),
     imageAlt: 'ASTRA 콘텐츠 배포와 롤백 운영 화면',
@@ -243,22 +243,22 @@ export const featuredProjects: FeaturedProject[] = [
       {
         src: assetPath('images/project-astra-incident-mail.png'),
         alt: 'ASTRA 사고 대상자 보상 화면',
-        caption: '영향 대상 snapshot과 멱등 보상을 확인하는 Incident Mail 화면',
+        caption: '영향 대상 snapshot과 Incident Mail 보상 화면',
       },
       {
         src: assetPath('images/project-astra-audit-log.png'),
         alt: 'ASTRA 운영 감사 로그 화면',
-        caption: '운영 명령과 결과를 추적하는 감사 로그',
+        caption: '운영 명령·결과 감사 로그',
       },
       {
         src: assetPath('images/project-astra-outbox.png'),
         alt: 'ASTRA Transactional Outbox 운영 화면',
-        caption: '재시도와 dead-letter를 관리하는 Outbox 화면',
+        caption: 'Outbox 재시도·dead-letter 관리 화면',
       },
       {
         src: assetPath('images/project-astra-observability.png'),
         alt: 'ASTRA Kibana 관측성 대시보드',
-        caption: 'trace와 PostgreSQL 장애 지표를 확인하는 Kibana Dashboard',
+        caption: 'Kibana trace·PostgreSQL 장애 지표 대시보드',
       },
       {
         src: assetPath('images/project-astra-operations.png'),
@@ -282,11 +282,11 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '01',
     title: 'NEO Intelligent ITS Operator',
-    period: '개인 프로젝트 · 2026',
+    period: '개인 프로젝트 · 2026.06.08~07.05',
     claim: '서로 다른 관제 신호를 판단하고, 운영자가 근거를 검토한 뒤 조치하게 합니다.',
     badge: '규칙 추론 · XAI 계보 · AWS 운영',
     summary:
-      'ITS·CCTV·VMS·TAAS 입력을 Canonical Fact로 정규화하고, NEO 규칙 추론의 판단 계보와 문서 근거를 운영 화면에 연결한 설명 가능한 교통 관제 시스템입니다.',
+      'ITS·CCTV·VMS·TAAS 입력을 공통 Fact로 변환하고, NEO가 판단에 사용한 관측값·규칙·문서 근거를 운영 화면에서 확인할 수 있는 교통 관제 시스템입니다.',
     proof: {
       problemLabel: '개요',
       problem:
@@ -294,13 +294,13 @@ export const featuredProjects: FeaturedProject[] = [
       solution:
         'FastAPI가 입력을 Canonical Fact로 정규화하고, NEO Rule KB·ATMS·CF가 Decision Package를 생성하도록 판단 경계를 분리했습니다. Neo4j와 NEMI는 판단을 바꾸지 않고 관계·문서 근거만 제공합니다.',
       result:
-        '첫 진입부터 저장된 판단 패키지를 읽기 전용으로 재현하고, 새 판단은 선택 기능으로 분리했습니다. 사건 선택 → 판단 → 계보·문서 근거 → 운영자 검토 → 감사 이력을 한 흐름으로 확인할 수 있습니다.',
+        'AWS 배포에서 저장 판단 재현·계보·문서 근거·운영자 검토까지 점검',
     },
     caseStudy: {
       requirements: [
-        'ITS CSV, 교통 API, CCTV, VMS, TAAS 입력을 규칙이 처리할 공통 Fact로 변환해야 했습니다.',
-        '최종 판단과 함께 실제 사용한 관측 Fact·Rule, 채택·충돌 근거와 판단 시점의 지식 기준을 재현할 수 있어야 했습니다.',
-        'NEO가 판단하되 운영자가 충돌·데이터 경고와 근거를 확인한 뒤에만 검토를 완료하는 경계를 유지해야 했습니다.',
+        '입력 통합: ITS CSV·교통 API·CCTV·VMS·TAAS를 공통 Fact로 변환',
+        '판단 재현: 관측 Fact·Rule·채택·충돌 근거와 지식 버전을 함께 보존',
+        '사람의 통제: 데이터 경고와 근거를 확인한 뒤에만 검토 완료',
       ],
       flow: '관측 근거 → 적용 규칙 → NEO 판단 → 권고 조치를 주축으로, 채택 근거와 충돌 근거를 분리해 검토하는 구조',
       architectureImage: {
@@ -361,13 +361,13 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       result: [
-        '첫 화면에서 저장된 판단과 대표 현장 증거를 바로 확인하고, Neo4j 판단 경로·NEMI 문서 근거·권고 조치를 순서대로 검토할 수 있게 했습니다.',
-        '공개 저장소에는 Canonical Fact·Decision Package 계약과 AWS 배포 기록을 남겨 공개 가능한 범위의 구조와 운영 상태를 확인할 수 있게 했습니다.',
+        '첫 화면에 저장 판단과 대표 현장 증거를 노출하고, Neo4j 판단 경로·NEMI 문서 근거·권고 조치를 순서대로 검토.',
+        '공개 저장소에 Canonical Fact·Decision Package 계약과 AWS 배포 기록을 남겨 구조와 운영 상태를 공개.',
       ],
       verification:
-        'AWS EC2 주요 화면 5종, 저장 판단 재현, 새 판단 실행, Neo4j 저장·재조회, NEMI 연결, 390px 모바일과 브라우저 콘솔 오류 0건을 확인했습니다.',
+        'AWS EC2 주요 화면 5종, 저장 판단 재현, 새 판단 실행, Neo4j 저장·재조회, NEMI 연결 확인. 390px 모바일·브라우저 콘솔 오류 0건.',
       verificationBoundary:
-        '배포·운영 흐름을 검증한 결과이며, 추론 정확도 수치를 측정한 결과는 아닙니다.',
+        '배포·운영 동작만 검증했으며 추론 정확도는 측정하지 않았습니다.',
     },
     role: '개인 프로젝트 · 시스템 아키텍처, NEO 추론 경계, FastAPI·운영 UI, AWS 배포 구현',
     stack: ['C/C++', 'FastAPI', 'Vue 3', 'Neo4j', 'Qdrant', 'AWS EC2', 'Docker'],
@@ -377,22 +377,22 @@ export const featuredProjects: FeaturedProject[] = [
       {
         src: assetPath('images/project-neo-dashboard-202607.png'),
         alt: 'NEO 저장 판단 패키지와 대표 현장 증거 검토 화면',
-        caption: '저장 판단 재현 → 현장 증거 → 근거 확인 → 운영자 검토를 한 화면에 연결',
+        caption: '저장 판단·현장 증거·근거·운영자 검토 화면',
       },
       {
         src: assetPath('images/project-neo-lineage-202607.png'),
         alt: 'NEO Neo4j 전체 판단 계보 화면',
-        caption: '관측 Fact·적용 규칙·NEO 판단·채택·충돌 근거를 실제 관계로 탐색하는 전체 그래프',
+        caption: '관측 Fact·적용 규칙·NEO 판단·채택·충돌 근거 전체 그래프',
       },
       {
         src: assetPath('images/project-neo-logs-202607.png'),
         alt: 'NEO 판단과 조치 감사 이력 화면',
-        caption: '사건별 입력·판단·근거·조치를 감사 ID와 함께 재현하는 이력 화면',
+        caption: '사건별 입력·판단·근거·조치·감사 ID 이력 화면',
       },
       {
         src: assetPath('images/project-neo-health-202607.png'),
         alt: 'NEO 핵심 서비스 상태 화면',
-        caption: 'FastAPI·NEO·Neo4j·NEMI 연결 상태와 운영 영향을 함께 확인',
+        caption: 'FastAPI·NEO·Neo4j·NEMI 연결 상태와 운영 영향 화면',
       },
     ],
     terms: [
@@ -431,22 +431,22 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '03',
     title: 'HI-FIVE Smart Tolling + PdM PoC',
-    period: '팀 프로젝트 · 1차 2026.04.27–06.01 · 2차 06.04–06.30',
-    claim: '1차 Edge AI 통행 처리에서 2차 카메라 품질 이상 탐지 PoC까지 확장했습니다.',
+    period: '팀 프로젝트 · 1차 2026.04.27~06.01 · 2차 06.04~06.30',
+    claim: '차량과 번호판을 인식해 통행 이벤트를 만들고, 카메라 품질 저하 징후까지 감지하는 스마트 톨링 시스템입니다.',
     badge: 'Edge AI · 이벤트 전송 · 품질 이상 탐지 PoC',
     summary:
-      '1차에서 Jetson 차량·번호판 인식을 통행 이벤트와 관제 흐름으로 연결하고, 2차에서는 축적된 카메라 품질 지표를 Rule-Based·Isolation Forest·LSTM-AE로 비교하는 품질 이상 탐지 PoC를 구현했습니다.',
+      '1차에서는 Jetson·YOLO/OCR·GPS로 통행 이벤트를 전송하고, 2차에서는 축적된 품질 지표를 Rule-Based·Isolation Forest·LSTM-AE로 비교하는 PoC를 구현했습니다.',
     proof: {
       problemLabel: '개요',
       problem: '1차는 Edge 인식 결과를 재시도 가능한 통행 이벤트로 전달해야 했고, 2차는 카메라 품질 저하 징후를 여러 지표로 조기에 확인해야 했습니다.',
       solution: 'YOLO/OCR 결과와 GPS를 Passage Event로 표준화하고, 축적된 품질 지표를 세 가지 탐지 방식으로 분석하는 PoC를 운영 화면·알림에 연결했습니다.',
-      result: '1차 통행 처리와 2차 품질 이상 탐지의 목표·구현·검증 범위를 분리해 확인할 수 있습니다.',
+      result: '1차 Edge 이벤트 전송 · 2차 품질 이상 탐지 PoC 시연',
     },
     caseStudy: {
       requirements: [
-        '1차: 차량·번호판 인식과 GPS를 서버가 처리할 하나의 통행 이벤트로 묶고 재시도 가능한 전송 경계를 만들어야 했습니다.',
-        '1차: Edge 입력부터 저장, 위치 판정, 검수·정산 후보와 관제 조회까지 한 흐름으로 시연해야 했습니다.',
-        '2차: 전후방 카메라 품질 저하를 단일 임계값뿐 아니라 복합 패턴과 시계열 추세로 진단하고 운영자에게 알려야 했습니다.',
+        '1차·이벤트 계약: 차량·번호판 인식과 GPS를 하나의 통행 이벤트로 결합',
+        '1차·전송 복구: Edge 입력부터 저장·위치 판정·관제 조회까지 재시도 가능',
+        '2차·품질 진단: 전후방 카메라 저하를 임계값·복합 패턴·시계열로 비교',
       ],
       flow: '1차 통행 이벤트 처리와 2차 품질 이상 탐지 PoC가 PostgreSQL 품질 지표를 기준으로 분리되는 구조',
       architectureImage: {
@@ -464,7 +464,7 @@ export const featuredProjects: FeaturedProject[] = [
             tone: 'primary',
             nodes: [
               { title: 'Camera / GPS', detail: '전후방 영상·위치·통행 시점' },
-              { title: 'Jetson YOLO / OCR', detail: '탐지 · 문자 후보 · Best-Fit' },
+              { title: 'Jetson YOLO/OCR', detail: '탐지 · 문자 후보 · Best-Fit' },
               { title: 'Passage Event', detail: 'Protobuf 이벤트 계약' },
               { title: 'WebTransport Ingress', detail: 'ACK · RETRY · REJECT' },
               { title: 'Spring / PostgreSQL', detail: '저장 · 위치 판정 · 검수 후보' },
@@ -500,10 +500,10 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       result: [
-        '1차에서 Edge 인식→이벤트 전송→중앙 저장·위치 판정→관제·검수로 이어지는 통행 처리 PoC를 시연했습니다.',
-        '2차에서 품질 지표→세 방식의 분석→통합 위험도→운영 화면·이메일 알림을 연결했으며, 결과는 품질 이상 탐지 PoC 범위로 제한했습니다.',
+        '1차: Edge 인식→이벤트 전송→중앙 저장·위치 판정→관제·검수 통행 처리 PoC 시연.',
+        '2차: 품질 지표→세 방식 분석→통합 위험도→운영 화면·이메일 알림. 결과는 품질 이상 탐지 PoC로 한정.',
       ],
-      verification: '1차는 Edge 영상 스모크와 ACK·RETRY·REJECT 전송 경로를, 2차는 PdM API 계약·분석·스케줄러와 고정/실시간 시나리오를 확인했습니다.',
+      verification: '1차: Edge 영상 스모크, ACK·RETRY·REJECT 전송 경로. 2차: PdM API 계약·분석·스케줄러, 고정/실시간 시나리오.',
       verificationBoundary: '실제 현장 고장 라벨 기반 예측 성능은 검증하지 않았습니다.',
     },
     role: '팀장 · 통합 리딩',
@@ -512,23 +512,28 @@ export const featuredProjects: FeaturedProject[] = [
       { label: '2차', detail: 'PdM Backend · FastAPI 분석·테스트·알림' },
     ],
     stack: ['Jetson', 'YOLO/OCR', 'FastAPI', 'Spring Boot', 'PostgreSQL', 'Isolation Forest', 'LSTM-AE', 'Docker'],
-    image: assetPath('images/project-hifive-pdm-202607.png'),
-    imageAlt: 'HI-FIVE 카메라 인식 품질 이상 탐지 PoC 대시보드',
+    image: assetPath('images/project-hifive-dashboard-202607.png'),
+    imageAlt: 'HI-FIVE 차량·번호판 인식 스마트 톨링 대시보드',
     screenshots: [
-      {
-        src: assetPath('images/project-hifive-pdm-202607.png'),
-        alt: 'HI-FIVE 전후방 카메라 인식 품질 이상 탐지 화면',
-        caption: '2차 · 세 가지 탐지 결과와 통합 위험도를 비교하는 품질 이상 탐지 PoC',
-      },
       {
         src: assetPath('images/project-hifive-dashboard-202607.png'),
         alt: 'HI-FIVE 스마트 톨링 대시보드',
-        caption: '1차 · Edge AI, GPS, 이벤트 수신과 통행 후보를 확인하는 관제 대시보드',
+        caption: '1차 · Edge AI·GPS·이벤트 수신·통행 후보 관제 대시보드',
+      },
+      {
+        src: assetPath('images/project-hifive-pdm-202607.png'),
+        alt: 'HI-FIVE 전후방 카메라 인식 품질 이상 탐지 화면',
+        caption: '2차 · Rule·Isolation Forest·LSTM-AE 결과와 통합 위험도',
       },
       {
         src: assetPath('images/project-hifive-admin-202607.png'),
         alt: 'HI-FIVE 마스터 관리자 품질 이상 탐지 화면',
-        caption: '2차 · 카메라별 품질 추세와 분석 결과를 관리하는 관리자 화면',
+        caption: '2차 · 카메라별 품질 추세·분석 결과 관리자 화면',
+      },
+      {
+        src: assetPath('images/project-hifive-home-202607.png'),
+        alt: 'HI-FIVE 위성 GPS 기반 스마트 하이패스 프로젝트 소개 화면',
+        caption: '1차 · 위성 GPS 기반 스마트 하이패스 서비스 소개',
       },
     ],
     screensTitle: '1차 통행 처리와 2차 품질 분석',
@@ -556,7 +561,7 @@ export const featuredProjects: FeaturedProject[] = [
     claim: '중복·지연·동시 이벤트에서도 학습 진행 상태를 일관되게 유지합니다.',
     badge: '이벤트 멱등성 · SQL Server 동시성 · 레거시 읽기 경계',
     summary:
-      '웹·모바일과 외부 플레이어의 학습 이벤트를 수집하고, 변경 이력과 현재 진행 상태를 하나의 SQL Server 트랜잭션으로 관리한 API입니다. 보호자 조회와 Classic ASP 읽기 전용 연동까지 분리했습니다.',
+      '웹·모바일·외부 플레이어에서 들어온 학습 이벤트를 SQL Server에 기록하고, 이어보기 위치·최대 시청 위치·완료 시각을 관리하는 API입니다. 보호자 조회와 Classic ASP 연동은 읽기 전용으로 제한했습니다.',
     proof: {
       problemLabel: '개요',
       problem:
@@ -564,13 +569,13 @@ export const featuredProjects: FeaturedProject[] = [
       solution:
         '이벤트 원장을 먼저 기록한 뒤 진행 상태를 key-range lock으로 갱신하고, 두 작업을 같은 트랜잭션에서 commit했습니다. 중복 키는 rollback 후 payload hash를 다시 비교해 정상 중복과 충돌을 분리했습니다.',
       result:
-        '실제 SQL Server 환경에서 HTTP 계약, 동시 최초 생성, 병렬 checkpoint, 중복·충돌, rollback, deadlock 재시도 시나리오를 확인했습니다.',
+        '실제 SQL Server 동시 생성·중복·충돌·rollback·deadlock 재시도 통과',
     },
     caseStudy: {
       requirements: [
-        '같은 학습 이벤트가 재전송되면 한 번만 반영하고, 같은 ID의 다른 payload는 충돌로 거절해야 했습니다.',
-        '늦게 도착하거나 동시에 처리된 이벤트가 이어보기 위치, 최대 시청 위치, 최초 완료 시각의 규칙을 깨뜨리지 않아야 했습니다.',
-        '보호자와 Classic ASP에는 필요한 조회만 제공하고 학습 이벤트 쓰기 권한은 넓히지 않아야 했습니다.',
+        '중복·충돌: 동일 이벤트는 1회 반영, 같은 ID의 다른 payload는 거절',
+        '순서·동시성: 이어보기·최대 시청·최초 완료 규칙을 요청 순서와 무관하게 유지',
+        '읽기 경계: 보호자·Classic ASP에는 필요한 조회만 허용',
       ],
       flow: '인증된 학습 이벤트 → 이벤트 원장 우선 기록 → 진행 상태 잠금·갱신 → commit/rollback → 보호자·레거시 읽기',
       architectureImage: {
@@ -599,15 +604,15 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       result: [
-        '같은 이벤트 재전송은 저장 결과를 중복 적용하지 않고 성공 응답으로 재사용하며, 같은 ID의 다른 payload는 충돌로 분리했습니다.',
-        '보호자 조회는 Bearer subject와 guardian link를 함께 확인하고, Classic ASP는 parameterized ADO 조회만 허용해 쓰기 API와 분리했습니다.',
+        '동일 이벤트 재전송: 중복 반영 없이 기존 성공 응답 재사용. 동일 ID·다른 payload: 409 conflict.',
+        '보호자 조회: Bearer subject와 guardian link 확인. Classic ASP: parameterized ADO 읽기만 허용.',
       ],
       verification:
-        'Docker Compose의 PHP 8.3·SQL Server 환경에서 contract·integration·concurrency 테스트와 실제 HTTP 데모를 실행하고, rollback 및 deadlock 전체 transaction 재시도를 확인했습니다.',
+        'Docker Compose(PHP 8.3·SQL Server)에서 contract·integration·concurrency 테스트와 실제 HTTP 데모 통과. rollback·deadlock 시 전체 transaction 재시도 포함.',
       verificationBoundary:
-        '정합성과 실패 경계를 검증한 결과이며, 운영 부하·처리량 검증과 MySQL 이식성 검증은 범위에 포함하지 않았습니다.',
+        '운영 부하·처리량과 MySQL 이식성은 이번 검증 범위에 포함하지 않았습니다.',
     },
-    role: '개인 프로젝트 · API 계약, SQL Server 트랜잭션·동시성, 테스트와 IIS 호환 읽기 경계 전 영역 구현',
+    role: '개인 프로젝트 · API 계약, SQL Server 트랜잭션·동시성, 테스트, IIS 호환 읽기 경계',
     stack: ['PHP 8.3', 'Slim 4', 'SQL Server 2022', 'PDO_SQLSRV', 'OpenAPI', 'Docker', 'Classic ASP'],
     image: assetPath('images/project-edusync-demo-report.png'),
     imageAlt: 'EduSync Docker Compose와 SQL Server 기반 데모 검증 결과',
@@ -620,18 +625,18 @@ export const featuredProjects: FeaturedProject[] = [
       {
         src: assetPath('images/project-edusync-pipeline.png'),
         alt: 'EduSync 전체 파이프라인',
-        caption: '웹·외부 플레이어 인증부터 원자적 저장과 읽기 전용 소비자까지 연결한 전체 파이프라인',
+        caption: '웹·외부 플레이어 인증·원자적 저장·읽기 전용 소비자 전체 파이프라인',
         objectPosition: 'center',
       },
       {
         src: assetPath('images/project-edusync-event-flow.png'),
         alt: 'EduSync 학습 이벤트 멱등 처리와 상태 갱신 흐름',
-        caption: '인증·수강 검증, 멱등성 분류, 최신/과거 이벤트 갱신과 commit·rollback 흐름',
+        caption: '인증·수강 검증·멱등 분류·상태 갱신·commit/rollback 다이어그램',
       },
       {
         src: assetPath('images/project-edusync-swagger.png'),
         alt: 'EduSync Learning API OpenAPI 문서',
-        caption: '학습 이벤트·외부 플레이어·보호자 조회 계약을 공개한 OpenAPI 화면',
+        caption: '학습 이벤트·외부 플레이어·보호자 조회 OpenAPI 화면',
       },
     ],
     terms: [
@@ -669,22 +674,22 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'compact',
     number: '05',
     title: '가구 쇼핑몰 웹 애플리케이션',
-    period: '팀 프로젝트 · 2026.03.14–04.12',
-    claim: '상품 탐색부터 주문·고객지원·관리자 운영까지 하나의 구매 흐름으로 연결했습니다.',
-    badge: '커머스 · 권한 흐름 · Frontend',
+    period: '팀 프로젝트 · 2026.03.14~04.12',
+    claim: '원하는 가구를 찾고 옵션을 선택해 주문하며, 문의와 리뷰도 이용할 수 있는 쇼핑몰입니다.',
+    badge: 'Vue 3 · Pinia · 권한별 UI',
     summary:
-      '상품 탐색, 장바구니, 주문, 고객지원, 관리자 운영까지 사용자와 관리자 흐름을 분리해 연결한 가구 쇼핑몰 웹 애플리케이션입니다.',
+      '비회원은 상품을 탐색하고, 회원은 장바구니·주문·리뷰를 이용합니다. 관리자는 상품·재고·주문·회원·게시글을 별도 화면에서 관리합니다.',
     proof: {
       problemLabel: '개요',
-      problem: '가구 상품 탐색만 있는 화면이 아니라, 옵션 선택부터 주문, 고객지원, 관리자 운영까지 이어지는 커머스 흐름을 구현한 프로젝트입니다.',
-      solution: '회원/관리자 권한을 나누고, 상품·옵션·재고 검증 → 주문 저장 → 주문내역/관리자 처리 흐름을 연결했습니다.',
-      result: '구매자와 관리자의 주요 사용 흐름을 한 서비스 안에서 끊기지 않게 시연할 수 있게 했습니다.',
+      problem: '비회원·회원·관리자가 같은 상품·주문 데이터를 사용하면서도 각 권한에 맞는 화면과 기능만 이용해야 했습니다.',
+      solution: 'Vue 3·Pinia로 상품 선택, 장바구니, 주문 상태를 관리하고 관리자 상품·재고·주문 화면에 반영했습니다.',
+      result: '비회원·회원·관리자 브라우저 시나리오 59건 통과',
     },
     caseStudy: {
       requirements: [
-        '비회원, 회원, 관리자의 접근 범위와 화면 흐름을 분리해야 했습니다.',
-        '상품 옵션과 재고 확인부터 장바구니, 주문 저장, 관리자 처리까지 연결해야 했습니다.',
-        '리뷰, QnA, 공지사항을 구매 이후 고객지원 흐름에 포함해야 했습니다.',
+        '권한: 비회원·회원·관리자가 서로 다른 기능에 접근',
+        '주문: 옵션·수량·재고를 장바구니와 주문에 동일하게 반영',
+        '운영: 상품·재고·주문·회원·게시글을 관리자 화면에서 처리',
       ],
       flow: '상품 탐색 → 장바구니 → 주문/결제 → 고객지원 → 관리자 운영',
       architecture: [
@@ -734,20 +739,20 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       problem: [
-        '사용자 구매 흐름과 관리자 운영 흐름이 같은 데이터 상태를 기준으로 이어져야 했습니다.',
-        '권한에 따라 접근 가능한 기능과 화면을 명확하게 나눌 필요가 있었습니다.',
+        '옵션·재고·주문 상태가 사용자와 관리자 화면에서 다르게 보이면 처리 결과를 신뢰하기 어려웠습니다.',
+        '비회원·회원·관리자별 접근 범위를 화면과 라우팅에서 함께 막아야 했습니다.',
       ],
       approach: [
-        '상품 목록, 상세, 옵션 선택에서 장바구니로 이어지는 구매 흐름을 구성했습니다.',
-        '주문 생성, 주문내역, 주문 상태 처리를 사용자와 관리자 화면에서 확인할 수 있게 연결했습니다.',
-        '리뷰, QnA, 공지사항을 고객지원과 관리자 운영 흐름에 배치했습니다.',
+        'Vue 3·Pinia로 상품 옵션, 수량, 장바구니 상태를 관리했습니다.',
+        '주문 생성과 상태 변경을 사용자 주문내역과 관리자 주문 화면에 반영했습니다.',
+        '리뷰·QnA·공지사항을 구매 이후 지원 기능으로 구현했습니다.',
       ],
       result: [
-        '사용자 구매 흐름과 관리자 운영 흐름을 함께 보여줄 수 있는 쇼핑몰 서비스로 정리했습니다.',
+        '주문 상태 변경: 사용자 주문내역과 관리자 화면에 함께 반영.',
       ],
-      verification: '비회원/회원/관리자 시나리오 기준 브라우저 테스트 59건 PASS',
+      verification: '비회원·회원·관리자 브라우저 시나리오 59건 통과',
     },
-    role: '팀장 · 직접 구현: 프론트엔드 · 설계/리딩: UI 흐름과 종합 QA',
+    role: '팀장 · 프론트엔드 직접 구현 · 화면 구조 설계·종합 QA',
     stack: ['Vue 3', 'Pinia', 'Axios', 'Spring Boot', 'JPA', 'PostgreSQL', 'Docker'],
     image: assetPath('images/project-furniture-home-main.jpg'),
     imageAlt: '가구 쇼핑몰 홈 화면',
@@ -795,22 +800,22 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'compact',
     number: '06',
     title: '인천 문화·관광 웹 애플리케이션',
-    period: '팀 프로젝트 · 2026.02.09–03.13',
-    claim: '관광 정보 화면을 회원 참여와 운영 관리가 가능한 MVC 서비스로 확장했습니다.',
-    badge: '관광 정보 · MVC 확장 · 권한 제어',
+    period: '팀 프로젝트 · 2026.02.09~03.13',
+    claim: '지역·테마별 관광 정보를 둘러보고, 회원끼리 여행 후기를 나눌 수 있는 인천 관광 서비스입니다.',
+    badge: 'Spring MVC · Thymeleaf · 권한 제어',
     summary:
-      '인천 문화·관광 정보 페이지를 Spring Boot 3와 Thymeleaf 기반 회원/게시판 서비스로 확장한 웹 애플리케이션입니다.',
+      '문화·교통 정보와 관광 서브페이지를 공통 화면으로 구성하고, 회원가입·로그인·마이페이지·리뷰 게시판·관리자 기능을 Spring MVC로 구현했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '인천 문화·관광 정보를 단순 소개 페이지가 아니라 회원 참여와 게시판 운영까지 가능한 서비스형 웹으로 확장한 프로젝트입니다.',
-      solution: 'Spring Boot MVC·Thymeleaf·PostgreSQL 기반으로 관광 카테고리, 회원/로그인, 공지·리뷰, 권한 흐름을 연결했습니다.',
-      result: '관광 정보 탐색에서 회원 기능, 게시판, 관리자 운영까지 이어지는 웹 서비스 흐름을 만들었습니다.',
+      problem: '여러 관광 서브페이지가 같은 탐색 구조를 사용하면서 회원·게시판·관리자 기능까지 동작해야 했습니다.',
+      solution: '공통 레이아웃을 Thymeleaf로 구성하고, Spring MVC·PostgreSQL로 회원·게시판·권한 기능을 구현했습니다.',
+      result: '비회원 탐색·회원가입·로그인·리뷰 작성·관리자 기능 브라우저 확인',
     },
     caseStudy: {
       requirements: [
-        '지역·테마·문화·교통 정보를 일관된 탐색 구조와 공통 화면으로 구성해야 했습니다.',
-        '정적 소개 화면에 회원가입, 로그인, 마이페이지와 게시판 기능을 연결해야 했습니다.',
-        '회원과 관리자의 권한에 따라 게시물과 운영 기능을 분리해야 했습니다.',
+        '탐색: 지역·테마·문화·교통 페이지에 같은 헤더와 메뉴 사용',
+        '회원: 가입·로그인·마이페이지와 리뷰 기능 제공',
+        '권한: 회원과 관리자 기능을 화면·서버에서 구분',
       ],
       flow: '관광 정보 카테고리 → Spring MVC/Thymeleaf → 회원·공지·리뷰 → 권한/관리자 → Docker 실행 환경',
       architecture: [
@@ -859,20 +864,20 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       problem: [
-        '여러 관광 서브페이지가 늘어나도 공통 레이아웃과 탐색 구조가 흔들리지 않아야 했습니다.',
-        '정보 제공 화면과 회원·게시판·관리자 기능을 하나의 MVC 흐름으로 연결해야 했습니다.',
+        '관광 서브페이지가 늘어날수록 헤더·메뉴·콘텐츠 구조가 달라질 수 있었습니다.',
+        '정적 정보 화면과 회원·게시판 기능이 따로 움직이면 서비스처럼 사용할 수 없었습니다.',
       ],
       approach: [
-        '지역, 테마, 문화, 교통 기준의 관광 서브페이지와 공통 레이아웃을 구성했습니다.',
-        '회원가입, 로그인, 마이페이지 흐름을 Spring MVC와 Thymeleaf 화면으로 연결했습니다.',
-        '공지, 리뷰, 관리자 권한을 DB와 화면 흐름 기준으로 분리했습니다.',
+        'Thymeleaf 공통 레이아웃으로 헤더·메뉴·콘텐츠 영역을 재사용했습니다.',
+        'Spring MVC로 회원가입·로그인·마이페이지와 리뷰 게시판을 구현했습니다.',
+        'PostgreSQL 데이터와 권한에 따라 회원·관리자 기능을 나눴습니다.',
       ],
       result: [
-        '정적 정보 페이지를 회원 참여와 운영 관리가 가능한 Spring Boot MVC 서비스로 정리했습니다.',
+        '관광 정보 탐색부터 리뷰 작성·관리자 기능까지 한 서비스에서 실행.',
       ],
-      verification: '비회원 접근, 회원가입/로그인, 마이페이지, 리뷰 게시판, 관리자 기능, 관광 서브페이지 흐름 확인',
+      verification: '비회원 탐색·회원가입·로그인·마이페이지·리뷰 게시판·관리자 기능 브라우저 확인',
     },
-    role: '팀장 · 직접 구현: 웹 퍼블리싱·공통 UI·주요 페이지 · 설계: 화면 구조',
+    role: '팀장 · 웹 퍼블리싱·공통 UI·주요 화면 직접 구현 · 화면 구조 설계',
     stack: ['Spring Boot 3', 'Thymeleaf', 'PostgreSQL', 'HTML5', 'CSS', 'JavaScript', 'Docker'],
     image: assetPath('images/project-incheon-main.jpg'),
     imageAlt: '인천 문화 관광 웹 애플리케이션 메인 화면',
@@ -909,17 +914,17 @@ export const additionalProjects: AdditionalProject[] = []
 export const experience: ExperienceItem[] = [
   {
     company: '대영전기',
-    period: '2024.11–2025.12',
+    period: '2024.11~2025.12',
     position: '현장 운영 지원 · 계약직',
     detail:
-      '현대자동차 울산 현장에서 자재, 인원·근태, 안전·행정 문서 흐름을 지원했습니다.',
+      '현대자동차 울산 현장에서 자재 관리, 인원·근태 확인, 안전·행정 문서 업무를 지원했습니다.',
   },
   {
     company: '(주)모아데이타',
-    period: '2021.07–2022.12',
+    period: '2021.07~2022.12',
     position: '개발자 · 정규직',
     detail:
-      'C/C++ 규칙 추론 엔진 유지보수, 규칙·온톨로지 로직, MariaDB 연동, Fact 데이터 변환을 담당했습니다.',
+      'C/C++ 규칙 추론 엔진과 규칙·온톨로지 로직을 유지보수하고, MariaDB 연동과 Fact 데이터 변환을 맡았습니다.',
   },
 ]
 
@@ -927,32 +932,32 @@ export const capabilities: CapabilityGroup[] = [
   {
     title: 'Backend & Distributed Systems',
     items: [
-      { label: '.NET / Microsoft Orleans', evidence: 'ASTRA의 플레이어별 명령 직렬화와 2-Silo 분산 실행 구성' },
-      { label: 'Java / Spring Boot', evidence: '회원, 게시판, 주문, 관리자 API와 MVC 서비스 구현' },
-      { label: 'Python / FastAPI', evidence: 'Edge Ingress, AI API, NEO 오케스트레이션 경계 구현' },
-      { label: 'PHP / Slim / SQL Server', evidence: 'EduSync 이벤트 원장·진행 상태의 멱등 트랜잭션과 동시성 제어' },
-      { label: 'PostgreSQL / Redis', evidence: '트랜잭션 정합성, 원장·감사, 멱등 응답과 조회 가속 구성' },
-      { label: 'HTTP / TCP + Protobuf', evidence: 'ASTRA와 HI-FIVE의 전송 경계와 command/event 계약 구성' },
+      { label: '.NET / Microsoft Orleans', evidence: 'ASTRA: 플레이어별 명령 직렬화·2-Silo 실행' },
+      { label: 'Java / Spring Boot', evidence: '가구·인천: 주문·관리자 API, 회원·게시판 MVC' },
+      { label: 'Python / FastAPI', evidence: 'NEO·HI-FIVE: 관제 오케스트레이션·Edge Ingress·분석 API' },
+      { label: 'PHP / Slim / SQL Server', evidence: 'EduSync: 이벤트 원장·진행 상태 트랜잭션' },
+      { label: 'PostgreSQL / Redis', evidence: 'ASTRA·HI-FIVE: 원장·감사·멱등 응답, 통행·품질 지표' },
+      { label: 'HTTP / TCP + Protobuf', evidence: 'ASTRA·HI-FIVE: 명령·통행 이벤트 계약' },
     ],
   },
   {
     title: 'Reasoning & AI',
     items: [
-      { label: 'C / C++', evidence: '기존 규칙 추론 엔진 유지보수와 로직 분석 경험' },
-      { label: 'NEO Rule Engine', evidence: 'Fact, Rule, ATMS/CF와 Decision 흐름으로 판단 근거 구조화' },
-      { label: 'Ontology / Neo4j', evidence: '룰·이벤트·판단 관계를 그래프 계보로 추적' },
-      { label: 'NEMI RAG', evidence: 'NEO 판단과 분리된 VectorDB/RAG 문서 근거 검색 구성' },
-      { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE 차량 번호판 탐지와 문자 판독 파이프라인 구현' },
+      { label: 'C/C++', evidence: '모아데이타: 규칙 추론 엔진 유지보수·Fact 변환' },
+      { label: 'NEO Rule Engine', evidence: 'NEO: Fact·Rule·ATMS/CF 기반 판단 패키지' },
+      { label: 'Ontology / Neo4j', evidence: 'NEO: 관측·규칙·판단 관계 계보' },
+      { label: 'NEMI RAG', evidence: 'NEO: 판단과 분리한 문서 근거 검색' },
+      { label: 'YOLO/CRNN-OCR', evidence: 'HI-FIVE: 차량·번호판 탐지와 문자 판독' },
     ],
   },
   {
     title: 'Frontend & Infra',
     items: [
-      { label: 'Vue 3 / TypeScript', evidence: '포폴/운영 화면을 컴포넌트와 데이터로 분리' },
-      { label: 'Pinia / Axios', evidence: '상태 관리와 API 호출 경계를 화면 흐름에 맞춰 분리' },
-      { label: 'Docker / Kubernetes', evidence: '멀티 서비스 이미지, Compose와 Helm 배포 구성 검증' },
-      { label: 'OpenTelemetry / Elastic', evidence: 'API·TCP·DB·Worker trace와 운영 지표 대시보드 구성' },
-      { label: 'GitHub Actions / Pages', evidence: '자동 테스트·이미지 발행과 정적 포트폴리오 배포' },
+      { label: 'Vue 3 / TypeScript', evidence: 'NEO·가구: 운영 화면·커머스 UI' },
+      { label: 'Pinia / Axios', evidence: '가구: 상품 옵션·장바구니·주문 상태' },
+      { label: 'Docker / Kubernetes', evidence: 'ASTRA·NEO: Helm·Compose 배포 환경' },
+      { label: 'OpenTelemetry / Elastic', evidence: 'ASTRA: API·TCP·DB·Worker 추적' },
+      { label: 'GitHub Actions / Pages', evidence: '프로젝트 CI·포트폴리오: 자동 테스트·이미지 발행·정적 배포' },
     ],
   },
 ]
@@ -960,12 +965,12 @@ export const capabilities: CapabilityGroup[] = [
 export const educationItems: EducationItem[] = [
   {
     title: '[에스트래픽] 스마트 모빌리티 DX Academy',
-    period: '2025.12.29–2026.07.02',
+    period: '2025.12.29~2026.07.02',
     detail: '스마트 모빌리티, ITS, Full Stack 프로젝트 과정',
   },
   {
     title: '유원대학교 스마트IT학과',
-    period: '2015.03–2022.02',
+    period: '2015.03~2022.02',
     detail: '학점 4.13 / 4.5 · 소프트웨어, Android, 임베디드, C/C++, Java, Python',
   },
 ]

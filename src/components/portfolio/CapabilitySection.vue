@@ -15,7 +15,6 @@ defineProps<{
           <p class="section-kicker">Capabilities</p>
           <h2 id="skills-title">기술 영역</h2>
         </div>
-        <p>프로젝트에서 직접 사용한 기술 스택을 역할 기준으로 정리했습니다.</p>
       </header>
       <div class="capability-grid">
         <section v-for="(group, index) in groups" :key="group.title" class="capability-group">

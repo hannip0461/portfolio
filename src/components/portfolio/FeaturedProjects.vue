@@ -26,7 +26,6 @@ const getProjectDemo = (project: FeaturedProject) =>
           <p class="section-kicker">Selected Projects</p>
           <h2 id="projects-title">대표 프로젝트</h2>
         </div>
-        <p>분산 서버·교통 관제·Edge AI·학습 이벤트 API를 실제 구현과 검증 화면으로 정리했습니다.</p>
       </header>
 
       <div class="primary-project-list">
@@ -58,15 +57,13 @@ const getProjectDemo = (project: FeaturedProject) =>
             </div>
             <h3>{{ project.title }}</h3>
             <p class="project-claim">{{ project.claim }}</p>
-            <p class="project-proof">{{ project.proof.result }}</p>
-
-            <dl class="project-snapshot" aria-label="프로젝트 핵심 정보">
+            <dl class="project-scan-facts" aria-label="프로젝트 검증과 담당 범위">
               <div>
-                <dt>핵심 구현</dt>
-                <dd>{{ project.badge }}</dd>
+                <dt>검증</dt>
+                <dd>{{ project.proof.result }}</dd>
               </div>
               <div>
-                <dt>직접 담당</dt>
+                <dt>담당</dt>
                 <dd>
                   <span>{{ project.role }}</span>
                   <ul v-if="project.rolePhases?.length" class="project-role-phases">
@@ -131,7 +128,7 @@ const getProjectDemo = (project: FeaturedProject) =>
               <p class="project-claim">{{ project.claim }}</p>
               <dl class="secondary-project-facts">
                 <div>
-                  <dt>역량</dt>
+                  <dt>기술</dt>
                   <dd>{{ project.badge }}</dd>
                 </div>
                 <div>

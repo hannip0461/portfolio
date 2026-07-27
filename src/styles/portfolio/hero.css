@@ -7,8 +7,8 @@
   position: relative;
   display: grid;
   min-height: 390px;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  gap: 42px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 330px);
+  gap: 38px;
   align-items: center;
   overflow: hidden;
 }
@@ -108,9 +108,9 @@
 .hero-evidence li p {
   margin: 3px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.45;
   word-break: keep-all;
 }
 
