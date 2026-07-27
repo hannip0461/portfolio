@@ -2,6 +2,7 @@ export interface ProjectScreenshot {
   src?: string
   alt: string
   caption: string
+  objectPosition?: 'top' | 'center'
 }
 
 export interface ProjectTerm {
@@ -546,10 +547,127 @@ export const featuredProjects: FeaturedProject[] = [
     ],
   },
   {
+    id: 'edusync',
+    tier: 'primary',
+    detailLevel: 'full',
+    number: '04',
+    title: 'EduSync Learning API',
+    period: '개인 프로젝트 · 2026.07',
+    claim: '중복·지연·동시 이벤트에서도 학습 진행 상태를 일관되게 유지합니다.',
+    badge: '이벤트 멱등성 · SQL Server 동시성 · 레거시 읽기 경계',
+    summary:
+      '웹·모바일과 외부 플레이어의 학습 이벤트를 수집하고, 변경 이력과 현재 진행 상태를 하나의 SQL Server 트랜잭션으로 관리한 API입니다. 보호자 조회와 Classic ASP 읽기 전용 연동까지 분리했습니다.',
+    proof: {
+      problemLabel: '개요',
+      problem:
+        '네트워크 재전송, 늦게 도착한 이벤트, 동시 요청이 겹치면 이어보기 위치·최대 시청 위치·완료 시각이 서로 다른 상태를 가리킬 수 있었습니다.',
+      solution:
+        '이벤트 원장을 먼저 기록한 뒤 진행 상태를 key-range lock으로 갱신하고, 두 작업을 같은 트랜잭션에서 commit했습니다. 중복 키는 rollback 후 payload hash를 다시 비교해 정상 중복과 충돌을 분리했습니다.',
+      result:
+        '실제 SQL Server 환경에서 HTTP 계약, 동시 최초 생성, 병렬 checkpoint, 중복·충돌, rollback, deadlock 재시도 시나리오를 확인했습니다.',
+    },
+    caseStudy: {
+      requirements: [
+        '같은 학습 이벤트가 재전송되면 한 번만 반영하고, 같은 ID의 다른 payload는 충돌로 거절해야 했습니다.',
+        '늦게 도착하거나 동시에 처리된 이벤트가 이어보기 위치, 최대 시청 위치, 최초 완료 시각의 규칙을 깨뜨리지 않아야 했습니다.',
+        '보호자와 Classic ASP에는 필요한 조회만 제공하고 학습 이벤트 쓰기 권한은 넓히지 않아야 했습니다.',
+      ],
+      flow: '인증된 학습 이벤트 → 이벤트 원장 우선 기록 → 진행 상태 잠금·갱신 → commit/rollback → 보호자·레거시 읽기',
+      architectureImage: {
+        src: assetPath('images/project-edusync-system-architecture-approved.svg'),
+        alt: '웹과 외부 플레이어의 학습 이벤트를 검증해 SQL Server 원장과 진행 상태를 원자적으로 저장하고, 중복·충돌 분류와 읽기 전용 경계를 분리한 시스템 구조',
+        caption: '이벤트 원장·진행 상태의 원자적 저장과 읽기 전용 경계',
+      },
+      decisions: [
+        {
+          title: '중복 여부를 현재 진행 상태만 보고 판단하지 않기',
+          context:
+            '동시에 들어온 첫 이벤트와 응답 유실 뒤 재전송은 현재 snapshot만으로 같은 요청인지 구분하기 어려웠습니다.',
+          decision:
+            'source와 event_id를 유일 키로 둔 learning_events를 먼저 insert하고, 중복 키가 발생하면 transaction을 rollback한 뒤 payload_hash를 다시 조회했습니다. hash가 같으면 200 duplicate, 다르면 409 conflict로 분리했습니다.',
+          evidence:
+            '동일 payload 병렬 요청은 한 건만 적용되고 나머지는 duplicate가 되며, 동일 event_id의 다른 payload는 409가 되는 실제 SQL Server 동시성 시나리오를 확인했습니다.',
+        },
+        {
+          title: '변경 이력과 현재 상태의 책임을 한 테이블에 섞지 않기',
+          context:
+            '이어보기 위치는 최신 순서를 따르지만 최대 시청 위치와 최초 완료 시각은 과거 이벤트도 보존해야 해 한 행만으로는 변경 이유를 재현하기 어려웠습니다.',
+          decision:
+            'learning_events는 수신 사실을 보존하는 원장으로, lecture_progress는 조회용 현재 상태로 분리했습니다. 두 테이블은 같은 transaction에서 갱신하고 lecture_progress에는 UPDLOCK·HOLDLOCK을 적용했습니다.',
+          evidence:
+            '늦은 checkpoint가 최대 시청 위치는 높이되 이어보기 위치는 되돌리지 않고, rewind와 최초 완료 시각 규칙이 유지되는 HTTP 통합 시나리오를 확인했습니다.',
+        },
+      ],
+      result: [
+        '같은 이벤트 재전송은 저장 결과를 중복 적용하지 않고 성공 응답으로 재사용하며, 같은 ID의 다른 payload는 충돌로 분리했습니다.',
+        '보호자 조회는 Bearer subject와 guardian link를 함께 확인하고, Classic ASP는 parameterized ADO 조회만 허용해 쓰기 API와 분리했습니다.',
+      ],
+      verification:
+        'Docker Compose의 PHP 8.3·SQL Server 환경에서 contract·integration·concurrency 테스트와 실제 HTTP 데모를 실행하고, rollback 및 deadlock 전체 transaction 재시도를 확인했습니다.',
+      verificationBoundary:
+        '정합성과 실패 경계를 검증한 결과이며, 운영 부하·처리량 검증과 MySQL 이식성 검증은 범위에 포함하지 않았습니다.',
+    },
+    role: '개인 프로젝트 · API 계약, SQL Server 트랜잭션·동시성, 테스트와 IIS 호환 읽기 경계 전 영역 구현',
+    stack: ['PHP 8.3', 'Slim 4', 'SQL Server 2022', 'PDO_SQLSRV', 'OpenAPI', 'Docker', 'Classic ASP'],
+    image: assetPath('images/project-edusync-demo-report.png'),
+    imageAlt: 'EduSync Docker Compose와 SQL Server 기반 데모 검증 결과',
+    screenshots: [
+      {
+        src: assetPath('images/project-edusync-demo-report.png'),
+        alt: 'EduSync Docker Compose와 SQL Server 기반 데모 검증 결과',
+        caption: '실제 HTTP 요청과 SQL Server 결과를 기록한 PASS 데모 리포트',
+      },
+      {
+        src: assetPath('images/project-edusync-pipeline.png'),
+        alt: 'EduSync 전체 파이프라인',
+        caption: '웹·외부 플레이어 인증부터 원자적 저장과 읽기 전용 소비자까지 연결한 전체 파이프라인',
+        objectPosition: 'center',
+      },
+      {
+        src: assetPath('images/project-edusync-event-flow.png'),
+        alt: 'EduSync 학습 이벤트 멱등 처리와 상태 갱신 흐름',
+        caption: '인증·수강 검증, 멱등성 분류, 최신/과거 이벤트 갱신과 commit·rollback 흐름',
+      },
+      {
+        src: assetPath('images/project-edusync-swagger.png'),
+        alt: 'EduSync Learning API OpenAPI 문서',
+        caption: '학습 이벤트·외부 플레이어·보호자 조회 계약을 공개한 OpenAPI 화면',
+      },
+    ],
+    terms: [
+      {
+        term: '멱등성',
+        description: '같은 요청을 여러 번 받아도 최초 처리 결과만 반영되고 이후 요청은 같은 결과를 돌려주는 성질입니다.',
+      },
+      {
+        term: '이벤트 원장',
+        description: '현재 상태와 별개로 어떤 학습 이벤트가 언제 수신됐는지 변경 이력을 보존하는 기록입니다.',
+      },
+      {
+        term: 'Key-range lock',
+        description: '아직 행이 없는 최초 생성 구간까지 잠가 동시 insert와 update가 같은 진행 상태를 만들도록 하는 SQL Server 잠금입니다.',
+      },
+      {
+        term: 'HMAC',
+        description: '외부 플레이어 서버가 보낸 요청의 발신자와 본문 무결성을 공유 비밀키로 검증하는 방식입니다.',
+      },
+    ],
+    screensTitle: 'API 계약과 정합성 검증 증거',
+    link: 'https://github.com/hannip0461/edusync-learning-api',
+    linkLabel: 'EduSync 저장소',
+    resources: [
+      { label: 'EduSync 저장소', url: 'https://github.com/hannip0461/edusync-learning-api' },
+      { label: '아키텍처와 데이터 흐름', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/ARCHITECTURE.md' },
+      { label: '설계 결정 기록', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/DECISIONS.md' },
+      { label: 'OpenAPI 계약', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/openapi.yaml' },
+      { label: '장애 대응 기록', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/TROUBLESHOOTING.md' },
+    ],
+  },
+  {
     id: 'furniture',
     tier: 'secondary',
     detailLevel: 'compact',
-    number: '04',
+    number: '05',
     title: '가구 쇼핑몰 웹 애플리케이션',
     period: '팀 프로젝트 · 2026.03.14–04.12',
     claim: '상품 탐색부터 주문·고객지원·관리자 운영까지 하나의 구매 흐름으로 연결했습니다.',
@@ -675,7 +793,7 @@ export const featuredProjects: FeaturedProject[] = [
     id: 'incheon',
     tier: 'secondary',
     detailLevel: 'compact',
-    number: '05',
+    number: '06',
     title: '인천 문화·관광 웹 애플리케이션',
     period: '팀 프로젝트 · 2026.02.09–03.13',
     claim: '관광 정보 화면을 회원 참여와 운영 관리가 가능한 MVC 서비스로 확장했습니다.',
@@ -812,6 +930,7 @@ export const capabilities: CapabilityGroup[] = [
       { label: '.NET / Microsoft Orleans', evidence: 'ASTRA의 플레이어별 명령 직렬화와 2-Silo 분산 실행 구성' },
       { label: 'Java / Spring Boot', evidence: '회원, 게시판, 주문, 관리자 API와 MVC 서비스 구현' },
       { label: 'Python / FastAPI', evidence: 'Edge Ingress, AI API, NEO 오케스트레이션 경계 구현' },
+      { label: 'PHP / Slim / SQL Server', evidence: 'EduSync 이벤트 원장·진행 상태의 멱등 트랜잭션과 동시성 제어' },
       { label: 'PostgreSQL / Redis', evidence: '트랜잭션 정합성, 원장·감사, 멱등 응답과 조회 가속 구성' },
       { label: 'HTTP / TCP + Protobuf', evidence: 'ASTRA와 HI-FIVE의 전송 경계와 command/event 계약 구성' },
     ],

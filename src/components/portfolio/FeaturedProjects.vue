@@ -26,7 +26,7 @@ const getProjectDemo = (project: FeaturedProject) =>
           <p class="section-kicker">Selected Projects</p>
           <h2 id="projects-title">대표 프로젝트</h2>
         </div>
-        <p>분산 서버·교통 관제·Edge AI 프로젝트를 실제 운영 화면과 함께 정리했습니다.</p>
+        <p>분산 서버·교통 관제·Edge AI·학습 이벤트 API를 실제 구현과 검증 화면으로 정리했습니다.</p>
       </header>
 
       <div class="primary-project-list">

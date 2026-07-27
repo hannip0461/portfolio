@@ -451,7 +451,14 @@ onUnmounted(() => {
               :aria-label="`${shot.caption} 확대 보기`"
               @click="openScreenshot(index + 1, $event)"
             >
-              <img v-if="shot.src" :src="shot.src" :alt="shot.alt" loading="lazy" decoding="async" />
+              <img
+                v-if="shot.src"
+                :src="shot.src"
+                :alt="shot.alt"
+                :style="{ objectPosition: shot.objectPosition ?? 'top' }"
+                loading="lazy"
+                decoding="async"
+              />
             </button>
             <figcaption>{{ shot.caption }}</figcaption>
           </figure>
@@ -484,44 +491,46 @@ onUnmounted(() => {
         </div>
       </footer>
 
-      <div
-        v-if="selectedScreenshot"
-        class="screenshot-lightbox"
-        :class="{ 'screenshot-lightbox-architecture': isArchitectureSelected }"
-        role="dialog"
-        aria-modal="true"
-        aria-label="프로젝트 화면 확대"
-        @click="closeScreenshot"
-      >
-        <figure @click.stop>
-          <div class="screenshot-lightbox-toolbar">
-            <span>{{ selectedScreenshotIndex! + 1 }} / {{ lightboxItems.length }}</span>
-            <button ref="lightboxCloseButton" type="button" aria-label="이미지 닫기" @click="closeScreenshot">
-              <X :size="20" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="screenshot-lightbox-stage">
-            <button
-              type="button"
-              aria-label="이전 이미지"
-              :disabled="selectedScreenshotIndex === 0"
-              @click="moveLightbox(-1)"
-            >
-              <ArrowLeft :size="20" aria-hidden="true" />
-            </button>
-            <img v-if="selectedScreenshot.src" :src="selectedScreenshot.src" :alt="selectedScreenshot.alt" />
-            <button
-              type="button"
-              aria-label="다음 이미지"
-              :disabled="selectedScreenshotIndex === lightboxItems.length - 1"
-              @click="moveLightbox(1)"
-            >
-              <ArrowRight :size="20" aria-hidden="true" />
-            </button>
-          </div>
-          <figcaption>{{ selectedScreenshot.caption }}</figcaption>
-        </figure>
-      </div>
+      <Teleport to="body">
+        <div
+          v-if="selectedScreenshot"
+          class="screenshot-lightbox"
+          :class="{ 'screenshot-lightbox-architecture': isArchitectureSelected }"
+          role="dialog"
+          aria-modal="true"
+          aria-label="프로젝트 화면 확대"
+          @click="closeScreenshot"
+        >
+          <figure @click.stop>
+            <div class="screenshot-lightbox-toolbar">
+              <span>{{ selectedScreenshotIndex! + 1 }} / {{ lightboxItems.length }}</span>
+              <button ref="lightboxCloseButton" type="button" aria-label="이미지 닫기" @click="closeScreenshot">
+                <X :size="20" aria-hidden="true" />
+              </button>
+            </div>
+            <div class="screenshot-lightbox-stage">
+              <button
+                type="button"
+                aria-label="이전 이미지"
+                :disabled="selectedScreenshotIndex === 0"
+                @click="moveLightbox(-1)"
+              >
+                <ArrowLeft :size="20" aria-hidden="true" />
+              </button>
+              <img v-if="selectedScreenshot.src" :src="selectedScreenshot.src" :alt="selectedScreenshot.alt" />
+              <button
+                type="button"
+                aria-label="다음 이미지"
+                :disabled="selectedScreenshotIndex === lightboxItems.length - 1"
+                @click="moveLightbox(1)"
+              >
+                <ArrowRight :size="20" aria-hidden="true" />
+              </button>
+            </div>
+            <figcaption>{{ selectedScreenshot.caption }}</figcaption>
+          </figure>
+        </div>
+      </Teleport>
     </article>
   </div>
 </template>

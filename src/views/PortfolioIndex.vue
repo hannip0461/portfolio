@@ -18,7 +18,7 @@ import {
 } from '../data/portfolioContent'
 
 const { scrollToTarget, scrollToTop } = usePortfolioScroll()
-const projectOrder = ['neo', 'astra', 'hifive', 'furniture', 'incheon']
+const projectOrder = ['neo', 'astra', 'hifive', 'edusync', 'furniture', 'incheon']
 const orderedProjects = [...featuredProjects].sort(
   (left, right) => projectOrder.indexOf(left.id) - projectOrder.indexOf(right.id),
 )

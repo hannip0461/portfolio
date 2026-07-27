@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1728" height="912" viewBox="0 0 1728 912" role="img" aria-labelledby="title desc">
+  <title id="title">EduSync Learning API 시스템 구조</title>
+  <desc id="desc">웹과 외부 플레이어의 학습 이벤트를 검증해 이벤트 원장과 진행 상태를 하나의 SQL Server 트랜잭션으로 저장하고, 중복과 충돌 처리 및 보호자와 Classic ASP의 읽기 전용 경계를 분리한 구조</desc>
+  <defs>
+    <marker id="arrow-red" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#c6281b"/>
+    </marker>
+    <marker id="arrow-navy" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#10233f"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#718096"/>
+    </marker>
+    <style>
+      text { font-family: Pretendard, "Malgun Gothic", Arial, sans-serif; fill: #0c1d36; }
+      .rail-number { font-size: 31px; font-weight: 800; fill: #c6281b; }
+      .rail-title { font-size: 41px; font-weight: 800; letter-spacing: -1.6px; }
+      .rail-copy { font-size: 18px; font-weight: 500; fill: #536176; }
+      .environment { font-size: 17px; font-weight: 700; fill: #536176; }
+      .lane-red { font-size: 21px; font-weight: 800; fill: #c6281b; }
+      .lane-gray { font-size: 20px; font-weight: 800; fill: #42526a; }
+      .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .4px; fill: #68778b; }
+      .eyebrow-red { font-size: 12px; font-weight: 800; letter-spacing: .4px; fill: #c6281b; }
+      .eyebrow-navy { font-size: 12px; font-weight: 800; letter-spacing: .4px; fill: #10233f; }
+      .box-title { font-size: 20px; font-weight: 800; }
+      .box-detail { font-size: 14px; font-weight: 500; fill: #536176; }
+      .box-detail-strong { font-size: 14px; font-weight: 700; fill: #334155; }
+      .source-title { font-size: 16px; font-weight: 800; }
+      .source-detail { font-size: 12px; font-weight: 500; fill: #536176; }
+      .transaction-title { font-size: 26px; font-weight: 800; fill: #c6281b; }
+      .transaction-step { font-size: 17px; font-weight: 800; }
+      .transaction-detail { font-size: 13px; font-weight: 600; fill: #536176; }
+      .result-title { font-size: 16px; font-weight: 800; }
+      .result-code { font-size: 13px; font-weight: 800; }
+      .legend { font-size: 15px; font-weight: 600; fill: #334155; }
+      .node { fill: #ffffff; stroke: #10233f; stroke-width: 1.7; }
+      .node-red { fill: #ffffff; stroke: #c6281b; stroke-width: 2.2; }
+      .node-read { fill: #f8fbff; stroke: #10233f; stroke-width: 1.6; }
+      .line-red { fill: none; stroke: #c6281b; stroke-width: 3.2; marker-end: url(#arrow-red); }
+      .line-navy { fill: none; stroke: #10233f; stroke-width: 2.5; marker-end: url(#arrow-navy); }
+      .line-dashed { fill: none; stroke: #718096; stroke-width: 2.2; stroke-dasharray: 8 7; marker-end: url(#arrow-gray); }
+    </style>
+  </defs>
+
+  <rect width="1728" height="912" fill="#ffffff"/>
+
+  <text x="30" y="72" class="rail-number">02</text>
+  <text x="82" y="75" class="rail-title">시스템 구조</text>
+  <text x="32" y="150" class="rail-copy">학습 이벤트 원장·진행 상태의</text>
+  <text x="32" y="183" class="rail-copy">원자적 저장과 조회 경계</text>
+  <line x1="302" y1="44" x2="302" y2="860" stroke="#cbd5e1" stroke-width="1.6"/>
+
+  <line x1="338" y1="34" x2="1685" y2="34" stroke="#10233f" stroke-width="3"/>
+  <text x="1012" y="77" text-anchor="middle" class="environment">Docker Compose · PHP 8.3 · Slim 4 · SQL Server 2022</text>
+
+  <text x="368" y="130" class="lane-red">학습 이벤트 처리</text>
+  <line x1="368" y1="145" x2="1128" y2="145" stroke="#c6281b" stroke-width="2"/>
+  <path d="M348 185H359M348 185V423M348 423H359" fill="none" stroke="#c6281b" stroke-width="2"/>
+
+  <rect x="374" y="188" width="190" height="94" rx="3" class="node"/>
+  <g transform="translate(386 218)" fill="none" stroke="#10233f" stroke-width="2">
+    <rect x="0" y="0" width="31" height="23" rx="2"/>
+    <path d="M10 29H21M15.5 23V29"/>
+    <rect x="39" y="6" width="14" height="25" rx="3"/>
+  </g>
+  <text x="454" y="211" class="eyebrow">CLIENT</text>
+  <text x="454" y="242" class="source-title">웹 · 모바일</text>
+  <text x="454" y="266" class="source-detail">Bearer 인증</text>
+
+  <rect x="374" y="329" width="190" height="94" rx="3" class="node"/>
+  <g transform="translate(386 356)" fill="none" stroke="#10233f" stroke-width="2">
+    <rect x="0" y="3" width="52" height="28" rx="3"/>
+    <path d="M10 12H42M10 20H32"/>
+    <circle cx="44" cy="20" r="3" fill="#10233f" stroke="none"/>
+  </g>
+  <text x="454" y="352" class="eyebrow">CALLBACK</text>
+  <text x="454" y="383" class="source-title">외부 플레이어</text>
+  <text x="454" y="407" class="source-detail">HMAC 서명</text>
+
+  <path d="M564 235H602C620 235 620 271 638 271" class="line-red"/>
+  <path d="M564 376H602C620 376 620 335 638 335" class="line-red"/>
+
+  <rect x="644" y="245" width="224" height="126" rx="3" class="node-red"/>
+  <text x="670" y="277" class="eyebrow-red">REQUEST BOUNDARY</text>
+  <text x="670" y="312" class="box-title">인증 · 이벤트 검증</text>
+  <line x1="670" y1="327" x2="842" y2="327" stroke="#c6281b" stroke-width="1.4"/>
+  <text x="670" y="353" class="box-detail">주체 · 출처 · 입력 계약 확정</text>
+
+  <path d="M868 308H926" class="line-red"/>
+
+  <rect x="932" y="245" width="210" height="126" rx="3" class="node-red"/>
+  <text x="958" y="277" class="eyebrow-red">APPLICATION</text>
+  <text x="958" y="312" class="box-title">ProgressService</text>
+  <line x1="958" y1="327" x2="1116" y2="327" stroke="#c6281b" stroke-width="1.4"/>
+  <text x="958" y="353" class="box-detail">순서 판단 · 저장 응답 확정</text>
+
+  <path d="M1142 308H1186" class="line-red"/>
+
+  <rect x="1192" y="139" width="280" height="338" rx="4" fill="#fffdfc" stroke="#c6281b" stroke-width="2.6"/>
+  <g transform="translate(1219 164)" fill="none" stroke="#c6281b" stroke-width="3">
+    <ellipse cx="31" cy="9" rx="27" ry="9"/>
+    <path d="M4 9V44C4 51 16 56 31 56C46 56 58 51 58 44V9"/>
+    <path d="M4 27C4 34 16 39 31 39C46 39 58 34 58 27"/>
+  </g>
+  <text x="1295" y="178" class="eyebrow-red">SOURCE OF TRUTH</text>
+  <text x="1219" y="243" class="transaction-title">SQL Server</text>
+  <text x="1219" y="274" class="transaction-title">Transaction</text>
+  <line x1="1219" y1="292" x2="1445" y2="292" stroke="#c6281b" stroke-width="2"/>
+
+  <circle cx="1234" cy="326" r="13" fill="#c6281b"/>
+  <text x="1234" y="331" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#ffffff">1</text>
+  <text x="1260" y="322" class="transaction-step">이벤트 원장 기록</text>
+  <text x="1260" y="347" class="transaction-detail">learning_events</text>
+  <text x="1260" y="366" class="transaction-detail">(source, event_id) 유일 키</text>
+
+  <line x1="1234" y1="339" x2="1234" y2="385" stroke="#c6281b" stroke-width="2"/>
+  <circle cx="1234" cy="399" r="13" fill="#c6281b"/>
+  <text x="1234" y="404" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#ffffff">2</text>
+  <text x="1260" y="395" class="transaction-step">진행 상태 잠금 · 갱신</text>
+  <text x="1260" y="420" class="transaction-detail">lecture_progress</text>
+  <text x="1260" y="439" class="transaction-detail">key-range lock</text>
+
+  <rect x="1219" y="449" width="226" height="28" fill="#fff1ee"/>
+  <text x="1332" y="468" text-anchor="middle" class="eyebrow-red">함께 COMMIT · 함께 ROLLBACK</text>
+
+  <text x="1501" y="153" class="eyebrow-navy">READ ONLY</text>
+  <text x="1501" y="174" class="box-detail-strong">현재 진행 상태만 조회</text>
+  <path d="M1472 306H1486V231H1500" class="line-navy"/>
+  <path d="M1472 306H1486V383H1500" class="line-navy"/>
+
+  <rect x="1506" y="190" width="170" height="82" rx="3" class="node-read"/>
+  <text x="1524" y="219" class="eyebrow-navy">GUARDIAN</text>
+  <text x="1524" y="245" class="box-title">보호자 조회</text>
+  <text x="1524" y="264" class="box-detail">subject · link 확인</text>
+
+  <rect x="1506" y="342" width="170" height="82" rx="3" class="node-read"/>
+  <text x="1524" y="371" class="eyebrow-navy">LEGACY</text>
+  <text x="1524" y="397" class="box-title">Classic ASP</text>
+  <text x="1524" y="416" class="box-detail">ADO · read only</text>
+
+  <line x1="338" y1="519" x2="1685" y2="519" stroke="#d7dee8" stroke-width="1.3"/>
+  <text x="368" y="557" class="lane-gray">중복 · 충돌 · 재시도</text>
+  <text x="368" y="582" class="box-detail">ROLLBACK 후 요청 일치 여부 확인</text>
+
+  <path d="M1332 477V525H345V607H366" class="line-dashed"/>
+  <path d="M1332 525H1505V599" class="line-dashed"/>
+
+  <g transform="translate(374 607)">
+    <line x1="0" y1="0" x2="176" y2="0" stroke="#718096" stroke-width="2"/>
+    <text x="0" y="31" class="eyebrow">SQL EXCEPTION</text>
+    <text x="0" y="61" class="result-title">중복 키 감지</text>
+    <text x="0" y="84" class="box-detail">2601 · 2627</text>
+  </g>
+  <path d="M550 651H600" class="line-dashed"/>
+
+  <g transform="translate(610 607)">
+    <line x1="0" y1="0" x2="202" y2="0" stroke="#718096" stroke-width="2"/>
+    <text x="0" y="31" class="eyebrow">ROLLBACK</text>
+    <text x="0" y="61" class="result-title">요청 원문 재조회</text>
+    <text x="0" y="84" class="box-detail">트랜잭션 종료 후 확인</text>
+  </g>
+  <path d="M812 651H862" class="line-dashed"/>
+
+  <g transform="translate(872 607)">
+    <line x1="0" y1="0" x2="200" y2="0" stroke="#718096" stroke-width="2"/>
+    <text x="0" y="31" class="eyebrow">COMPARE</text>
+    <text x="0" y="61" class="result-title">payload_hash 비교</text>
+    <text x="0" y="84" class="box-detail">같은 ID의 요청 의미 확인</text>
+  </g>
+  <path d="M1072 635H1119" class="line-dashed"/>
+  <path d="M1072 675H1119" class="line-dashed"/>
+
+  <g transform="translate(1130 585)">
+    <line x1="0" y1="0" x2="185" y2="0" stroke="#10233f" stroke-width="2"/>
+    <text x="0" y="29" class="result-title">같은 payload</text>
+    <text x="0" y="52" class="result-code" fill="#10233f">200 · duplicate</text>
+  </g>
+  <g transform="translate(1130 660)">
+    <line x1="0" y1="0" x2="185" y2="0" stroke="#c6281b" stroke-width="2"/>
+    <text x="0" y="29" class="result-title">다른 payload</text>
+    <text x="0" y="52" class="result-code" fill="#c6281b">409 · conflict</text>
+  </g>
+
+  <g transform="translate(1370 607)">
+    <line x1="0" y1="0" x2="270" y2="0" stroke="#718096" stroke-width="2"/>
+    <text x="0" y="31" class="eyebrow">RETRYABLE</text>
+    <text x="0" y="61" class="result-title">교착 · snapshot 충돌</text>
+    <text x="0" y="84" class="box-detail">1205 · 3960</text>
+    <text x="0" y="106" class="box-detail">ProgressService가 트랜잭션 1회 재실행</text>
+  </g>
+
+  <line x1="338" y1="812" x2="1685" y2="812" stroke="#cbd5e1" stroke-width="1.2"/>
+  <line x1="370" y1="849" x2="432" y2="849" stroke="#c6281b" stroke-width="4"/>
+  <text x="448" y="855" class="legend">이벤트 처리 · 원장/상태 원자적 저장</text>
+  <line x1="790" y1="849" x2="852" y2="849" stroke="#718096" stroke-width="3" stroke-dasharray="8 7"/>
+  <text x="868" y="855" class="legend">중복·충돌 분류와 전체 재시도</text>
+  <line x1="1244" y1="849" x2="1306" y2="849" stroke="#10233f" stroke-width="4"/>
+  <text x="1322" y="855" class="legend">보호자·레거시 읽기 전용</text>
+</svg>

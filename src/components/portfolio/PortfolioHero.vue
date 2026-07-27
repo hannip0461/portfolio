@@ -51,6 +51,13 @@ const emit = defineEmits<{
               <p>Edge AI 이벤트와 품질 분석</p>
             </div>
           </li>
+          <li>
+            <span>04</span>
+            <div>
+              <strong>EduSync</strong>
+              <p>학습 이벤트 정합성과 레거시 연동</p>
+            </div>
+          </li>
         </ol>
       </aside>
     </div>
