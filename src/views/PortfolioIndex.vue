@@ -35,8 +35,8 @@ const { selectedProject, openProject, closeProject } = usePortfolioProjectModal(
       <main id="main-content">
         <PortfolioHero @navigate="scrollToTarget" />
         <FeaturedProjects :projects="orderedProjects" @open-project="openProject" />
-        <ExperienceTimeline :items="experience" />
         <CapabilitySection :groups="capabilities" />
+        <ExperienceTimeline :items="experience" />
         <EducationSection :items="educationItems" />
       </main>
 

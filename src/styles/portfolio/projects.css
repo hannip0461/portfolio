@@ -1,9 +1,5 @@
 .projects-heading {
-  margin-bottom: 18px;
-}
-
-.primary-project-list {
-  border-top: 2px solid var(--navy);
+  margin-bottom: 0;
 }
 
 .project-row {
@@ -32,7 +28,7 @@
   padding: 0;
   border: 1px solid #cbd2d8;
   border-radius: 4px;
-  background: #ffffff;
+  background: var(--soft);
   cursor: pointer;
 }
 
@@ -64,7 +60,6 @@
   height: 100%;
   object-fit: contain;
   object-position: top;
-  background: #ffffff;
 }
 
 .project-row-astra .project-media img {
@@ -73,6 +68,10 @@
 }
 
 .project-row-hifive .project-media {
+  aspect-ratio: 16 / 9;
+}
+
+.project-row-neo .project-media {
   aspect-ratio: 16 / 9;
 }
 
@@ -93,18 +92,19 @@
   min-height: 24px;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d9c6c2;
-  color: var(--rust);
-  background: #fff7f5;
+  border: 1px solid #c8d0da;
+  color: var(--navy);
+  background: var(--soft);
   font-size: 12px;
   font-weight: 900;
 }
 
 .project-period {
   margin: 0;
-  color: var(--rust);
+  color: var(--muted);
   font-size: 12px;
   font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .project-content h3 {
@@ -125,7 +125,7 @@
   font-size: 17px;
   font-weight: 800;
   line-height: 1.6;
-  text-wrap: pretty;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -151,7 +151,7 @@
 
 .project-scan-facts dt,
 .secondary-project-facts dt {
-  color: var(--rust);
+  color: var(--navy);
   font-size: 12px;
   font-weight: 900;
 }
@@ -163,6 +163,7 @@
   font-size: 13px;
   font-weight: 650;
   line-height: 1.55;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -176,7 +177,8 @@
 
 .text-link {
   display: inline-flex;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   align-items: center;
   gap: 7px;
   color: var(--navy);
@@ -249,7 +251,7 @@
   word-break: keep-all;
 }
 
-.secondary-project-content > p:not(.project-period) {
+.secondary-project-content > p:not(.project-period):not(.project-claim) {
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 14px;
@@ -273,7 +275,7 @@
 }
 
 .project-role-phases strong {
-  color: var(--rust);
+  color: var(--muted);
   font-size: 11px;
   font-weight: 900;
 }

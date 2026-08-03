@@ -16,8 +16,9 @@
 
 .utility-bar {
   min-height: 34px;
-  color: #ffffff;
-  background: var(--rust);
+  color: #ccd3e0;
+  background: var(--navy-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 12px;
 }
 
@@ -26,6 +27,33 @@
   align-items: center;
   justify-content: space-between;
   min-height: 34px;
+  gap: 16px;
+}
+
+.utility-role {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.utility-contact {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: center;
+  gap: 6px;
+}
+
+.utility-contact a {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.utility-contact a:last-child {
+  padding-right: 0;
 }
 
 .utility-inner a:hover {
@@ -84,7 +112,9 @@
 .site-nav a {
   position: relative;
   display: flex;
+  min-width: 44px;
   align-items: center;
+  justify-content: center;
   padding: 0 17px;
   color: #e3e7ee;
   font-size: 14px;

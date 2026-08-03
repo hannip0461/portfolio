@@ -3,30 +3,9 @@
   background: #ffffff;
 }
 
-.experience-layout {
-  display: grid;
-  grid-template-columns: 0.42fr 1fr;
-  gap: 52px;
-}
-
-.experience-heading .section-kicker {
-  margin-bottom: 10px;
-}
-
-.experience-heading h2 {
-  margin: 0;
-  color: var(--navy);
-  font-family: "Presentation", "Noto Sans KR", sans-serif;
-  font-size: 34px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
 .timeline {
   max-width: none;
   margin: 0;
-  padding-top: 6px;
-  border-top: 2px solid var(--navy);
 }
 
 .timeline-row {
@@ -38,7 +17,7 @@
 }
 
 .timeline-row time {
-  color: var(--rust);
+  color: var(--muted);
   font-size: 13px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -65,17 +44,12 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
-  text-wrap: pretty;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
-@media (max-width: 960px) {
-  .experience-layout {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .experience-heading h2 {
-    font-size: 29px;
+@media (max-width: 680px) {
+  .timeline-row h3 {
+    font-size: 18px;
   }
 }

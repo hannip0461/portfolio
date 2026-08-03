@@ -183,6 +183,7 @@
   font-size: 27px;
   font-weight: 900;
   line-height: 1.35;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -191,6 +192,7 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.72;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -224,6 +226,7 @@
   font-size: 12px;
   font-weight: 700;
   line-height: 1.55;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -295,7 +298,13 @@
   color: var(--ink);
   font-size: 13px;
   line-height: 1.7;
+  text-wrap: balance;
   word-break: keep-all;
+}
+
+.compact-project-section li,
+.compact-project-verification {
+  text-wrap: balance;
 }
 
 .compact-project-section ul {
@@ -373,6 +382,7 @@
   font-size: 13px;
   font-weight: 700;
   line-height: 1.65;
+  text-wrap: balance;
   word-break: keep-all;
   counter-increment: requirement;
 }
@@ -839,6 +849,7 @@
   color: var(--ink);
   font-size: 13.5px;
   line-height: 1.7;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
@@ -876,16 +887,19 @@
   padding: 22px 0;
 }
 
+.verification-findings,
 .verification-criteria {
   border-bottom: 1px solid var(--line);
 }
 
 .verification-boundary {
-  border-top: 1px solid var(--line);
+  align-items: start;
 }
 
 .verification-boundary h4 {
-  color: var(--rust);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .verification-result-flow p,
@@ -894,19 +908,38 @@
   color: var(--ink);
   font-size: 13px;
   line-height: 1.7;
+  text-wrap: balance;
   word-break: keep-all;
 }
 
-.verification-criteria p {
-  color: var(--muted);
+.verification-result-flow li {
+  text-wrap: balance;
 }
 
-.verification-result-flow ul {
+.verification-boundary p {
+  white-space: pre-line;
+}
+
+.verification-findings ul {
   display: grid;
   gap: 11px;
   padding: 0;
   counter-reset: verified-result;
   list-style: none;
+}
+
+.verification-method-list {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+.verification-method-list li {
+  color: var(--ink);
+}
+
+.verification-method-list li::marker {
+  color: #8b96a7;
 }
 
 .verification-findings li {
@@ -977,6 +1010,10 @@
   aspect-ratio: 16 / 9;
 }
 
+.project-screenshot-cropped img {
+  object-fit: cover;
+}
+
 .project-term-list {
   margin: 0 28px;
   border-bottom: 1px solid var(--line);
@@ -1014,6 +1051,7 @@
   color: var(--muted);
   font-size: 12px;
   line-height: 1.65;
+  text-wrap: balance;
 }
 
 .project-modal-actions {
@@ -1135,6 +1173,14 @@
   max-height: calc(100dvh - 170px);
   object-fit: contain;
   background: #f4f6f8;
+}
+
+.screenshot-lightbox-cropped .screenshot-lightbox-stage img {
+  width: min(900px, 100%);
+  aspect-ratio: 8 / 7;
+  justify-self: center;
+  object-fit: cover;
+  object-position: top;
 }
 
 .screenshot-lightbox figcaption {
@@ -1430,6 +1476,10 @@
     grid-template-columns: 1fr;
     gap: 9px;
     padding: 18px 0;
+  }
+
+  .verification-boundary p {
+    white-space: normal;
   }
 
   .project-additional-screenshots {

@@ -3,15 +3,8 @@
   background: var(--soft);
 }
 
-.education-layout {
-  display: grid;
-  grid-template-columns: 0.42fr 1fr;
-  gap: 52px;
-}
-
 .education-detail {
-  padding-top: 6px;
-  border-top: 2px solid var(--navy);
+  margin: 0;
 }
 
 .education-item {
@@ -21,9 +14,10 @@
 
 .education-period {
   margin: 0 0 8px;
-  color: var(--rust);
+  color: var(--muted);
   font-size: 13px;
   font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .education-item h3 {
@@ -39,5 +33,7 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
+  white-space: pre-line;
+  word-break: keep-all;
   text-wrap: pretty;
 }

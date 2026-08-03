@@ -113,11 +113,20 @@
 
 .footer-bottom {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
+  padding-top: 8px;
   color: #8f99ab;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   font-size: 12px;
+}
+
+.footer-bottom a {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .footer-bottom a:hover {

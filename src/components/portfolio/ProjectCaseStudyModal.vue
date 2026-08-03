@@ -45,6 +45,7 @@ const selectedScreenshot = computed(() => {
 const isArchitectureSelected = computed(
   () => Boolean(props.project.caseStudy.architectureImage) && selectedScreenshotIndex.value === props.project.screenshots.length,
 )
+const isLightboxCropped = computed(() => Boolean(selectedScreenshot.value?.lightboxCrop))
 const resourceLinks = computed(() => {
   const resources = props.project.resources?.filter((resource) => resource.kind !== 'demo') ?? []
   if (resources.length) return resources
@@ -233,7 +234,7 @@ onUnmounted(() => {
                 />
               </button>
             </div>
-            <figcaption>{{ project.caseStudy.architectureImage.caption }} · 클릭하면 크게 볼 수 있습니다.</figcaption>
+            <figcaption>{{ project.caseStudy.architectureImage.caption }}. 클릭하면 크게 볼 수 있습니다.</figcaption>
           </figure>
 
           <template v-else>
@@ -375,18 +376,20 @@ onUnmounted(() => {
             </div>
           </header>
           <div class="verification-result-flow">
-            <div class="verification-criteria">
-              <h4>검증 방법</h4>
-              <p>{{ project.caseStudy.verification }}</p>
-            </div>
             <div class="verification-findings">
               <h4>확인한 결과</h4>
               <ul>
                 <li v-for="item in project.caseStudy.result" :key="item">{{ item }}</li>
               </ul>
             </div>
+            <div class="verification-criteria">
+              <h4>확인 방법</h4>
+              <ul class="verification-method-list">
+                <li v-for="item in project.caseStudy.verification" :key="item">{{ item }}</li>
+              </ul>
+            </div>
             <div v-if="project.caseStudy.verificationBoundary" class="verification-boundary">
-              <h4>검증 범위 밖</h4>
+              <h4>추가 검증</h4>
               <p>{{ project.caseStudy.verificationBoundary }}</p>
             </div>
           </div>
@@ -419,7 +422,7 @@ onUnmounted(() => {
             </ul>
             <p class="compact-project-verification">
               <strong>확인 범위</strong>
-              {{ project.caseStudy.verification }}
+              {{ project.caseStudy.verification.join(' ') }}
             </p>
           </div>
         </section>
@@ -438,6 +441,7 @@ onUnmounted(() => {
           <figure v-for="(shot, index) in additionalScreenshots" :key="shot.caption">
             <button
               type="button"
+              :class="{ 'project-screenshot-cropped': shot.lightboxCrop }"
               :disabled="!shot.src"
               :aria-label="`${shot.caption} 확대 보기`"
               @click="openScreenshot(index + 1, $event)"
@@ -486,7 +490,10 @@ onUnmounted(() => {
         <div
           v-if="selectedScreenshot"
           class="screenshot-lightbox"
-          :class="{ 'screenshot-lightbox-architecture': isArchitectureSelected }"
+          :class="{
+            'screenshot-lightbox-architecture': isArchitectureSelected,
+            'screenshot-lightbox-cropped': isLightboxCropped,
+          }"
           role="dialog"
           aria-modal="true"
           aria-label="프로젝트 화면 확대"
