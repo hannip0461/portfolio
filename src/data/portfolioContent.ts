@@ -462,10 +462,10 @@ export const featuredProjects: FeaturedProject[] = [
     number: '03',
     title: 'HI-FIVE Smart Tolling + PdM PoC',
     period: '팀 프로젝트 (1차 2026.04.27~06.01, 2차 06.04~06.30)',
-    claim: '차량과 번호판 인식부터 품질 저하 징후 탐지까지 연결한 스마트 톨링 시스템입니다.',
+    claim: '차량 번호판 인식부터 품질 저하 징후 탐지까지 연결한 스마트 톨링 시스템입니다.',
     badge: 'Edge AI, 이벤트 전송, 품질 이상 탐지',
     summary:
-      '1차에서는 Jetson의 차량, 번호판 인식 결과를 통행 이벤트로 전송했고, 2차에서는 그 인식 품질이 떨어지는 징후까지 탐지하도록 확장했습니다. 통행 처리와 품질 이상 알림을 하나의 운영 흐름으로 연결했습니다.',
+      '1차에서는 Jetson의 차량 번호판 인식 결과를 통행 이벤트로 전송했고, 2차에서는 그 인식 품질이 떨어지는 징후까지 탐지하도록 확장했습니다. 통행 처리와 품질 이상 알림을 하나의 운영 흐름으로 연결했습니다.',
     proof: {
       problemLabel: '개요',
       problem: '통행 이벤트를 안정적으로 전달해도 카메라와 인식 품질이 서서히 떨어지면 잘못된 결과가 계속 쌓일 수 있어, 전송 이후의 품질 상태까지 확인해야 했습니다.',
@@ -474,7 +474,7 @@ export const featuredProjects: FeaturedProject[] = [
     },
     caseStudy: {
       requirements: [
-        '1차 이벤트 계약: 차량과 번호판 인식\u00a0결과, GPS를 하나의 통행 이벤트로 결합',
+        '1차 이벤트 계약: 차량 번호판 인식\u00a0결과와 GPS를 하나의 통행 이벤트로 결합',
         '1차 전송 복구: Edge 입력부터 저장, 위치 판정, 관제 조회까지 재시도 가능',
         '2차 품질 진단: 전후방 카메라 저하를 임계값, 복합 패턴, 시계열로 비교',
       ],
@@ -547,7 +547,7 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     stack: ['Jetson', 'YOLO/OCR', 'FastAPI', 'Spring Boot', 'PostgreSQL', 'Isolation Forest', 'LSTM\u2011AE', 'Docker'],
     image: assetPath('images/project-hifive-dashboard-202607.png'),
-    imageAlt: 'HI-FIVE 차량, 번호판 인식 스마트 톨링 대시보드',
+    imageAlt: 'HI-FIVE 차량 번호판 인식 스마트 톨링 대시보드',
     screenshots: [
       {
         src: assetPath('images/project-hifive-dashboard-202607.png'),
@@ -989,7 +989,7 @@ export const capabilities: CapabilityGroup[] = [
       { label: '규칙 추론 엔진', evidence: '모아데이타 실무 유지보수, NEO에서 ITS 관제 도메인에 적용' },
       { label: 'Ontology / Neo4j', evidence: 'NEO: 관측 Fact, 규칙, 판단 관계를 계보로 저장하고 재조회' },
       { label: 'RAG / Qdrant', evidence: 'NEO: embeddinggemma 임베딩과 Qdrant 코사인 검색으로 판단과 분리한 근거 조회' },
-      { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE: 차량, 번호판 탐지와 문자 판독' },
+      { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE: 차량 번호판 탐지와 문자 판독' },
     ],
   },
   {
