@@ -103,12 +103,6 @@ export interface FeaturedProject {
   resources?: ProjectResource[]
 }
 
-export interface AdditionalProject {
-  title: string
-  period: string
-  detail: string
-}
-
 export interface ExperienceItem {
   company: string
   period: string
@@ -960,8 +954,6 @@ export const featuredProjects: FeaturedProject[] = [
     ],
   },
 ]
-
-export const additionalProjects: AdditionalProject[] = []
 
 export const experience: ExperienceItem[] = [
   {
