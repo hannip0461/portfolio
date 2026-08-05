@@ -386,6 +386,11 @@ export const featuredProjects: FeaturedProject[] = [
         caption: '사건, 판단 근거, 현재 조치를 한 화면에서 검토',
       },
       {
+        src: assetPath('images/project-neo-decision-pipeline-live.png'),
+        alt: 'NEO 규칙 추론과 문서 근거 검색 및 Neo4j 판단 계보 실행 화면',
+        caption: '운영 화면에 표시되기 전, 같은 실행 ID로 규칙 추론, 문서 근거 검색과 Neo4j 계보를 연결',
+      },
+      {
         src: assetPath('images/project-neo-v2-lineage.png'),
         alt: 'NEO Neo4j 전체 판단 계보 화면',
         caption: '관측 Fact부터 규칙과 판단까지 이어지는 Neo4j 계보',
