@@ -33,7 +33,7 @@ let screenshotReturnFocus: HTMLElement | null = null
 const isExternalLink = (link: string) => link.startsWith('http')
 const heroScreenshot = computed(() => props.project.screenshots[0] ?? null)
 const additionalScreenshots = computed(() => props.project.screenshots.slice(1))
-const visibleStack = computed(() => props.project.stack.slice(0, 5))
+const visibleStack = computed(() => props.project.stack)
 const lightboxItems = computed(() => {
   const architectureImage = props.project.caseStudy.architectureImage
   return architectureImage ? [...props.project.screenshots, architectureImage] : props.project.screenshots
@@ -174,7 +174,7 @@ onUnmounted(() => {
 
         <div class="project-modal-hero-copy">
           <p class="project-modal-claim">{{ project.claim }}</p>
-          <p class="project-modal-summary">{{ project.summary }}</p>
+          <p v-if="project.detailLevel === 'compact'" class="project-modal-summary">{{ project.summary }}</p>
 
           <dl class="project-modal-meta">
             <div>
@@ -206,19 +206,46 @@ onUnmounted(() => {
           <header class="case-study-heading">
             <span>01</span>
             <div>
-              <h3>요구사항</h3>
+              <h3>핵심 문제와 해결</h3>
             </div>
           </header>
-          <ul class="case-requirement-list">
-            <li v-for="item in project.caseStudy.requirements" :key="item">{{ item }}</li>
-          </ul>
+          <ol v-if="project.caseStudy.decisions?.length" class="decision-list">
+            <li v-for="(decision, index) in project.caseStudy.decisions" :key="decision.title">
+              <header>
+                <span>{{ String(index + 1).padStart(2, '0') }}</span>
+                <h4>{{ decision.title }}</h4>
+              </header>
+              <p><strong>문제</strong>{{ decision.problem }}</p>
+              <p><strong>판단과 실행</strong>{{ decision.action }}</p>
+              <p class="decision-evidence"><strong>결과</strong>{{ decision.result }}</p>
+            </li>
+          </ol>
+          <div v-else class="problem-resolution-grid">
+            <div v-if="project.caseStudy.problem?.length">
+              <h4>문제</h4>
+              <ul>
+                <li v-for="item in project.caseStudy.problem" :key="item">{{ item }}</li>
+              </ul>
+            </div>
+            <div v-if="project.caseStudy.approach?.length">
+              <h4>판단과 실행</h4>
+              <ul>
+                <li v-for="item in project.caseStudy.approach" :key="item">{{ item }}</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         <section
           class="case-study-section case-study-architecture"
           :class="{ 'case-study-architecture-approved': project.caseStudy.architectureImage }"
-          :aria-label="project.caseStudy.architectureImage ? '02 시스템 구조' : undefined"
         >
+          <header class="case-study-heading">
+            <span>02</span>
+            <div>
+              <h3>시스템 구조</h3>
+            </div>
+          </header>
           <figure v-if="project.caseStudy.architectureImage" class="approved-architecture">
             <div class="approved-architecture-scroll">
               <button
@@ -238,12 +265,6 @@ onUnmounted(() => {
           </figure>
 
           <template v-else>
-            <header class="case-study-heading">
-              <span>02</span>
-              <div>
-                <h3>시스템 구조</h3>
-              </div>
-            </header>
             <div
               v-if="project.caseStudy.architectureMap"
               class="architecture-map"
@@ -338,50 +359,10 @@ onUnmounted(() => {
           <header class="case-study-heading">
             <span>03</span>
             <div>
-              <h3>문제와 해결</h3>
-            </div>
-          </header>
-          <ol v-if="project.caseStudy.decisions?.length" class="decision-list">
-            <li v-for="(decision, index) in project.caseStudy.decisions" :key="decision.title">
-              <header>
-                <span>{{ String(index + 1).padStart(2, '0') }}</span>
-                <h4>{{ decision.title }}</h4>
-              </header>
-              <p><strong>상황</strong>{{ decision.context }}</p>
-              <p><strong>판단</strong>{{ decision.decision }}</p>
-              <p class="decision-evidence"><strong>근거</strong>{{ decision.evidence }}</p>
-            </li>
-          </ol>
-          <div v-else class="problem-resolution-grid">
-            <div v-if="project.caseStudy.problem?.length">
-              <h4>문제 상황</h4>
-              <ul>
-                <li v-for="item in project.caseStudy.problem" :key="item">{{ item }}</li>
-              </ul>
-            </div>
-            <div v-if="project.caseStudy.approach?.length">
-              <h4>판단과 해결</h4>
-              <ul>
-                <li v-for="item in project.caseStudy.approach" :key="item">{{ item }}</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="case-study-section">
-          <header class="case-study-heading">
-            <span>04</span>
-            <div>
-              <h3>검증과 결과</h3>
+              <h3>검증 범위</h3>
             </div>
           </header>
           <div class="verification-result-flow">
-            <div class="verification-findings">
-              <h4>확인한 결과</h4>
-              <ul>
-                <li v-for="item in project.caseStudy.result" :key="item">{{ item }}</li>
-              </ul>
-            </div>
             <div class="verification-criteria">
               <h4>확인 방법</h4>
               <ul class="verification-method-list">

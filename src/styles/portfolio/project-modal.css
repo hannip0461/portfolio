@@ -364,46 +364,12 @@
   word-break: keep-all;
 }
 
-.case-requirement-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  counter-reset: requirement;
-  list-style: none;
-}
-
-.case-requirement-list li {
-  position: relative;
-  padding: 28px 18px 3px;
-  border-left: 2px solid var(--line);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.65;
-  text-wrap: balance;
-  word-break: keep-all;
-  counter-increment: requirement;
-}
-
-.case-requirement-list li::before {
-  position: absolute;
-  top: 1px;
-  left: 18px;
-  color: var(--rust);
-  content: counter(requirement, decimal-leading-zero);
-  font-size: 10px;
-  font-weight: 900;
-  line-height: 1.4;
-}
-
-.case-requirement-list li:first-child {
-  border-left-color: var(--rust);
-}
-
 .case-study-architecture-approved {
   display: block;
+}
+
+.case-study-architecture-approved .case-study-heading {
+  margin-bottom: 20px;
 }
 
 .approved-architecture {
@@ -841,7 +807,7 @@
 
 .decision-list p {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 72px minmax(0, 1fr);
   gap: 12px;
   margin: 0;
   padding-top: 13px;
@@ -887,7 +853,6 @@
   padding: 22px 0;
 }
 
-.verification-findings,
 .verification-criteria {
   border-bottom: 1px solid var(--line);
 }
@@ -920,14 +885,6 @@
   white-space: pre-line;
 }
 
-.verification-findings ul {
-  display: grid;
-  gap: 11px;
-  padding: 0;
-  counter-reset: verified-result;
-  list-style: none;
-}
-
 .verification-method-list {
   display: grid;
   gap: 8px;
@@ -940,25 +897,6 @@
 
 .verification-method-list li::marker {
   color: #8b96a7;
-}
-
-.verification-findings li {
-  position: relative;
-  padding-left: 34px;
-  color: var(--navy);
-  font-size: 14px;
-  font-weight: 750;
-  counter-increment: verified-result;
-}
-
-.verification-findings li::before {
-  position: absolute;
-  top: 1px;
-  left: 0;
-  color: var(--rust);
-  content: counter(verified-result, decimal-leading-zero);
-  font-size: 10px;
-  font-weight: 900;
 }
 
 .verification-boundary p {
@@ -1322,20 +1260,6 @@
     gap: 10px;
   }
 
-  .case-requirement-list {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .case-requirement-list li {
-    padding: 28px 0 0 14px;
-    border-left-color: var(--line);
-  }
-
-  .case-requirement-list li::before {
-    left: 14px;
-  }
-
   .architecture-flow {
     grid-column: auto;
   }
@@ -1468,7 +1392,7 @@
   }
 
   .decision-list p {
-    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-columns: 68px minmax(0, 1fr);
     gap: 9px;
   }
 

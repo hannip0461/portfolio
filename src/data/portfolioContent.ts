@@ -53,9 +53,9 @@ export interface ProjectArchitectureMap {
 
 export interface ProjectDecision {
   title: string
-  context: string
-  decision: string
-  evidence: string
+  problem: string
+  action: string
+  result: string
 }
 
 export interface FeaturedProject {
@@ -207,15 +207,21 @@ export const featuredProjects: FeaturedProject[] = [
       decisions: [
         {
           title: '중복 요청을 새 명령으로 처리하지 않기',
-          context: '재전송과 동시 명령이 같은 재화 차감, 보상을 여러 번 실행할 수 있었습니다.',
-          decision: 'Idempotency-Key와 요청 hash로 동일성을 확인하고, 상태, 원장, 감사, Outbox를 한 PostgreSQL\u00a0transaction에서 commit한 뒤 완료 응답을 재사용했습니다.',
-          evidence: '동시성, 재시도, commit 후 응답 유실을 포함한 실제 PostgreSQL 통합 테스트와 요청 해시 골든 벡터로 불변조건을 고정했습니다.',
+          problem: '재전송과 동시 명령이 겹치면 같은 재화 차감이나 보상이 여러 번 반영되고, 응답이 유실된 뒤에는 처리 여부를 구분하기 어려웠습니다.',
+          action: '플레이어별 명령은 Orleans Grain에서 직렬화하고 Idempotency-Key와 요청 hash로 동일 요청을 판별했습니다. 상태, 원장, 감사, Outbox와 완료 응답은 한 PostgreSQL 트랜잭션에 저장했습니다.',
+          result: '동시 요청과 응답 유실 뒤 재시도에서도 저장된 완료 결과를 재사용해 재화와 보상이 한 번만 반영되는 것을 실제 PostgreSQL 통합 테스트로 확인했습니다.',
+        },
+        {
+          title: '커밋 이후 작업이 장애로 사라지지 않게 하기',
+          problem: '명령 처리는 끝났지만 후속 이벤트를 전달하던 Worker가 중간에 종료되면, 저장된 상태와 운영 이벤트의 처리 결과가 어긋날 수 있었습니다.',
+          action: '상태 변경과 Outbox 이벤트를 같은 PostgreSQL 트랜잭션에 저장했습니다. Worker는 lease와 재시도로 전달하고, 소비자는 event_id를 기준으로 중복 반영을 막으며 반복 실패는 dead-letter로 격리했습니다.',
+          result: '소비자 반영 직후 Worker를 종료한 상황에서도 lease 만료 후 다시 전달됐고, 운영 결과는 한 번만 반영된 채 Outbox가 정상 완료되는 것을 장애 테스트로 확인했습니다.',
         },
         {
           title: '콘텐츠 사고의 복구 대상을 추측하지 않기',
-          context: '잘못된 콘텐츠가 배포되면 어떤 버전에서 누구에게 영향을 줬는지 운영자가 재구성해야 했습니다.',
-          decision: '배포 snapshot과 checksum을 불변 기록으로 남기고, rollback 시점의 영향 대상 snapshot을 기준으로 Incident Mail을 멱등 지급했습니다.',
-          evidence: '배포, 롤백, 영향 대상 확정, 보상, 감사 기록이 같은 운영\u00a0절차로 이어지는지 화면과 장애 시나리오에서 확인했습니다.',
+          problem: '잘못된 콘텐츠가 배포되면 어떤 버전에서 누구에게 영향을 줬는지 사후에 다시 찾아야 했고, 보상을 중복 지급할 위험도 있었습니다.',
+          action: '배포 snapshot과 checksum을 불변 기록으로 남기고, rollback 시점의 영향 대상 snapshot을 기준으로 Incident Mail을 한 번만 지급하도록 구성했습니다.',
+          result: '배포 버전, 롤백, 영향 대상 확정, 사고 보상과 감사 기록이 하나의 복구 절차로 이어지는 것을 운영 화면과 장애 시나리오에서 확인했습니다.',
         },
       ],
       result: [
@@ -246,11 +252,6 @@ export const featuredProjects: FeaturedProject[] = [
         caption: '영향 대상 snapshot과 Incident Mail 보상 화면',
       },
       {
-        src: assetPath('images/project-astra-audit-log.png'),
-        alt: 'ASTRA 운영 감사 로그 화면',
-        caption: '운영 명령, 결과 감사 로그',
-      },
-      {
         src: assetPath('images/project-astra-outbox.png'),
         alt: 'ASTRA Transactional Outbox 운영 화면',
         caption: 'Outbox 재시도, dead-letter 관리 화면',
@@ -259,11 +260,6 @@ export const featuredProjects: FeaturedProject[] = [
         src: assetPath('images/project-astra-observability.png'),
         alt: 'ASTRA Kibana 관측성 대시보드',
         caption: 'Kibana trace, PostgreSQL 장애 지표 대시보드',
-      },
-      {
-        src: assetPath('images/project-astra-operations.png'),
-        alt: 'ASTRA 운영 상태 대시보드',
-        caption: 'API, Silo, Worker와 데이터 계층의 운영 상태 화면',
       },
     ],
     screensTitle: '복구 절차와 운영 증거',
@@ -349,15 +345,21 @@ export const featuredProjects: FeaturedProject[] = [
       decisions: [
         {
           title: '단일 경보를 곧바로 위험으로 확정하지 않기',
-          context: '카메라가 시야 제한을 감지해도 속도와 정체 흐름이 정상이라면 같은 위험도로 대응할 근거가 부족했습니다.',
-          decision: 'ATMS가 Fact의 지지 근거와 충돌 근거를 나누고, CF가 출처 신뢰도, 감지 신뢰도, 최신성을 반영하도록 했습니다. 후속 규칙은 이 결과로 위험도와 대응 가이드를 생성합니다.',
-          evidence: '정체와 시야 제한이 함께 나타난 사건은 운영자 승인 대상으로, 시야 제한만 있고 교통 흐름이 정상인 사건은 관찰 후 재확인 대상으로 구분되는 시나리오를 확인했습니다.',
+          problem: '카메라가 시야 제한을 감지해도 속도와 정체 흐름이 정상이라면 단일 경보만으로 같은 위험도와 조치를 적용하기 어려웠습니다.',
+          action: '관제 입력을 공통 Fact로 정리하고 ATMS가 지지 근거와 충돌 근거를 나누도록 했습니다. CF에는 출처 신뢰도, 감지 신뢰도와 최신성을 반영하고 후속 규칙으로 위험도와 대응 가이드를 조정했습니다.',
+          result: '정체와 시야 제한이 함께 나타난 사건은 운영자 승인 대상으로, 시야 제한만 있고 교통 흐름이 정상인 사건은 관찰 후 재확인 대상으로 구분했습니다.',
+        },
+        {
+          title: 'RAG 설명이 규칙 판단을 덮어쓰지 않게 하기',
+          problem: '문서 검색과 설명 모델의 답을 판단 결과와 섞으면, 실제 규칙이 내린 결론과 검색으로 보충한 설명의 경계가 흐려질 수 있었습니다.',
+          action: 'NEO만 Decision Package의 판단과 우선순위를 만들도록 했습니다. Neo4j는 판단 계보를, NEMI는 관련 문서를 조회하고 설명 모델은 이 근거를 읽어 설명만 하도록 역할을 나눴습니다.',
+          result: '공개 파이프라인에서 NEO 판단을 유지한 채 Neo4j 20개 노드와 28개 관계, NEMI 문서 2건을 함께 반환하고 설명 화면에 연결했습니다.',
         },
         {
           title: '근거 확인과 운영자 조치를 한 번의 버튼으로 끝내지 않기',
-          context: '권고 조치를 곧바로 송출하거나 확인 버튼만 두면 오탐과 현장 예외가 운영 기록에 남지 않습니다.',
-          decision: 'VMS 조치는 승인 전 송출하지 않고, 보류와 오탐 요청은 확인 절차와 사유 입력을 거쳐 감사 ID와 함께 저장하도록 만들었습니다.',
-          evidence: '취소하면 기록이 남지 않고, 사유를 입력한 경우에만 운영자 조치가 한 건 생성되는 흐름을 PC와 모바일에서 확인했습니다.',
+          problem: '권고 조치를 곧바로 송출하거나 확인 버튼만 두면 오탐과 현장 예외를 검토한 이유가 운영 기록에 남지 않습니다.',
+          action: 'VMS 조치는 승인 전 송출하지 않고, 보류와 오탐 요청은 확인 절차와 사유 입력을 거쳐 감사 ID와 함께 저장하도록 만들었습니다.',
+          result: '취소하면 기록이 남지 않고, 사유를 입력한 경우에만 운영자 조치가 한 건 생성되는 흐름을 PC와 모바일에서 확인했습니다.',
         },
       ],
       result: [
@@ -398,16 +400,6 @@ export const featuredProjects: FeaturedProject[] = [
         alt: 'NEO 판단과 조치 감사 이력 화면',
         caption: '사건별 판단과 운영자 조치를 감사 ID로 재현',
       },
-      {
-        src: assetPath('images/project-neo-v2-health.png'),
-        alt: 'NEO 핵심 서비스 상태 화면',
-        caption: 'FastAPI, NEO, Neo4j, NEMI 연결 상태와 운영 영향 확인',
-      },
-      {
-        src: assetPath('images/project-neo-v2-settings.png'),
-        alt: 'NEO 정책 초안 검토 화면',
-        caption: '서버 정책을 바꾸지 않고 변경 초안과 검토 요청을 기록',
-      },
     ],
     terms: [
       {
@@ -430,7 +422,6 @@ export const featuredProjects: FeaturedProject[] = [
         description:
           '직접 만든 문서 근거 검색 모듈입니다. 판단 결과를 바꾸지 않고 관련 SOP와 정책 문서를 찾아 운영자 검토 화면에 제공합니다. Qdrant 벡터 검색을 사용하며, 단독 실행 시에는 어휘 기반 검색으로 전환됩니다.',
       },
-      { term: 'Neo4j', description: '외부 그래프 DB. 실제 관측 Fact, Rule, Decision 관계 저장과 판단 경로 조회에 사용했습니다.' },
     ],
     screensTitle: '판단 근거와 운영 기록',
     link: neoOperatorUrl,
@@ -445,14 +436,6 @@ export const featuredProjects: FeaturedProject[] = [
         label: 'v2.0.0 릴리즈 기록',
         url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/blob/main/docs/releases/NEO_V2.0.0.md',
       },
-      {
-        label: 'Canonical Fact 계약',
-        url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/blob/main/docs/design/CANONICAL_FACT_SCHEMA.md',
-      },
-      {
-        label: 'Decision Package 계약',
-        url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/blob/main/docs/design/DECISION_PACKAGE_SCHEMA.md',
-      },
     ],
   },
   {
@@ -462,23 +445,23 @@ export const featuredProjects: FeaturedProject[] = [
     number: '03',
     title: 'HI-FIVE Smart Tolling + PdM PoC',
     period: '팀 프로젝트 (1차 2026.04.27~06.01, 2차 06.04~06.30)',
-    claim: '차량 번호판 인식부터 품질 저하 징후 탐지까지 연결한 스마트 톨링 시스템입니다.',
-    badge: 'Edge AI, 이벤트 전송, 품질 이상 탐지',
+    claim: '현장 Edge AI로 차량 번호판을 인식하고, 망 장애 대응과 품질 저하 예측까지 연결한 스마트 톨링 시스템입니다.',
+    badge: 'Edge AI, 망 이중화, 예지보전',
     summary:
-      '1차에서는 Jetson의 차량 번호판 인식 결과를 통행 이벤트로 전송했고, 2차에서는 그 인식 품질이 떨어지는 징후까지 탐지하도록 확장했습니다. 통행 처리와 품질 이상 알림을 하나의 운영 흐름으로 연결했습니다.',
+      '1차에서는 영상 추론을 현장 Jetson에서 처리하고 결과만 중앙으로 보내며, 주망 장애 시 예비망으로 전환하도록 구성했습니다. 2차에서는 세 가지 분석 방식으로 즉시 이상부터 장기적인 품질 저하 흐름까지 확인했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '통행 이벤트를 안정적으로 전달해도 카메라와 인식 품질이 서서히 떨어지면 잘못된 결과가 계속 쌓일 수 있어, 전송 이후의 품질 상태까지 확인해야 했습니다.',
-      solution: 'YOLO/OCR 결과와 GPS를 Passage Event로 표준화해 재시도 가능한 전송 경계를 만들고, 축적된 품질 지표를 Rule-Based, Isolation Forest, LSTM\u2011AE로 분석해 화면과 이메일 알림에 연결했습니다.',
-      result: '통행 이벤트 전송부터 인식 품질 저하 탐지와 알림까지 단계별 시연',
+      problem: '영상 추론을 중앙에서 처리하면 네트워크와 서버 부담이 커지고, 망 장애나 인식 품질 저하가 생기면 통행 결과의 신뢰도도 함께 낮아질 수 있었습니다.',
+      solution: '현장 Edge에서 번호판을 인식해 결과 이벤트만 전송하고 주망과 예비망을 구성했습니다. 품질 지표는 Rule-Based, Isolation Forest, LSTM-AE로 나눠 분석했습니다.',
+      result: 'Edge AI 통행 이벤트, 주망과 예비망 전환, 세 가지 분석 방식의 품질 탐지와 알림을 단계별 검증',
     },
     caseStudy: {
       requirements: [
-        '1차 이벤트 계약: 차량 번호판 인식\u00a0결과와 GPS를 하나의 통행 이벤트로 결합',
-        '1차 전송 복구: Edge 입력부터 저장, 위치 판정, 관제 조회까지 재시도 가능',
-        '2차 품질 진단: 전후방 카메라 저하를 임계값, 복합 패턴, 시계열로 비교',
+        '1차 Edge AI: 현장에서 번호판을 인식하고 영상 대신 결과 이벤트만 중앙으로 전송',
+        '1차 전송 복구: Passage Event 재시도와 주망, 예비망 전환으로 통행 이벤트 유지',
+        '2차 예지보전: 즉시 임계값, 복합 패턴, 장기 시계열로 품질 저하를 나눠 확인',
       ],
-      flow: 'Edge 인식 → 통행 이벤트 전송과 저장 → 품질 지표 축적 → 이상 탐지 → 화면과 이메일 알림',
+      flow: '현장 Edge 인식 → 주망과 예비망 전송 → 중앙 저장과 관제 → 품질 지표 축적 → 세 가지 방식의 이상 탐지 → 화면과 이메일 알림',
       architectureImage: {
         src: assetPath('images/project-hifive-system-architecture-approved.png'),
         alt: '현장 Edge의 1차 스마트 톨링과 중앙 시스템의 2차 품질 이상 탐지 PoC를 분리한 시스템 구조',
@@ -517,16 +500,34 @@ export const featuredProjects: FeaturedProject[] = [
       },
       decisions: [
         {
-          title: 'Edge 재전송을 중앙 업무 처리와 섞지 않기',
-          context: '영상, 인식 결과, GPS를 제각각 보내면 사건 단위가 깨지고, 망 장애 시 같은 통행을 다시 처리할 기준도 모호해졌습니다.',
-          decision: 'Jetson에서 Passage Event, Protobuf 계약으로 묶고 WebTransport Ingress가 ACK, RETRY, REJECT를 반환한 뒤 Spring Boot의 저장, 판정 경계로 전달했습니다.',
-          evidence: 'Edge 영상 스모크 테스트와 Ingress 응답 시나리오에서 수신, 재시도, 거절 경로를 각각 확인했습니다.',
+          title: '1차: 중앙이 아닌 현장에서 영상 추론을 끝내기',
+          problem: 'FHD 영상을 중앙으로 보내 추론하면 통신량과 서버 부하가 늘고, 고속 차량을 실시간으로 처리하기 어려웠습니다.',
+          action: 'Jetson에서 GStreamer와 CUDA Memory를 ZeroCopy로 연결하고 TensorRT FP16으로 YOLO와 OCR 추론을 처리했습니다. 중앙에는 영상 대신 번호판과 GPS를 묶은 Passage Event만 보냈습니다.',
+          result: '불필요한 CPU와 GPU 사이의 메모리 복사를 줄이고, 중앙 서버는 정산과 관제에 집중하는 구조로 분리했습니다.',
         },
         {
-          title: '현장 고장 예측과 품질 이상 탐지의 검증 범위를 분리',
-          context: 'OCR 신뢰도와 성공률은 서서히 변하고 지표마다 민감도가 달라 한 기준만으로 품질 저하를 설명하기 어려웠습니다.',
-          decision: 'Rule-Based, Isolation Forest, LSTM\u2011AE를 나란히 계산하고 통합 위험도로 비교하는 PoC를 구성하되, 현장 고장 예측\u00a0성능이 아니라 품질 이상 탐지 가능성을 검증 범위로 한정했습니다.',
-          evidence: 'PdM API 계약, 분석, 스케줄러와 고정\u2060/\u2060실시간 시나리오를 확인했으며, 실제 고장 라벨 기반 성능 검증은 후속 과제로 남겼습니다.',
+          title: '1차: 리사이즈 대신 필요한 영역을 다시 배치',
+          problem: '1920x1080 영상에는 번호판과 무관한 상하 배경이 많았고, 전체 화면을 매번 리사이즈하면 처리 자원과 문자 품질을 함께 잃을 수 있었습니다.',
+          action: '불필요한 상하 영역을 덜어낸 뒤 차선별 960x480 두 영역을 위아래로 붙여 960x960 입력을 만들었습니다. 픽셀 크기는 바꾸지 않고 번호판 영역이 더 크게 보이도록 했습니다.',
+          result: '리사이즈 단계를 없애 입력 이미지 용량을 2.1MB에서 0.9MB로 줄였고, 발표자료 내부 비교에서는 상용 OCR보다 인식 정확도가 15% 높게 나타났습니다.',
+        },
+        {
+          title: '1차: Edge 성능에 맞는 OCR과 다중 프레임 판정',
+          problem: '한 프레임의 OCR 결과만 쓰면 고속 주행과 흔들림에 따라 인식이 달라지고, 무거운 모델은 Jetson에서 반복 추론하기 어려웠습니다.',
+          action: 'Attention, Transformer, VLM을 비교한 뒤 가벼운 CRNN을 선택했습니다. 30ms 단위의 추론 결과를 50건 이상 모아 신뢰도와 일치율로 Best-Fit을 골랐습니다.',
+          result: '100km/h 테스트 환경에서도 번호판 후보를 누적해 통행 이벤트를 만들고, 일치율이 낮은 건은 needs_review로 분리했습니다.',
+        },
+        {
+          title: '1차: 빠른 전송과 24시간 운영을 함께 고려',
+          problem: '유선망도 특정 상황에서 끊길 수 있어, 24시간 운영을 고려하면 평상시 전송 속도뿐 아니라 장애 이후의 연속성도 필요했습니다.',
+          action: 'WebTransport와 MQTT를 유선망과 LTE에서 비교해 WebTransport를 선택했습니다. Watchdog가 주망을 감시하다 장애를 감지하면 예비 무선망으로 자동 전환하도록 구성했습니다.',
+          result: '3000장 유선망 시험에서 전송 시간이 8.4초로 MQTT QoS1의 63.4초보다 짧았고, 장애 시나리오에서는 3초 이내 예비망 전환과 이벤트 연속 전송을 확인했습니다.',
+        },
+        {
+          title: '2차: 즉시 이상부터 장기 열화까지 나눠서 탐지',
+          problem: 'OCR 신뢰도와 성공률은 갑자기 떨어지기도 하고 여러 지표의 조합이나 긴 시간의 변화로 나타나기도 해 한 가지 기준만으로 품질 저하를 설명하기 어려웠습니다.',
+          action: 'Rule-Based는 현재 임계값, Isolation Forest는 여러 지표의 조합, LSTM-AE는 시간에 따라 이어지는 열화 흐름을 맡도록 나누고 결과를 통합 위험도로 결합했습니다.',
+          result: '고정 및 실시간 시나리오에서 즉시 이상, 복합 패턴과 장기적인 품질 저하 흐름을 구분하고, 위험도와 권장 조치를 화면과 이메일로 전달했습니다.',
         },
       ],
       result: [
@@ -534,18 +535,19 @@ export const featuredProjects: FeaturedProject[] = [
         '2차에서는 품질 지표를 세 가지 방식으로 분석하고, 통합\u00a0위험도와 권장 조치를 화면 및 이메일로 전달했습니다.',
       ],
       verification: [
-        '1차에서는 Edge 영상 입력부터 통행 이벤트 전송, ACK/RETRY/REJECT 처리까지 확인했습니다.',
-        '2차에서는 PdM API와 스케줄러가 고정 및 실시간 시나리오를 분석하고, 결과를 화면과 이메일 알림으로 전달하는 흐름을 확인했습니다.',
+        '1차 입력과 추론에서는 리사이즈 없는 960x960 입력, CRNN 반복 추론과 Best-Fit 판정이 통행 이벤트로 이어지는 흐름을 확인했습니다.',
+        '전송에서는 3000장 기준 WebTransport와 MQTT를 비교하고, 주망 장애 시 3초 이내 예비망 전환과 ACK/RETRY/REJECT 처리를 확인했습니다.',
+        '2차에서는 세 가지 분석 방식이 고정 및 실시간 시나리오를 처리하고, 통합 결과가 화면과 이메일 알림으로 이어지는 흐름을 확인했습니다.',
       ],
       verificationBoundary:
         '고정 및 실시간 시나리오에서 품질 저하 징후가 탐지, 표시, 알림으로 이어지는 흐름을 확인했습니다.\n실제 현장 고장 라벨을 활용한 예측 성능은 추가 검증이 필요합니다.',
     },
     role: '팀장',
     rolePhases: [
-      { label: '1차', detail: 'Jetson YOLO/OCR, WebTransport Ingress 담당' },
-      { label: '2차', detail: 'PdM Backend, FastAPI 분석과 테스트, 이메일 알림 통합' },
+      { label: '1차', detail: 'Jetson YOLO/CRNN-OCR, 입력 영상 최적화와 Best-Fit, WebTransport Ingress, 망 전환 테스트' },
+      { label: '2차', detail: 'PdM Backend, FastAPI 세 가지 방식의 분석, 테스트와 이메일 알림 통합' },
     ],
-    stack: ['Jetson', 'YOLO/OCR', 'FastAPI', 'Spring Boot', 'PostgreSQL', 'Isolation Forest', 'LSTM\u2011AE', 'Docker'],
+    stack: ['Jetson / DeepStream', 'YOLO / CRNN-OCR', 'WebTransport / Protobuf', 'Spring Boot', 'FastAPI', 'PostgreSQL', 'Isolation Forest / LSTM-AE', 'Vue 3 / Docker'],
     image: assetPath('images/project-hifive-dashboard-202607.png'),
     imageAlt: 'HI-FIVE 차량 번호판 인식 스마트 톨링 대시보드',
     screenshots: [
@@ -553,6 +555,16 @@ export const featuredProjects: FeaturedProject[] = [
         src: assetPath('images/project-hifive-dashboard-202607.png'),
         alt: 'HI-FIVE 스마트 톨링 대시보드',
         caption: '1차 Edge AI, GPS, 이벤트 수신, 통행 후보 관제 대시보드',
+      },
+      {
+        src: assetPath('images/project-hifive-input-optimization.png'),
+        alt: 'HI-FIVE 입력 영상 최적화 비교',
+        caption: 'FHD 입력의 불필요한 영역을 덜어내고 리사이즈 없이 960x960으로 재구성한 입력 최적화',
+      },
+      {
+        src: assetPath('images/project-hifive-network-failover.png'),
+        alt: 'HI-FIVE 주망과 예비망 자동 전환 구조',
+        caption: 'Watchdog가 주망 장애를 감지하면 3초 이내 예비 무선망으로 전환하는 망 이중화',
       },
       {
         src: assetPath('images/project-hifive-pdm-202607.png'),
@@ -564,13 +576,8 @@ export const featuredProjects: FeaturedProject[] = [
         alt: 'HI-FIVE 마스터 관리자 품질 이상 탐지 화면',
         caption: '2차 카메라별 품질 추세와 분석 결과 관리자 화면',
       },
-      {
-        src: assetPath('images/project-hifive-home-202607.png'),
-        alt: 'HI-FIVE 위성 GPS 기반 스마트 하이패스 프로젝트 소개 화면',
-        caption: '1차 위성 GPS 기반 스마트 하이패스 서비스 소개',
-      },
     ],
-    screensTitle: '1차 통행 처리와 2차 품질 분석',
+    screensTitle: '1차 입력과 전송 최적화, 2차 품질 분석',
     link: 'https://github.com/hannip0461/straffic_hi-five-1st-project',
     linkLabel: 'HI-FIVE 저장소',
     resources: [
@@ -581,8 +588,6 @@ export const featuredProjects: FeaturedProject[] = [
       },
       { label: '1차와 2차 통합 저장소', url: 'https://github.com/hannip0461/straffic_hi-five-1st-project' },
       { label: '1차와 2차 산출물', url: 'https://app.notion.com/p/HI-FIVE-3aa96acf563f81ee8200d281cd86dca2' },
-      { label: '2차 PdM PoC Backend', url: 'https://hub.docker.com/r/kimmj6466/hifive-pdm-backend' },
-      { label: '2차 PdM PoC FastAPI', url: 'https://hub.docker.com/r/kimmj6466/hifive-pdm-fastapi' },
     ],
   },
   {
@@ -620,21 +625,30 @@ export const featuredProjects: FeaturedProject[] = [
       decisions: [
         {
           title: '중복 여부를 현재 진행 상태만 보고 판단하지 않기',
-          context:
+          problem:
             '동시에 들어온 첫 이벤트와 응답 유실 뒤 재전송은 현재 snapshot만으로 같은 요청인지 구분하기 어려웠습니다.',
-          decision:
+          action:
             'source와 event_id를 유일 키로 둔 learning_events를 먼저 insert하고, 중복 키가 발생하면 transaction을 rollback한 뒤 payload_hash를 다시 조회했습니다. hash가 같으면 200 duplicate, 다르면 409 conflict로 분리했습니다.',
-          evidence:
-            '동일 payload 병렬 요청은 한 건만 적용되고 나머지는 duplicate가 되며, 동일 event_id의 다른 payload는 409가 되는 실제 SQL Server 동시성 시나리오를 확인했습니다.',
+          result:
+            '동일 payload 병렬 요청은 한 건만 적용하고 나머지는 기존 결과를 재사용했습니다. 같은 event_id에 다른 payload가 들어오면 409로 분리되는 것을 실제 SQL Server 동시성 시나리오로 확인했습니다.',
         },
         {
           title: '변경 이력과 현재 상태의 책임을 한 테이블에 섞지 않기',
-          context:
+          problem:
             '이어보기 위치는 최신 순서를 따르지만 최대 시청 위치와 최초 완료 시각은 과거 이벤트도 보존해야 해 한 행만으로는 변경 이유를 재현하기 어려웠습니다.',
-          decision:
+          action:
             'learning_events는 수신 사실을 보존하는 원장으로, lecture_progress는 조회용 현재 상태로 분리했습니다. 두 테이블은 같은 transaction에서 갱신하고 lecture_progress에는 UPDLOCK, HOLDLOCK을 적용했습니다.',
-          evidence:
-            '늦은 checkpoint가 최대 시청 위치는 높이되 이어보기 위치는 되돌리지 않고, rewind와 최초 완료 시각 규칙이 유지되는 HTTP 통합 시나리오를 확인했습니다.',
+          result:
+            '늦게 도착한 checkpoint가 최대 시청 위치는 높이되 이어보기 위치는 되돌리지 않았고, rewind와 최초 완료 시각도 요청 순서와 관계없이 같은 규칙을 유지했습니다.',
+        },
+        {
+          title: '레거시 조회를 쓰기 경로처럼 열어두지 않기',
+          problem:
+            '기존 IIS와 Classic ASP에서도 진행 상태를 조회해야 했지만, 인증 없이 데이터베이스 접근 범위를 넓히면 조회 어댑터가 새로운 쓰기 경로가 될 수 있었습니다.',
+          action:
+            '사이트를 루프백에만 바인딩하고 Classic ASP 소스에서도 REMOTE_ADDR를 먼저 확인했습니다. 매개변수화한 ADO 조회와 SELECT 전용 SQL 계정만 사용했습니다.',
+          result:
+            'Windows IIS 10에서 정상 조회와 잘못된 입력, 없는 데이터 응답을 확인하고 해당 계정의 INSERT, UPDATE, DELETE가 모두 거부되는 것을 검증했습니다.',
         },
       ],
       result: [
@@ -672,28 +686,11 @@ export const featuredProjects: FeaturedProject[] = [
         caption: '웹, 외부 플레이어 인증, 원자적 저장, 읽기 전용 소비자 전체 파이프라인',
         objectPosition: 'center',
       },
-      {
-        src: assetPath('images/project-edusync-event-flow.png'),
-        alt: 'EduSync 학습 이벤트 멱등 처리와 상태 갱신 흐름',
-        caption: '인증, 수강 검증, 멱등 분류, 상태 갱신, commit/rollback 다이어그램',
-      },
     ],
     terms: [
       {
-        term: '멱등성',
-        description: '같은 요청을 여러 번 받아도 최초 처리 결과만 반영되고 이후 요청은 같은 결과를 돌려주는 성질입니다.',
-      },
-      {
-        term: '이벤트 원장',
-        description: '현재 상태와 별개로 어떤 학습 이벤트가 언제 수신됐는지 변경 이력을 보존하는 기록입니다.',
-      },
-      {
         term: 'Key-range lock',
         description: '아직 행이 없는 최초 생성 구간까지 잠가 동시 insert와 update가 같은 진행 상태를 만들도록 하는 SQL Server 잠금입니다.',
-      },
-      {
-        term: 'HMAC',
-        description: '외부 플레이어 서버가 보낸 요청의 발신자와 본문 무결성을 공유 비밀키로 검증하는 방식입니다.',
       },
     ],
     screensTitle: 'API 계약과 실행 검증 자료',
@@ -703,8 +700,6 @@ export const featuredProjects: FeaturedProject[] = [
       { label: 'EduSync 저장소', url: 'https://github.com/hannip0461/edusync-learning-api' },
       { label: '실행 검증 자료', url: 'https://hannip0461.github.io/edusync-learning-api/' },
       { label: '아키텍처와 데이터 흐름', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/ARCHITECTURE.md' },
-      { label: '설계 결정 기록', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/DECISIONS.md' },
-      { label: 'OpenAPI 계약', url: 'https://github.com/hannip0461/edusync-learning-api/blob/main/openapi.yaml' },
       { label: 'GitHub Actions 검증', url: 'https://github.com/hannip0461/edusync-learning-api/actions/workflows/verification-and-pages.yml' },
     ],
   },
@@ -715,15 +710,15 @@ export const featuredProjects: FeaturedProject[] = [
     number: '05',
     title: '가구 쇼핑몰 웹 애플리케이션',
     period: '팀 프로젝트 (2026.03.14~04.12)',
-    claim: '상품 옵션과 주문 상태를 사용자와 관리자 화면에 일관되게 연결한 가구 쇼핑몰입니다.',
-    badge: 'Vue 3, Pinia, 권한별 UI',
+    claim: '고객의 상품 탐색과 주문부터 관리자의 재고와 주문 처리까지 각 사용자 흐름을 고려한 가구 쇼핑몰입니다.',
+    badge: 'Vue 3, JWT 인증, 권한별 UI',
     summary:
-      '옵션과 수량 선택부터 장바구니, 주문, 관리자 상태 변경까지 같은 주문 데이터를 이어서 반영했습니다. 회원과 관리자 권한에 따라 사용할 수 있는 화면과 기능도 구분했습니다.',
+      '고객은 상품 탐색부터 옵션 선택, 장바구니와 주문까지 자연스럽게 이어갈 수 있도록 구성했습니다. 관리자는 상품, 재고, 주문과 회원을 한곳에서 관리하며, JWT 인증과 권한에 따라 화면과 기능을 구분했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '옵션, 수량, 재고, 주문 상태가 구매 화면과 관리자 화면에서 다르게 보이면 실제 주문 처리 결과를 신뢰하기 어려웠습니다.',
-      solution: 'Vue 3와 Pinia로 선택 상태를 관리하고, 주문 생성과 상태 변경을 사용자 주문 내역과 관리자 화면에 함께 반영했습니다.',
-      result: '권한별 구매 및 운영 흐름 브라우저 시나리오 59건 통과',
+      problem: '고객과 관리자에게 필요한 정보와 행동은 다르지만, 상품과 주문 상태는 같은 기준으로 이어져야 했습니다.',
+      solution: 'Vue 3와 Pinia로 구매 흐름을 구성하고, JWT 인증과 권한에 따라 화면, 라우트, API 접근 범위를 나눴습니다.',
+      result: '비회원, 회원, 관리자 구매 및 운영 흐름 브라우저 시나리오 59건 통과',
     },
     caseStudy: {
       requirements: [
@@ -779,25 +774,25 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       problem: [
-        '옵션, 재고, 주문 상태가 사용자와 관리자 화면에서 다르게 보이면 처리 결과를 신뢰하기 어려웠습니다.',
-        '비회원과 회원, 관리자별 접근 범위를 화면과 라우팅에서 함께 막아야 했습니다.',
+        '고객은 상품과 주문 정보를 쉽게 확인해야 하고, 관리자는 같은 데이터를 운영 관점에서 처리해야 했습니다.',
+        '비회원과 회원, 관리자의 접근 범위를 화면뿐 아니라 API에서도 구분해야 했습니다.',
       ],
       approach: [
-        'Vue 3, Pinia로 상품 옵션, 수량, 장바구니 상태를 관리했습니다.',
-        '주문 생성과 상태 변경을 사용자 주문내역과 관리자 주문\u00a0화면에 반영했습니다.',
-        '리뷰, QnA, 공지사항을 구매 이후 지원 기능으로 구현했습니다.',
+        'Vue 3와 Pinia로 상품 탐색, 옵션 선택, 장바구니, 주문까지 고객의 구매 흐름을 연결했습니다.',
+        '상품, 재고, 주문, 회원 상태를 관리자가 한곳에서 확인하고 처리하도록 화면을 구성했습니다.',
+        '프로젝트에서는 JWT 액세스 토큰과 리프레시 토큰으로 API 접근을 보호했고, 저는 권한에 따라 화면 요소와 라우트를 나눴습니다.',
       ],
       result: [
-        '옵션과 수량 변경이 장바구니와 주문 화면에 일관되게 반영되었습니다.',
-        '주문 상태 변경이 사용자 주문내역과 관리자 화면에 함께 반영되었습니다.',
-        '권한별로 접근 가능한 화면과 기능을 구분했습니다.',
+        '고객의 상품 탐색부터 주문 확인까지 하나의 구매 흐름으로 이어졌습니다.',
+        '관리자 처리 결과가 고객 주문 내역에도 같은 상태로 반영되었습니다.',
+        '비회원과 회원, 관리자가 각 권한에 맞는 기능만 사용하도록 구분했습니다.',
       ],
       verification: [
         '비회원과 회원, 관리자별로 상품 탐색, 장바구니, 주문, 리뷰, 관리자 주문 처리 흐름을 브라우저 시나리오 59건으로 확인했습니다.',
       ],
     },
     role: '팀장, 프론트엔드 직접 구현, 화면 구조 설계와 종합 QA',
-    stack: ['Vue 3', 'Pinia', 'Axios', 'Spring Boot', 'JPA', 'PostgreSQL', 'Docker'],
+    stack: ['Vue 3', 'Pinia', 'Axios', 'Spring Boot', 'Spring Security / JWT', 'PostgreSQL', 'Docker'],
     image: assetPath('images/project-furniture-home-main.jpg'),
     imageAlt: '가구 쇼핑몰 홈 화면',
     screenshots: [
@@ -805,11 +800,6 @@ export const featuredProjects: FeaturedProject[] = [
         src: assetPath('images/project-furniture-home-main.jpg'),
         alt: '가구 쇼핑몰 홈 화면',
         caption: '홈 메인과 카테고리 진입 화면',
-      },
-      {
-        src: assetPath('images/project-furniture-category-main.jpg'),
-        alt: '가구 쇼핑몰 카테고리 화면',
-        caption: '카테고리 상품 목록과 필터 화면',
       },
       {
         src: assetPath('images/project-furniture-detail-main.jpg'),
@@ -833,9 +823,6 @@ export const featuredProjects: FeaturedProject[] = [
     resources: [
       { label: '가구 쇼핑몰 저장소', url: 'https://github.com/hannip0461/teamweb02' },
       { label: 'Notion 기록', url: 'https://www.notion.so/de296acf563f838584b301756ee05b67' },
-      { label: 'Docker frontend', url: 'https://hub.docker.com/r/kimmj6466/team4-frontend' },
-      { label: 'Docker backend', url: 'https://hub.docker.com/r/kimmj6466/team4-backend' },
-      { label: 'Docker DB', url: 'https://hub.docker.com/r/kimmj6466/team4-db' },
     ],
   },
   {
@@ -845,15 +832,15 @@ export const featuredProjects: FeaturedProject[] = [
     number: '06',
     title: '인천 문화, 관광 웹 애플리케이션',
     period: '팀 프로젝트 (2026.02.09~03.13)',
-    claim: '공통 탐색 구조에 회원, 게시판, 관리자 흐름을 연결한 인천 관광 웹 서비스입니다.',
+    claim: '지역과 테마별 관광 정보를 한곳에서 둘러보고 여행 후기를 나눌 수 있는 인천 관광 서비스입니다.',
     badge: 'Spring MVC, Thymeleaf, 권한 제어',
     summary:
-      '처음으로 여러 화면과 서버 기능을 하나의 서비스 흐름으로 완성한 팀 프로젝트입니다. 관광 서브페이지의 공통 구조를 만들고, 회원가입, 로그인, 마이페이지, 리뷰, 관리자 기능을 Spring MVC로 연결했습니다.',
+      '지역, 테마, 문화, 교통 정보를 같은 화면 구조로 정리하고, 회원가입, 로그인, 마이페이지, 여행 후기와 관리자 기능을 Spring MVC로 연결했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '관광 서브페이지마다 화면 구조가 달라지면 탐색 경험이 끊기고, 회원과 게시판 기능도 별도 화면처럼 분리될 수 있었습니다.',
-      solution: '공통 레이아웃을 Thymeleaf로 구성하고, Spring MVC, PostgreSQL로 회원, 게시판, 권한 기능을 구현했습니다.',
-      result: '비회원 탐색부터 관리자 기능까지 주요 사용자 흐름 확인',
+      problem: '인천의 관광 정보를 한곳에서 살펴보고 회원들이 여행 후기를 나눌 수 있는 서비스가 필요했습니다.',
+      solution: '공통 레이아웃으로 관광 정보를 정리하고, Spring MVC와 PostgreSQL로 회원, 후기, 관리자 기능을 연결했습니다.',
+      result: '관광 정보 탐색부터 후기 작성과 관리자 운영까지 주요 흐름 확인',
     },
     caseStudy: {
       requirements: [
@@ -908,16 +895,16 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       problem: [
-        '관광 서브페이지가 늘어날수록 헤더, 메뉴, 콘텐츠 구조가 달라질 수 있었습니다.',
-        '정적 정보 화면과 회원, 게시판 기능이 따로 움직이면 서비스처럼 사용할 수 없었습니다.',
+        '지역과 테마, 문화와 교통 정보가 여러 화면에 나뉘어도 사용자가 같은 방식으로 둘러볼 수 있어야 했습니다.',
+        '관광 정보 열람에서 끝나지 않고 회원들이 여행 후기를 나눌 수 있는 흐름이 필요했습니다.',
       ],
       approach: [
-        'Thymeleaf 공통 레이아웃으로 헤더, 메뉴, 콘텐츠\u00a0영역을 재사용했습니다.',
-        'Spring MVC로 회원가입, 로그인, 마이페이지와 리뷰\u00a0게시판을 구현했습니다.',
-        'PostgreSQL 데이터와 권한에 따라 회원, 관리자 기능을 나눴습니다.',
+        'Thymeleaf 공통 레이아웃으로 관광 카테고리를 같은 화면 구조에 담았습니다.',
+        'Spring MVC로 회원가입, 로그인, 마이페이지와 여행 후기 게시판을 구현했습니다.',
+        '회원과 관리자의 권한에 맞춰 이용할 수 있는 기능을 나눴습니다.',
       ],
       result: [
-        '관광 정보 탐색부터 리뷰 작성과 관리자 운영까지 하나의 서비스\u00a0흐름으로 연결했습니다.',
+        '관광 정보 탐색부터 여행 후기 작성과 관리자 운영까지 하나의 서비스 흐름으로 연결했습니다.',
       ],
       verification: [
         '비회원 탐색부터 회원가입, 로그인, 마이페이지, 리뷰 작성, 관리자 기능까지 주요 흐름을 브라우저에서 확인했습니다.',
