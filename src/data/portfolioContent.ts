@@ -261,6 +261,11 @@ export const featuredProjects: FeaturedProject[] = [
         alt: 'ASTRA Kibana 관측성 대시보드',
         caption: 'Kibana trace, PostgreSQL 장애 지표 대시보드',
       },
+      {
+        src: assetPath('images/project-astra-operations.png'),
+        alt: 'ASTRA Trace와 PostgreSQL SLO 및 Outbox 운영 지표 대시보드',
+        caption: 'Trace 수신량, PostgreSQL SLO와 Outbox 발행 및 재시도를 함께 확인하는 운영 지표',
+      },
     ],
     screensTitle: '복구 절차와 운영 증거',
     link: 'https://github.com/hannip0461/ASTRA-LiveOps-Server',
