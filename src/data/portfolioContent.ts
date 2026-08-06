@@ -415,7 +415,7 @@ export const featuredProjects: FeaturedProject[] = [
       {
         term: 'NEO',
         description:
-          'Fact, Rule, ATMS, CF로 판단하는 규칙 추론 엔진입니다. 교수님께 포트폴리오 사용 허가를 받아 엔진의 흐름을 이해한 뒤 ITS 관제 서비스에 적용했습니다. 입력 정규화, 판단 근거 연동, 운영 화면, AWS 배포는 직접 구현했습니다.',
+          '학부 시절 구조를 익히고 튜닝에 참여했던 NEO 규칙 추론 엔진을 ITS 관제 서비스에 적용했습니다. 이번 프로젝트에서는 입력 정규화, 판단 근거 연동, 운영 화면과 AWS 배포를 구현했습니다.',
       },
       {
         term: 'ATMS',
