@@ -283,7 +283,7 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '01',
     title: 'NEO Intelligent ITS Operator',
-    period: '개인 프로젝트 (2026.06.08~08.03)',
+    period: '개인 프로젝트 (2026.06.08~07.05, 보강 08.03)',
     claim: '여러 관제 신호를 함께 따져 위험도와 대응 수준을 조정하는 ITS\u00a0관제\u00a0시스템입니다.',
     badge: '규칙 추론, XAI 계보, AWS 운영',
     summary:
@@ -415,7 +415,7 @@ export const featuredProjects: FeaturedProject[] = [
       {
         term: 'NEO',
         description:
-          '학부 시절 구조를 익히고 튜닝에 참여했던 NEO 규칙 추론 엔진을 ITS 관제 서비스에 적용했습니다. 이번 프로젝트에서는 입력 정규화, 판단 근거 연동, 운영 화면과 AWS 배포를 구현했습니다.',
+          '학부 시절 학습과 튜닝에 참여했던 NEO 규칙 추론 엔진을 사용했습니다. ITS 관제 입력 정규화, 판단 근거 연동, 운영 화면과 AWS 배포는 개인 프로젝트에서 구현했습니다.',
       },
       {
         term: 'ATMS',
@@ -518,8 +518,8 @@ export const featuredProjects: FeaturedProject[] = [
         {
           title: '1차: 리사이즈 대신 필요한 영역을 다시 배치',
           problem: '1920x1080 영상에는 번호판과 무관한 상하 배경이 많았고, 전체 화면을 매번 리사이즈하면 처리 자원과 문자 품질을 함께 잃을 수 있었습니다.',
-          action: '불필요한 상하 영역을 덜어낸 뒤 차선별 960x480 두 영역을 위아래로 붙여 960x960 입력을 만들었습니다. 픽셀 크기는 바꾸지 않고 번호판 영역이 더 크게 보이도록 했습니다.',
-          result: '리사이즈 단계를 없애 입력 이미지 용량을 2.1MB에서 0.9MB로 줄였고, 발표자료 내부 비교에서는 상용 OCR보다 인식 정확도가 15% 높게 나타났습니다.',
+          action: 'FHD 영상에서 두 차선의 960×480 영역을 리사이즈 없이 위아래로 배치해 960×960 YOLO 입력을 만들었습니다.',
+          result: 'YOLO가 검출한 번호판 영역을 픽셀 크기 변경 없이 그대로 잘라 CRNN-OCR 반복 추론에 사용했습니다.',
         },
         {
           title: '1차: Edge 성능에 맞는 OCR과 다중 프레임 판정',
@@ -606,7 +606,7 @@ export const featuredProjects: FeaturedProject[] = [
     detailLevel: 'full',
     number: '04',
     title: 'EduSync Learning API',
-    period: '개인 프로젝트 (2026.07.24~07.26, 보강 08.02)',
+    period: '개인 프로젝트 (2026.07.20~07.26, 보강 08.02)',
     claim: '중복과 순서가 뒤섞인 이벤트에도 학습\u00a0상태를 일관되게 유지하는 학습\u00a0API입니다.',
     badge: 'PHP 8.3, Slim 4, SQL Server 2022',
     summary:
@@ -963,9 +963,9 @@ export const experience: ExperienceItem[] = [
   {
     company: '(주)모아데이타',
     period: '2021.07~2022.12',
-    position: 'AI Lab 센터, 매니저 (정규직)',
+    position: 'AI Lab 센터 (입사 당시 AI연구개발팀) | 매니저 (정규직)',
     detail:
-      '사내 솔루션과 헬스케어에 연동할 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 모듈 간 데이터 흐름을 추적해 오류를 수정하고, 포인터 구간과 메모리 누수를 점검한 뒤 Windows와\u00a0Linux에서 다시 실행해 검증했습니다. Rule과\u00a0Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진\u00a0Fact로 변환해 연결했습니다.',
+      '사내 솔루션과 헬스케어에 연동할 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 모듈 간 데이터 흐름을 추적해 오류를 수정하고, 포인터 사용 구간과 메모리 누수를 점검한 뒤 Windows와\u00a0Linux에서 다시 실행해 검증했습니다. Rule과\u00a0Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진\u00a0Fact로 변환해 연결했습니다.',
   },
 ]
 

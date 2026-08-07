@@ -14,7 +14,7 @@ const coreStack = ['C/C++ / Rule Engine', 'Java / Spring Boot', 'Python / FastAP
     <div class="page-width hero-inner">
       <div class="hero-copy">
         <p class="section-kicker">응용 소프트웨어 개발자</p>
-        <h1 id="hero-title">요구사항을 제대로 이해하고, 필요한 구조를 설계해 결과까지 확인하는 개발자 김민진입니다.</h1>
+        <h1 id="hero-title">요구사항을 이해하고, 필요한 구조를 설계해 결과까지 확인하는 개발자 김민진입니다.</h1>
         <div class="hero-statement">
           <p>(주)모아데이타에서 1년 6개월간 C/C++ 규칙 추론 엔진의 기능 개발, 지식베이스 구축, 데이터 연계를 단독으로 담당했습니다.</p>
           <p>이후 진행한 개인 및 팀 프로젝트에서는 Java와 Python으로 관제, 정산, 학습 서비스를 구현하고 테스트와 배포까지 직접 검증했습니다.</p>
