@@ -140,7 +140,7 @@ export const featuredProjects: FeaturedProject[] = [
     number: '02',
     title: 'ASTRA LiveOps Server',
     period: '개인 프로젝트 (2026.07.06~07.13, 보강 08.02)',
-    claim: '동시 요청에도 재화\u00a0정합성을 지키고 장애를 복구하는 게임\u00a0운영\u00a0서버입니다.',
+    claim: '동시 요청에도 재화 정합성을 지키고 장애를 복구하는 게임 운영 서버입니다.',
     badge: '분산 상태 정합성, LiveOps 복구, 관측성',
     summary:
       'Orleans Grain으로 플레이어별 명령을 직렬화하고, PostgreSQL 트랜잭션으로 상태와 원장, 감사 기록을 함께 저장했습니다. 콘텐츠 배포 버전과 영향 대상을 남겨 롤백과 보상 절차로 연결했습니다.',
@@ -234,7 +234,7 @@ export const featuredProjects: FeaturedProject[] = [
         'Docker 이미지 5종을 non-root로 실제 기동했고, 릴리스 빌드 경고와 취약 패키지 0건, 최신 main GitHub Actions 통과를 확인했습니다.',
       ],
       verificationBoundary:
-        '현재 확인 범위는 Helm lint와 template, Terraform validate까지입니다.\n실제 Kubernetes 배포와 Azure Terraform apply, 운영 규모의 처리량은 추가 검증이 필요합니다.',
+        '현재는 Helm lint와 template, Terraform validate까지 확인했습니다. Kubernetes 배포와 Azure Terraform apply, 운영 처리량은 추가 검증이 필요합니다.',
     },
     role: '개인 프로젝트, 서버 아키텍처와 정합성, 운영 복구, 테스트 및 배포',
     stack: ['.NET 10', 'ASP.NET Core', 'Microsoft Orleans', 'PostgreSQL', 'Redis', 'Blazor', 'OpenTelemetry', 'Docker'],
@@ -284,7 +284,7 @@ export const featuredProjects: FeaturedProject[] = [
     number: '01',
     title: 'NEO Intelligent ITS Operator',
     period: '개인 프로젝트 (2026.06.08~07.05, 보강 08.03)',
-    claim: '여러 관제 신호를 함께 따져 위험도와 대응 수준을 조정하는 ITS\u00a0관제\u00a0시스템입니다.',
+    claim: '여러 관제 신호를 함께 따져 위험도와 대응 수준을 조정하는 ITS 관제 시스템입니다.',
     badge: '규칙 추론, XAI 계보, AWS 운영',
     summary:
       '단일 경보를 그대로 위험으로 확정하지 않고, 속도, 정체, CCTV 상태 등 여러 Fact의 지지 근거와 충돌 근거를 함께 확인했습니다. ATMS와 CF로 판단 신뢰도를 계산해 위험도와 대응 가이드를 만들고, 운영 화면에서 그 근거를 검토할 수 있게 했습니다.',
@@ -378,9 +378,9 @@ export const featuredProjects: FeaturedProject[] = [
         '실시간 파이프라인은 3.15초에 완료됐으며 Neo4j 20노드, 28관계와 NEMI 문서 2건이 연결됐습니다.',
       ],
       verificationBoundary:
-        '테스트 데이터에서는 추론 결과가 예상대로 나오는지 확인했습니다.\n현장 데이터로 정량 평가하지 못해 실환경 정확도와 일반화 성능은 추가\u00a0검증이 필요합니다. AI4I와 C-MAPSS는 각각 참조 규칙과 시뮬레이션 기준값으로 사용했습니다.',
+        '테스트 데이터에서는 추론 결과가 예상대로 나오는지 확인했습니다. 현장 데이터로 정량 평가하지 못해 실환경 정확도와 일반화 성능은 추가 검증이 필요합니다. AI4I와 C-MAPSS는 각각 참조 규칙과 시뮬레이션 기준값으로 사용했습니다.',
     },
-    role: '개인 프로젝트, 판단 근거 연동 구조와 NEO\u00a0추론\u00a0경계, FastAPI\u00a0운영\u00a0UI, AWS\u00a0배포\u00a0구현',
+    role: '개인 프로젝트, 판단 근거 연동 구조와 NEO 추론 경계, FastAPI 운영 UI, AWS 배포 구현',
     stack: ['C/C++', 'Python / FastAPI', 'Vue 3', 'Neo4j / Qdrant', 'Docker / AWS EC2'],
     image: assetPath('images/project-neo-v2-dashboard.png'),
     imageAlt: 'NEO 사건 판단과 운영자 조치 검토 화면',
@@ -541,8 +541,8 @@ export const featuredProjects: FeaturedProject[] = [
         },
       ],
       result: [
-        '1차에서는 Edge 인식 결과를 통행 이벤트로 전송하고, 중앙\u00a0저장, 위치 판정, 관제 검수까지 연결했습니다.',
-        '2차에서는 품질 지표를 세 가지 방식으로 분석하고, 통합\u00a0위험도와 권장 조치를 화면 및 이메일로 전달했습니다.',
+        '1차에서는 Edge 인식 결과를 통행 이벤트로 전송하고, 중앙 저장, 위치 판정, 관제 검수까지 연결했습니다.',
+        '2차에서는 품질 지표를 세 가지 방식으로 분석하고, 통합 위험도와 권장 조치를 화면 및 이메일로 전달했습니다.',
       ],
       verification: [
         '1차 입력과 추론에서는 리사이즈 없는 960x960 입력, CRNN 반복 추론과 Best-Fit 판정이 통행 이벤트로 이어지는 흐름을 확인했습니다.',
@@ -550,7 +550,7 @@ export const featuredProjects: FeaturedProject[] = [
         '2차에서는 세 가지 분석 방식이 고정 및 실시간 시나리오를 처리하고, 통합 결과가 화면과 이메일 알림으로 이어지는 흐름을 확인했습니다.',
       ],
       verificationBoundary:
-        '고정 및 실시간 시나리오에서 품질 저하 징후가 탐지, 표시, 알림으로 이어지는 흐름을 확인했습니다.\n실제 현장 고장 라벨을 활용한 예측 성능은 추가 검증이 필요합니다.',
+        '고정 및 실시간 시나리오에서 품질 저하 징후가 탐지, 표시, 알림으로 이어지는 흐름을 확인했습니다. 실제 현장 고장 라벨을 활용한 예측 성능은 추가 검증이 필요합니다.',
     },
     role: '팀장',
     rolePhases: [
@@ -607,10 +607,10 @@ export const featuredProjects: FeaturedProject[] = [
     number: '04',
     title: 'EduSync Learning API',
     period: '개인 프로젝트 (2026.07.20~07.26, 보강 08.02)',
-    claim: '중복과 순서가 뒤섞인 이벤트에도 학습\u00a0상태를 일관되게 유지하는 학습\u00a0API입니다.',
+    claim: '중복과 순서가 뒤섞인 이벤트에도 학습 상태를 일관되게 유지하는 학습 API입니다.',
     badge: 'PHP 8.3, Slim 4, SQL Server 2022',
     summary:
-      '웹, 모바일, 외부 플레이어의 이벤트를 SQL Server 원장과 진행 상태로 나눠 기록했습니다. 보호자 조회와 Classic\u00a0ASP 연동은 읽기 전용으로 분리했습니다.',
+      '웹, 모바일, 외부 플레이어의 이벤트를 SQL Server 원장과 진행 상태로 나눠 기록했습니다. 보호자 조회와 Classic ASP 연동은 읽기 전용으로 분리했습니다.',
     proof: {
       problemLabel: '개요',
       problem:
@@ -623,8 +623,8 @@ export const featuredProjects: FeaturedProject[] = [
     caseStudy: {
       requirements: [
         '중복, 충돌: 동일 이벤트는 1회 반영, 같은 ID의 다른 payload는 거절',
-        '순서, 동시성: 이어보기, 최대 시청, 최초\u00a0완료 규칙을 요청 순서와 무관하게 유지',
-        '읽기 경계: 보호자와 Classic\u00a0ASP에는 필요한 데이터 조회만 허용',
+        '순서, 동시성: 이어보기, 최대 시청, 최초 완료 규칙을 요청 순서와 무관하게 유지',
+        '읽기 경계: 보호자와 Classic ASP에는 필요한 데이터 조회만 허용',
       ],
       flow: '인증된 학습 이벤트 → 이벤트 원장 우선 기록 → 진행 상태 잠금, 갱신 → commit/rollback → 보호자, 레거시 읽기',
       architectureImage: {
@@ -640,7 +640,7 @@ export const featuredProjects: FeaturedProject[] = [
           action:
             'source와 event_id를 유일 키로 둔 learning_events를 먼저 insert하고, 중복 키가 발생하면 transaction을 rollback한 뒤 payload_hash를 다시 조회했습니다. hash가 같으면 200 duplicate, 다르면 409 conflict로 분리했습니다.',
           result:
-            '동일 payload 병렬 요청은 한 건만 적용하고 나머지는 기존 결과를 재사용했습니다. 같은 event_id에 다른 payload가 들어오면 409로 분리되는 것을 실제 SQL Server 동시성 시나리오로 확인했습니다.',
+            '동일 payload 병렬 요청은 한 건만 적용하고 나머지는 기존 결과를 반환했습니다. 다른 payload는 409로 분리되는 것을 SQL Server 동시성 테스트로 확인했습니다.',
         },
         {
           title: '변경 이력과 현재 상태의 책임을 한 테이블에 섞지 않기',
@@ -654,7 +654,7 @@ export const featuredProjects: FeaturedProject[] = [
         {
           title: '레거시 조회를 쓰기 경로처럼 열어두지 않기',
           problem:
-            '기존 IIS와 Classic ASP에서도 진행 상태를 조회해야 했지만, 인증 없이 데이터베이스 접근 범위를 넓히면 조회 어댑터가 새로운 쓰기 경로가 될 수 있었습니다.',
+            'IIS와 Classic ASP에서도 진행 상태 조회가 필요했지만, 인증 없이 DB 접근 범위를 넓히면 읽기 어댑터가 쓰기 경로가 될 수 있었습니다.',
           action:
             '사이트를 루프백에만 바인딩하고 Classic ASP 소스에서도 REMOTE_ADDR를 먼저 확인했습니다. 매개변수화한 ADO 조회와 SELECT 전용 SQL 계정만 사용했습니다.',
           result:
@@ -664,7 +664,7 @@ export const featuredProjects: FeaturedProject[] = [
       result: [
         '동일 이벤트가 다시 들어오면 기존 성공 결과를 재사용하고, 같은 ID에 다른 요청 본문이 오면 409로 구분했습니다.',
         'Bearer 경로의 학습자와 보호자 주체를 확인하고, 외부 플레이어 요청은 timestamp와 HMAC 서명을 검증했습니다.',
-        'Classic\u00a0ASP는 루프백에서만 매개변수화된 ADO 조회를 허용하고, 조회 전용 SQL 계정으로 쓰기를 차단했습니다.',
+        'Classic ASP는 루프백에서만 매개변수화된 ADO 조회를 허용하고, 조회 전용 SQL 계정으로 쓰기를 차단했습니다.',
       ],
       verification: [
         'Docker Compose에서 계약 테스트, HTTP와 SQL Server 통합 테스트, DB 배리어 기반 동시성 시나리오 6종을 통과했습니다.',
@@ -672,7 +672,7 @@ export const featuredProjects: FeaturedProject[] = [
         'Windows IIS 10에서 200, 400, 404 응답을 확인하고, 조회 전용 SQL 계정의 INSERT, UPDATE, DELETE 거부를 검증했습니다.',
       ],
       verificationBoundary:
-        '이번 검증은 신뢰된 외부 플레이어 서버와 루프백 전용 Classic\u00a0ASP 읽기 어댑터를 기준으로 진행했습니다.\n리버스 프록시 배치, 운영 부하, 장기 토큰 운용은 추가 검증이 필요합니다.',
+        '신뢰된 외부 플레이어 서버와 루프백 전용 Classic ASP 읽기 어댑터를 기준으로 검증했습니다. 리버스 프록시 배치, 운영 부하, 장기 토큰 운용은 추가 검증이 필요합니다.',
     },
     role: '개인 프로젝트, API 계약과 SQL Server 트랜잭션, 동시성 제어, 테스트, IIS 호환 읽기 경계',
     stack: ['PHP 8.3', 'Slim 4', 'SQL Server 2022', 'PDO_SQLSRV', 'OpenAPI', 'Docker', 'Classic ASP'],
@@ -920,7 +920,7 @@ export const featuredProjects: FeaturedProject[] = [
         '비회원 탐색부터 회원가입, 로그인, 마이페이지, 리뷰 작성, 관리자 기능까지 주요 흐름을 브라우저에서 확인했습니다.',
       ],
     },
-    role: '팀장, 웹 퍼블리싱과 공통 UI 및 주요 화면 직접 구현, 화면\u00a0구조\u00a0설계',
+    role: '팀장, 웹 퍼블리싱과 공통 UI 및 주요 화면 직접 구현, 화면 구조 설계',
     stack: ['Spring Boot 3', 'Thymeleaf', 'PostgreSQL', 'HTML5', 'CSS', 'JavaScript', 'Docker'],
     image: assetPath('images/project-incheon-main.jpg'),
     imageAlt: '인천 문화 관광 웹 애플리케이션 메인 화면',
@@ -965,7 +965,7 @@ export const experience: ExperienceItem[] = [
     period: '2021.07~2022.12',
     position: 'AI Lab 센터 (입사 당시 AI연구개발팀) | 매니저 (정규직)',
     detail:
-      '사내 솔루션과 헬스케어에 연동할 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 모듈 간 데이터 흐름을 추적해 오류를 수정하고, 포인터 사용 구간과 메모리 누수를 점검한 뒤 Windows와\u00a0Linux에서 다시 실행해 검증했습니다. Rule과\u00a0Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진\u00a0Fact로 변환해 연결했습니다.',
+      '사내 솔루션과 헬스케어에 연동할 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 모듈 간 데이터 흐름을 추적해 오류를 수정하고, 포인터 사용 구간과 메모리 누수를 점검한 뒤 Windows와 Linux에서 다시 실행해 검증했습니다. Rule과 Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진 Fact로 변환해 연결했습니다.',
   },
 ]
 
@@ -973,7 +973,7 @@ export const capabilities: CapabilityGroup[] = [
   {
     title: 'Backend & Data',
     items: [
-      { label: 'C / C++', evidence: '모아데이타 실무: 규칙 추론 엔진 단독 유지보수, MariaDB 데이터를 엔진\u00a0Fact로 변환' },
+      { label: 'C / C++', evidence: '모아데이타 실무: 규칙 추론 엔진 단독 유지보수, MariaDB 데이터를 엔진 Fact로 변환' },
       { label: 'Python / FastAPI', evidence: 'NEO, HI-FIVE: 관제 오케스트레이션, Edge Ingress, 품질 분석 API' },
       { label: 'Java / Spring Boot', evidence: '가구, 인천, HI-FIVE: 주문, 관리자 API, 회원, 게시판 MVC, 통행 저장' },
       { label: '.NET / Microsoft Orleans', evidence: 'ASTRA: 플레이어별 명령 직렬화와 멱등 처리' },

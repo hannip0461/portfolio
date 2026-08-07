@@ -163,7 +163,7 @@
   font-size: 13px;
   font-weight: 650;
   line-height: 1.55;
-  text-wrap: balance;
+  text-wrap: pretty;
   word-break: keep-all;
 }
 
