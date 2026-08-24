@@ -52,7 +52,7 @@ const coreStack = ['C/C++ / Rule Engine', 'Java / Spring Boot', 'Python / FastAP
             <span>02</span>
             <div>
               <strong>ASTRA</strong>
-              <p>중복 요청과 재시도 → 정합성 유지와 운영 복구</p>
+              <p>중복 요청과 재시도 → 정합성 유지와 콘텐츠 롤백 및 보상</p>
             </div>
           </li>
           <li>

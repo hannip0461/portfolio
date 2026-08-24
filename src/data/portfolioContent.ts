@@ -140,8 +140,8 @@ export const featuredProjects: FeaturedProject[] = [
     number: '02',
     title: 'ASTRA LiveOps Server',
     period: '개인 프로젝트 (2026.07.06~07.13, 보강 08.02)',
-    claim: '동시 요청에도 재화 정합성을 지키고 장애를 복구하는 게임 운영 서버입니다.',
-    badge: '분산 상태 정합성, LiveOps 복구, 관측성',
+    claim: '동시 요청에도 재화 정합성을 지키고 콘텐츠 배포 사고의 롤백과 보상 절차를 검증한 게임 운영 서버입니다.',
+    badge: '분산 상태 정합성, LiveOps 롤백과 보상, 관측성',
     summary:
       'Orleans Grain으로 플레이어별 명령을 직렬화하고, PostgreSQL 트랜잭션으로 상태와 원장, 감사 기록을 함께 저장했습니다. 콘텐츠 배포 버전과 영향 대상을 남겨 롤백과 보상 절차로 연결했습니다.',
     proof: {
@@ -236,7 +236,7 @@ export const featuredProjects: FeaturedProject[] = [
       verificationBoundary:
         '현재는 Helm lint와 template, Terraform validate까지 확인했습니다. Kubernetes 배포와 Azure Terraform apply, 운영 처리량은 추가 검증이 필요합니다.',
     },
-    role: '개인 프로젝트, 서버 아키텍처와 정합성, 운영 복구, 테스트 및 배포',
+    role: '개인 프로젝트, 서버 아키텍처와 정합성, 콘텐츠 롤백과 보상 절차, 테스트 및 배포',
     stack: ['.NET 10', 'ASP.NET Core', 'Microsoft Orleans', 'PostgreSQL', 'Redis', 'Blazor', 'OpenTelemetry', 'Docker'],
     image: assetPath('images/project-astra-content-ops.png'),
     imageAlt: 'ASTRA 콘텐츠 배포와 롤백 운영 화면',
@@ -554,7 +554,7 @@ export const featuredProjects: FeaturedProject[] = [
     },
     role: '팀장',
     rolePhases: [
-      { label: '1차', detail: 'Jetson YOLO/CRNN-OCR, 입력 영상 최적화와 Best-Fit, WebTransport Ingress, 망 전환 테스트' },
+      { label: '1차', detail: 'Jetson YOLO/CRNN-OCR, 입력 영상 최적화와 Best-Fit 공동 수행, WebTransport Ingress 수신과 ACK/REJECT 처리, RETRY 및 망 전환 연동 테스트' },
       { label: '2차', detail: 'PdM Backend, FastAPI 세 가지 방식의 분석, 테스트와 이메일 알림 통합' },
     ],
     stack: ['Jetson / DeepStream', 'YOLO / CRNN-OCR', 'WebTransport / Protobuf', 'Spring Boot', 'FastAPI', 'PostgreSQL', 'Isolation Forest / LSTM-AE', 'Vue 3 / Docker'],
@@ -985,7 +985,7 @@ export const capabilities: CapabilityGroup[] = [
     items: [
       { label: '규칙 추론 엔진', evidence: '모아데이타 실무 유지보수, NEO에서 ITS 관제 도메인에 적용' },
       { label: 'Ontology / Neo4j', evidence: 'NEO: 관측 Fact, 규칙, 판단 관계를 계보로 저장하고 재조회' },
-      { label: 'RAG / Qdrant', evidence: 'NEO: embeddinggemma 임베딩과 Qdrant 코사인 검색으로 판단과 분리한 근거 조회' },
+      { label: 'RAG / Qdrant', evidence: 'NEO 현재 구성: 96차원 해시 임베딩과 Qdrant 코사인 검색으로 판단과 분리한 근거 조회' },
       { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE: 차량 번호판 탐지와 문자 판독' },
     ],
   },
