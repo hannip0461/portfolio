@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ArrowDown, FileText, GitBranch } from '@lucide/vue'
+import { ArrowDown, GitBranch } from '@lucide/vue'
 
 const emit = defineEmits<{
   navigate: [event: MouseEvent, target: string]
 }>()
 
-const resumeUrl = `${import.meta.env.BASE_URL}docs/kim-minjin-resume.pdf`
 const coreStack = ['C/C++ / Rule Engine', 'Java / Spring Boot', 'Python / FastAPI', 'RAG / LLM', 'Docker / CI']
 </script>
 
@@ -26,10 +25,6 @@ const coreStack = ['C/C++ / Rule Engine', 'Java / Spring Boot', 'Python / FastAP
           <a class="button button-primary" href="#projects" @click="emit('navigate', $event, '#projects')">
             대표 프로젝트
             <ArrowDown :size="17" aria-hidden="true" />
-          </a>
-          <a class="button button-secondary" :href="resumeUrl" target="_blank" rel="noreferrer">
-            <FileText :size="17" aria-hidden="true" />
-            김민진 이력서
           </a>
           <a class="button button-secondary" href="https://github.com/hannip0461" target="_blank" rel="noreferrer">
             <GitBranch :size="17" aria-hidden="true" />
