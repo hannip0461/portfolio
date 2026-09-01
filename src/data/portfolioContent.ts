@@ -555,7 +555,7 @@ export const featuredProjects: FeaturedProject[] = [
     role: '팀장',
     rolePhases: [
       { label: '1차', detail: 'Jetson YOLO/CRNN-OCR, 입력 영상 최적화와 Best-Fit 공동 수행, WebTransport Ingress 수신과 ACK/REJECT 처리, RETRY 및 망 전환 연동 테스트' },
-      { label: '2차', detail: 'PdM Backend, FastAPI 세 가지 방식의 분석, 테스트와 이메일 알림 통합' },
+      { label: '2차', detail: 'Spring Boot PdM API와 DB 연동 검증' },
     ],
     stack: ['Jetson / DeepStream', 'YOLO / CRNN-OCR', 'WebTransport / Protobuf', 'Spring Boot', 'FastAPI', 'PostgreSQL', 'Isolation Forest / LSTM-AE', 'Vue 3 / Docker'],
     image: assetPath('images/project-hifive-dashboard-202607.png'),
