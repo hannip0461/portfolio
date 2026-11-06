@@ -57,12 +57,16 @@ const getProjectDemo = (project: FeaturedProject) =>
             </div>
             <h3>{{ project.title }}</h3>
             <p class="project-claim">{{ project.claim }}</p>
-            <dl class="project-scan-facts" aria-label="프로젝트 검증과 담당 범위">
+            <dl class="project-scan-facts" aria-label="프로젝트 요약">
               <div>
-                <dt>검증</dt>
-                <dd>{{ project.proof.result }}</dd>
+                <dt>핵심 구현</dt>
+                <dd>{{ project.badge }}</dd>
               </div>
               <div>
+                <dt>기술</dt>
+                <dd>{{ project.stack.join(', ') }}</dd>
+              </div>
+              <div v-if="project.role">
                 <dt>담당</dt>
                 <dd>
                   <span>{{ project.role }}</span>
@@ -131,7 +135,7 @@ const getProjectDemo = (project: FeaturedProject) =>
                   <dt>기술</dt>
                   <dd>{{ project.badge }}</dd>
                 </div>
-                <div>
+                <div v-if="project.role">
                   <dt>담당</dt>
                   <dd>{{ project.role }}</dd>
                 </div>

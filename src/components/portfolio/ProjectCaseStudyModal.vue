@@ -31,6 +31,7 @@ let returnFocus: HTMLElement | null = null
 let screenshotReturnFocus: HTMLElement | null = null
 
 const isExternalLink = (link: string) => link.startsWith('http')
+const caseSections = ['architecture', 'decisions', 'verification']
 const heroScreenshot = computed(() => props.project.screenshots[0] ?? null)
 const additionalScreenshots = computed(() => props.project.screenshots.slice(1))
 const visibleStack = computed(() => props.project.stack)
@@ -173,7 +174,7 @@ onUnmounted(() => {
         </figure>
 
         <div class="project-modal-hero-copy">
-          <p class="project-modal-claim">{{ project.claim }}</p>
+          <p class="project-modal-claim">{{ project.detailClaim ?? project.claim }}</p>
           <p v-if="project.detailLevel === 'compact'" class="project-modal-summary">{{ project.summary }}</p>
 
           <dl class="project-modal-meta">
@@ -181,7 +182,7 @@ onUnmounted(() => {
               <dt>기간</dt>
               <dd>{{ project.period }}</dd>
             </div>
-            <div>
+            <div v-if="project.role">
               <dt>담당 범위</dt>
               <dd>
                 <span>{{ project.role }}</span>
@@ -201,12 +202,21 @@ onUnmounted(() => {
         </div>
       </section>
 
-      <div v-if="project.detailLevel === 'full'" class="project-case-study">
-        <section class="case-study-section">
+      <div class="project-case-study">
+        <section class="case-study-section case-study-purpose">
           <header class="case-study-heading">
             <span>01</span>
+            <h3>만든 이유</h3>
+          </header>
+          <p>{{ project.proof.problem }}</p>
+        </section>
+
+        <template v-for="(section, sectionIndex) in caseSections" :key="section">
+        <section v-if="section === 'decisions'" class="case-study-section">
+          <header class="case-study-heading">
+            <span>{{ String(sectionIndex + 2).padStart(2, '0') }}</span>
             <div>
-              <h3>핵심 문제와 해결</h3>
+              <h3>핵심 구현과 선택 이유</h3>
             </div>
           </header>
           <ol v-if="project.caseStudy.decisions?.length" class="decision-list">
@@ -237,11 +247,12 @@ onUnmounted(() => {
         </section>
 
         <section
+          v-else-if="section === 'architecture'"
           class="case-study-section case-study-architecture"
           :class="{ 'case-study-architecture-approved': project.caseStudy.architectureImage }"
         >
           <header class="case-study-heading">
-            <span>02</span>
+            <span>{{ String(sectionIndex + 2).padStart(2, '0') }}</span>
             <div>
               <h3>시스템 구조</h3>
             </div>
@@ -261,7 +272,7 @@ onUnmounted(() => {
                 />
               </button>
             </div>
-            <figcaption>{{ project.caseStudy.architectureImage.caption }}. 클릭하면 크게 볼 수 있습니다.</figcaption>
+            <figcaption>{{ project.caseStudy.architectureImage.caption }}</figcaption>
           </figure>
 
           <template v-else>
@@ -353,60 +364,35 @@ onUnmounted(() => {
               </li>
             </ol>
           </template>
+          <div v-if="project.caseStudy.architectureNotes?.length" class="architecture-notes">
+            <p v-for="note in project.caseStudy.architectureNotes" :key="note">{{ note }}</p>
+          </div>
         </section>
 
-        <section class="case-study-section">
+        <section v-else class="case-study-section">
           <header class="case-study-heading">
-            <span>03</span>
+            <span>{{ String(sectionIndex + 2).padStart(2, '0') }}</span>
             <div>
-              <h3>검증 범위</h3>
+              <h3>구현 결과</h3>
             </div>
           </header>
           <div class="verification-result-flow">
-            <div class="verification-criteria">
-              <h4>확인 방법</h4>
+            <ul class="project-results">
+              <li v-for="item in project.caseStudy.result" :key="item">{{ item }}</li>
+            </ul>
+            <details class="verification-criteria">
+              <summary>확인 방법</summary>
               <ul class="verification-method-list">
                 <li v-for="item in project.caseStudy.verification" :key="item">{{ item }}</li>
               </ul>
-            </div>
+            </details>
             <div v-if="project.caseStudy.verificationBoundary" class="verification-boundary">
-              <h4>추가 검증</h4>
+              <h4>{{ project.caseStudy.verificationBoundaryLabel ?? '추가 검증' }}</h4>
               <p>{{ project.caseStudy.verificationBoundary }}</p>
             </div>
           </div>
         </section>
-      </div>
-
-      <div v-else class="project-compact-study">
-        <section class="compact-project-section">
-          <h3>프로젝트 목표</h3>
-          <p>{{ project.proof.problem }}</p>
-        </section>
-
-        <section class="compact-project-section">
-          <h3>핵심 구현</h3>
-          <ul>
-            <li
-              v-for="item in (project.caseStudy.approach ?? project.caseStudy.requirements).slice(0, 3)"
-              :key="item"
-            >
-              {{ item }}
-            </li>
-          </ul>
-        </section>
-
-        <section class="compact-project-section compact-project-result">
-          <h3>확인한 결과</h3>
-          <div>
-            <ul>
-              <li v-for="item in project.caseStudy.result" :key="item">{{ item }}</li>
-            </ul>
-            <p class="compact-project-verification">
-              <strong>확인 범위</strong>
-              {{ project.caseStudy.verification.join(' ') }}
-            </p>
-          </div>
-        </section>
+        </template>
       </div>
 
       <section
@@ -496,7 +482,9 @@ onUnmounted(() => {
               >
                 <ArrowLeft :size="20" aria-hidden="true" />
               </button>
-              <img v-if="selectedScreenshot.src" :src="selectedScreenshot.src" :alt="selectedScreenshot.alt" />
+              <div class="screenshot-lightbox-media">
+                <img v-if="selectedScreenshot.src" :src="selectedScreenshot.src" :alt="selectedScreenshot.alt" />
+              </div>
               <button
                 type="button"
                 aria-label="다음 이미지"

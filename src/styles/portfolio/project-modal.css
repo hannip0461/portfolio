@@ -409,7 +409,7 @@
 }
 
 .architecture-map {
-  grid-column: 2;
+  grid-column: 1 / -1;
   min-width: 0;
   border-top: 2px solid var(--navy);
   border-bottom: 1px solid var(--line);
@@ -595,7 +595,7 @@
 
 .architecture-flow {
   display: grid;
-  grid-column: 2;
+  grid-column: 1 / -1;
   grid-template-columns: repeat(var(--architecture-columns), minmax(0, 1fr));
   gap: 28px;
   margin: 0;
@@ -759,8 +759,8 @@
 
 .problem-resolution-grid li {
   color: var(--ink);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.8;
   word-break: keep-all;
 }
 
@@ -1081,17 +1081,16 @@
   width: min(1500px, calc(100vw - 48px));
 }
 
-.screenshot-lightbox-architecture .screenshot-lightbox-stage {
-  display: block;
+.screenshot-lightbox-media {
+  min-width: 0;
+}
+
+.screenshot-lightbox-architecture .screenshot-lightbox-media {
   overflow: auto;
-  max-height: calc(100dvh - 150px);
+  max-height: calc(100dvh - 190px);
   border: 1px solid #d7dde4;
   background: #ffffff;
   overscroll-behavior: contain;
-}
-
-.screenshot-lightbox-architecture .screenshot-lightbox-stage > button {
-  display: none;
 }
 
 .screenshot-lightbox-architecture .screenshot-lightbox-stage img {
@@ -1122,6 +1121,82 @@
   color: var(--ink);
   font-size: 12px;
   text-align: center;
+}
+
+.project-modal .case-study-section {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.project-modal .case-study-purpose p,
+.project-modal .architecture-notes,
+.project-modal .verification-result-flow {
+  max-width: 960px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.project-modal .architecture-notes p {
+  margin: 0 0 12px;
+}
+
+.project-modal .decision-list > li {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.project-modal .decision-list p {
+  grid-column: 1;
+  grid-template-columns: 92px minmax(0, 1fr);
+  max-width: 1000px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.project-modal .decision-list h4 {
+  font-size: 18px;
+}
+
+.project-modal .decision-list p strong {
+  font-size: 13px;
+}
+
+.project-modal .project-results {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 20px 0 20px 20px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.project-modal .verification-criteria {
+  display: block;
+  padding: 16px 0;
+}
+
+.project-modal .verification-criteria summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.project-modal .verification-method-list {
+  margin-top: 12px;
+}
+
+.project-modal .verification-method-list li,
+.project-modal .verification-boundary p {
+  font-size: 14px;
+}
+
+@media (max-width: 760px) {
+  .project-modal .decision-list p {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {

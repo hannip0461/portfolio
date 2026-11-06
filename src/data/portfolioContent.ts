@@ -66,18 +66,21 @@ export interface FeaturedProject {
   title: string
   period: string
   claim: string
+  detailClaim?: string
   summary: string
   badge: string
   proof: {
     problemLabel?: string
     problem: string
     solution: string
+    resultLabel?: string
     result: string
   }
   caseStudy: {
     requirements: string[]
     flow: string
     architectureImage?: ProjectScreenshot
+    architectureNotes?: string[]
     architecture?: ProjectArchitectureStage[]
     architectureMap?: ProjectArchitectureMap
     problem?: string[]
@@ -86,8 +89,9 @@ export interface FeaturedProject {
     result: string[]
     verification: string[]
     verificationBoundary?: string
+    verificationBoundaryLabel?: string
   }
-  role: string
+  role?: string
   rolePhases?: Array<{
     label: string
     detail: string
@@ -127,7 +131,7 @@ const neoOperatorUrl = import.meta.env.VITE_NEO_OPERATOR_URL ?? 'https://3-38-33
 const neoResources = [
   { label: 'NEO 관제 화면', url: neoOperatorUrl },
   {
-    label: 'NEO 저장소',
+    label: 'NEO 프로젝트 문서',
     url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator',
   },
 ]
@@ -141,13 +145,13 @@ export const featuredProjects: FeaturedProject[] = [
     title: 'ASTRA LiveOps Server',
     period: '개인 프로젝트 (2026.07.06~07.13, 보강 08.02)',
     claim: '동시 요청에도 재화 정합성을 지키고 콘텐츠 배포 사고의 롤백과 보상 절차를 검증한 게임 운영 서버입니다.',
-    badge: '분산 상태 정합성, LiveOps 롤백과 보상, 관측성',
+    badge: '재화 중복 처리 방지, 콘텐츠 롤백과 사고 보상',
     summary:
       'Orleans Grain으로 플레이어별 명령을 직렬화하고, PostgreSQL 트랜잭션으로 상태와 원장, 감사 기록을 함께 저장했습니다. 콘텐츠 배포 버전과 영향 대상을 남겨 롤백과 보상 절차로 연결했습니다.',
     proof: {
       problemLabel: '개요',
       problem:
-        '수집형 RPG 운영에서는 중복 요청과 콘텐츠 배포 실수가 재화, 보상 오류로 이어질 수 있습니다.',
+        '수집형 RPG에서 재화와 보상이 중복 처리되는 것을 막고, 잘못 배포한 콘텐츠를 되돌릴 수 있는 게임 운영 서버를 만들었습니다.',
       solution:
         'Orleans Grain의 플레이어별 직렬화와 PostgreSQL 원자적 트랜잭션으로 멱등 처리 구조를 적용하고, 콘텐츠 롤백과 사고 보상 절차를 연결했습니다.',
       result:
@@ -236,7 +240,6 @@ export const featuredProjects: FeaturedProject[] = [
       verificationBoundary:
         '현재는 Helm lint와 template, Terraform validate까지 확인했습니다. Kubernetes 배포와 Azure Terraform apply, 운영 처리량은 추가 검증이 필요합니다.',
     },
-    role: '개인 프로젝트, 서버 아키텍처와 정합성, 콘텐츠 롤백과 보상 절차, 테스트 및 배포',
     stack: ['.NET 10', 'ASP.NET Core', 'Microsoft Orleans', 'PostgreSQL', 'Redis', 'Blazor', 'OpenTelemetry', 'Docker'],
     image: assetPath('images/project-astra-content-ops.png'),
     imageAlt: 'ASTRA 콘텐츠 배포와 롤백 운영 화면',
@@ -282,113 +285,124 @@ export const featuredProjects: FeaturedProject[] = [
     tier: 'primary',
     detailLevel: 'full',
     number: '01',
-    title: 'NEO Intelligent ITS Operator',
-    period: '개인 프로젝트 (2026.06.08~07.05, 보강 08.03)',
-    claim: '여러 관제 신호를 함께 따져 위험도와 대응 수준을 조정하는 ITS 관제 시스템입니다.',
-    badge: '규칙 추론, XAI 계보, AWS 운영',
+    title: 'NEO 교통관제 시스템',
+    period: '개인 프로젝트 (2026.06~07 개발, 2026.11 개선)',
+    claim: '여러 규칙으로 위험도를 판단하고, 담당자의 조치부터 처리 완료까지 관리하는 관제 시스템입니다.',
+    detailClaim: '여러 규칙으로 위험도를 판단하고, 담당자의 조치부터 처리 완료까지 관리하는 관제 시스템입니다.',
+    badge: '규칙 기반 위험 판단, 근거 조회, 담당자와 처리 상태 관리',
     summary:
-      '단일 경보를 그대로 위험으로 확정하지 않고, 속도, 정체, CCTV 상태 등 여러 Fact의 지지 근거와 충돌 근거를 함께 확인했습니다. ATMS와 CF로 판단 신뢰도를 계산해 위험도와 대응 가이드를 만들고, 운영 화면에서 그 근거를 검토할 수 있게 했습니다.',
+      '기존 NEO 규칙 추론 엔진을 관제 서비스에 연결했습니다. 입력 정규화와 판단 근거 조회, 현장 확인 화면, 담당 지정부터 종결까지의 처리 흐름을 구현했습니다.',
     proof: {
       problemLabel: '개요',
       problem:
-        '한 센서의 경보만으로 위험을 확정하면, 다른 센서가 정상인 상황에서도 과잉 대응하거나 반대로 중요한 충돌 신호를 놓칠 수 있었습니다.',
+        '관제요원은 경보가 발생하면 교통 흐름과 현장을 함께 살피고, 대응이 필요한지 판단해야 합니다. 판단 이후에도 담당자와 처리 결과를 이어서 확인할 수 있도록, 현장 확인부터 조치와 종결까지 한곳에서 관리하는 서비스를 만들었습니다.',
       solution:
-        'FastAPI가 입력을 공통 Fact로 정규화하고, ATMS가 지지 근거와 충돌 근거를 구분하도록 했습니다. NEO는 CF로 판단 신뢰도를 계산하고 후속 규칙으로 위험도와 대응 가이드를 조정해 Decision Package에 함께 남깁니다.',
+        'FastAPI가 공통 Fact와 NEO 판단, Neo4j 계보, NEMI 문서 검색을 연결합니다. Vue 화면에서는 현장을 확인하며 판단을 검토하고, 담당자와 조치 결과를 사건별로 관리합니다.',
+      resultLabel: '구현 역량',
       result:
-        'Python 테스트 219건 통과, PC와 모바일 6개 화면 및 AWS 실시간 파이프라인 검증',
+        '기존 추론 엔진의 서비스 연동, 판단 근거 조회, 담당자와 처리 상태 관리',
     },
     caseStudy: {
       requirements: [
-        '입력 통합: ITS CSV, 교통 API, CCTV, VMS, TAAS를 공통 Fact로 변환',
-        '판단 조정: 지지 근거와 충돌 근거, CF를 반영해 위험도와 대응 가이드를 생성',
-        '판단 재현과 운영자 통제: Fact, Rule, 지식 버전과 승인 이력을 함께 보존',
+        '서로 다른 입력을 공통 Fact로 변환하고 지지 근거와 충돌 근거를 함께 검토',
+        '판단 근거를 확인하는 동안에도 선택 사건의 현장 화면 유지',
+        '담당 지정, 인계, 조치 결과 확인, 종결과 재개를 사건별 이력으로 연결',
       ],
-      flow: '관제 입력 → Canonical Fact → ATMS 지지 근거와 충돌 근거 검토 → CF 신뢰도 계산 → 위험도와 대응 가이드 → 운영자 검토',
+      flow: '관제 입력과 시계열 분석 → Canonical Fact → NEO 규칙 판단 → 계보와 문서 근거 조회 → 담당자 검토 → 조치 결과 확인과 종결',
       architectureImage: {
         src: assetPath('images/project-neo-system-architecture-approved.png'),
-        alt: 'ITS, CCTV, VMS, TAAS 입력부터 NEO 판단, 읽기 전용 근거, 운영자 승인과 감사 피드백까지 연결한 시스템 구조',
-        caption: 'NEO 판단, 읽기 전용 근거, 운영자 승인과 감사',
+        alt: '교통 입력과 시계열 분석을 FastAPI로 정규화해 NEO 규칙 판단, Neo4j 계보와 NEMI 문서 검색, 운영자 검토와 사건 처리 이력으로 연결한 구조',
+        caption: '입력 정규화와 규칙 판단, 계보와 문서 검색, 담당 지정부터 종결까지의 처리 흐름',
       },
+      architectureNotes: [
+        '기존 NEO 규칙 추론 엔진을 FastAPI와 연결했습니다. 교통 입력을 공통 Fact로 정리하면 엔진이 규칙을 적용하고, 파생된 Fact에 다시 규칙을 적용해 위험도와 대응 가이드를 도출합니다.',
+        '예지 분석은 설비 시계열에서 이상 징후를 찾는 입력 경로입니다. LSTM 예측값과 입력값의 차이, 기준선과 RUL 참조값을 Fact로 변환해 같은 규칙 판단 과정에 전달합니다.',
+      ],
       architectureMap: {
         variant: 'neo',
-        boundary: 'AWS EC2, Docker Compose, HTTPS는 처리 단계가 아닌 실행 환경',
+        boundary: 'AWS EC2 / Docker Compose / HTTPS, 임베딩은 외부 Amazon Bedrock API 호출',
         lanes: [
           {
             label: '판단 경로',
             description: '관제 입력을 같은 기준으로 해석하고 결정 패키지 생성',
             tone: 'primary',
             nodes: [
-              { title: 'ITS, CCTV, VMS, TAAS', detail: '속도, 정체, 시야, 사고 입력' },
-              { title: 'Canonical Fact', detail: '출처, 시간, 자산 기준 통일' },
+              { title: '교통 입력과 시계열 분석', detail: 'CSV / API, 현장 시나리오, LSTM 잔차와 기준선' },
+              { title: 'FastAPI / Canonical Fact', detail: '입력 정규화, 출처와 관측 시각 보존' },
               { title: 'NEO Rule Engine', detail: 'Rule KB, ATMS, CF 판단' },
               { title: 'Decision Package', detail: '판단, 근거, KB 버전 고정' },
             ],
           },
           {
             label: '읽기 전용 근거',
-            description: '판단을 바꾸지 않고 운영자 검토에 필요한 근거만 조회',
+            description: '판단 계보와 관련 문서 조회',
             tone: 'secondary',
             source: { title: 'Decision Package', detail: '판단 결과와 조회 기준' },
             branches: [
-              { title: 'Neo4j 판단 계보', detail: 'Fact → Rule → Decision' },
-              { title: 'NEMI 문서 근거', detail: 'Qdrant 벡터 검색, SOP, 정책' },
+              { title: 'Neo4j 판단 계보', detail: 'Fact → Rule → Decision 저장과 조회' },
+              { title: 'NEMI 문서 근거', detail: 'Bedrock Titan 임베딩, Qdrant 검색' },
             ],
-            outcome: { title: 'Operator UI', detail: '판단과 두 근거를 함께 제시' },
+            outcome: { title: 'Vue 운영 화면', detail: 'FastAPI로 현장, 판단, 근거 연결' },
           },
           {
-            label: '사람의 통제',
-            description: '자동 송출 없이 검토, 승인, 감사 상태를 보존',
+            label: '사건 처리',
+            description: '역할별 권한과 작업 공간을 구분하고 상태와 처리 결과 보존',
             tone: 'control',
             nodes: [
               { title: '운영자 검토', detail: '계보, 문서, 영향 범위 확인' },
-              { title: '승인 / 보류', detail: '최종 조치 권한은 운영자' },
-              { title: '조치 / 감사 이력', detail: '감사 ID로 판단과 상태 재현' },
+              { title: '담당 지정 / 인계', detail: '조치 요청과 결과 확인' },
+              { title: '종결 / 재개 / 처리 이력', detail: 'FastAPI 업무 API와 SQLite에 보존' },
             ],
           },
         ],
       },
       decisions: [
         {
-          title: '단일 경보를 곧바로 위험으로 확정하지 않기',
-          problem: '카메라가 시야 제한을 감지해도 속도와 정체 흐름이 정상이라면 단일 경보만으로 같은 위험도와 조치를 적용하기 어려웠습니다.',
-          action: '관제 입력을 공통 Fact로 정리하고 ATMS가 지지 근거와 충돌 근거를 나누도록 했습니다. CF에는 출처 신뢰도, 감지 신뢰도와 최신성을 반영하고 후속 규칙으로 위험도와 대응 가이드를 조정했습니다.',
-          result: '정체와 시야 제한이 함께 나타난 사건은 운영자 승인 대상으로, 시야 제한만 있고 교통 흐름이 정상인 사건은 관찰 후 재확인 대상으로 구분했습니다.',
+          title: '경보 하나가 아니라 입력 조합으로 판단',
+          problem: '시야가 제한돼도 교통은 정상일 수 있습니다. 반대로 차로 차단과 영상 단절이 함께 발생하면 현장 확인과 대응을 우선해야 합니다. 경보 하나만으로 두 상황을 구분할 수는 없습니다.',
+          action: '서로 다른 입력을 공통 Fact로 정규화하고 NEO의 ATMS로 지지 근거와 충돌 근거를 함께 검토하도록 연결했습니다. 출처와 감지 신뢰도, 최신성을 CF 입력에 반영하고, 파생된 사실을 후속 규칙에 전달해 대응 가이드를 도출했습니다.',
+          result: '차로 차단과 영상 단절이 겹친 시나리오는 운영자 승인 대상으로, 시야 제한만 있고 교통 흐름이 정상인 시나리오는 관찰 후 재확인 대상으로 구분했습니다.',
         },
         {
-          title: 'RAG 설명이 규칙 판단을 덮어쓰지 않게 하기',
-          problem: '문서 검색과 설명 모델의 답을 판단 결과와 섞으면, 실제 규칙이 내린 결론과 검색으로 보충한 설명의 경계가 흐려질 수 있었습니다.',
-          action: 'NEO만 Decision Package의 판단과 우선순위를 만들도록 했습니다. Neo4j는 판단 계보를, NEMI는 관련 문서를 조회하고 설명 모델은 이 근거를 읽어 설명만 하도록 역할을 나눴습니다.',
-          result: '공개 파이프라인에서 NEO 판단을 유지한 채 Neo4j 20개 노드와 28개 관계, NEMI 문서 2건을 함께 반환하고 설명 화면에 연결했습니다.',
+          title: '판단 경로는 그래프로, 관련 문서는 의미 검색으로 조회',
+          problem: '어떤 입력과 규칙이 판단에 쓰였는지 추적하는 일과, 현재 상황에 맞는 문서를 찾는 일은 다릅니다. 두 근거를 한 목록에 섞으면 판단에 직접 쓰인 내용을 구분하기 어렵습니다.',
+          action: '입력과 규칙의 연결을 따라갈 수 있도록 판단 계보를 Neo4j에 저장했습니다. 관련 문서는 표현이 달라도 찾을 수 있도록 NEMI에서 Bedrock Titan 임베딩과 Qdrant 검색을 사용했습니다. 화면에서도 판단 경로와 문서 원문을 나눠 제공합니다.',
+          result: '계보에서는 판단에 사용한 입력과 규칙, 관측 시각을 추적하고, 문서에서는 원문과 적용 범위를 확인할 수 있습니다.',
         },
         {
-          title: '근거 확인과 운영자 조치를 한 번의 버튼으로 끝내지 않기',
-          problem: '권고 조치를 곧바로 송출하거나 확인 버튼만 두면 오탐과 현장 예외를 검토한 이유가 운영 기록에 남지 않습니다.',
-          action: 'VMS 조치는 승인 전 송출하지 않고, 보류와 오탐 요청은 확인 절차와 사유 입력을 거쳐 감사 ID와 함께 저장하도록 만들었습니다.',
-          result: '취소하면 기록이 남지 않고, 사유를 입력한 경우에만 운영자 조치가 한 건 생성되는 흐름을 PC와 모바일에서 확인했습니다.',
+          title: '판단 근거를 열어도 현장은 계속 확인',
+          problem: '초기 화면에서는 판단 탭을 열면 현장 이미지가 사라졌습니다. 관제요원이 판단 내용과 현장을 비교하려면 탭을 계속 오가야 했습니다.',
+          action: '현장 영역을 검토 탭 밖에 두고 판단, 계보, 문서와 함께 볼 수 있도록 분리했습니다. 화면 높이가 낮을 때는 현장과 검토 영역을 좌우로 배치했습니다.',
+          result: '검토 탭을 전환해도 선택 사건의 현장이 유지됩니다. 사건을 바꾸면 제목과 현장 출처도 함께 바뀌어 다른 사건의 영상과 혼동하지 않도록 했습니다.',
+        },
+        {
+          title: '담당 지정부터 결과 확인과 종결까지 연결',
+          problem: '초기 조치 기록만으로는 다음 담당자가 누구인지, 전달한 조치가 실제로 처리됐는지 이어서 확인하기 어려웠습니다.',
+          action: '조치 요청과 처리 완료를 구분하기 위해 담당 지정, 인계와 인수, 결과 확인, 종결과 재개를 상태 전이로 관리했습니다. 역할별 쓰기 권한을 적용하고 방문자의 작업은 운영 기록과 분리했습니다.',
+          result: '사건별로 현재 담당자와 처리 단계를 확인하고, 인계와 조치 결과, 종결 사유를 한 이력에서 조회할 수 있습니다. 인계 취소나 전달 실패는 완료 처리와 구분해 남깁니다.',
         },
       ],
       result: [
-        '여러 관제 입력을 함께 검토해 지지 근거가 충분한 사건과 충돌 신호가 있는 사건의 대응 수준을 구분했습니다.',
-        '판단에 사용한 Fact, Rule, 신뢰도, 충돌 근거와 권고 조치를 Decision Package와 계보에 남겨 운영 화면에서 재현했습니다.',
-        '운영자가 취소하면 기록이 남지 않고, 사유를 입력한 경우에만 감사 이력이 한 건 생성됩니다.',
+        '여러 입력을 비교한 규칙 판단과 관련 문서를 구분해 검토할 수 있습니다.',
+        '판단과 계보를 탐색하는 동안에도 선택 사건의 현장 화면을 유지합니다.',
+        '담당 지정부터 인계, 조치 결과 확인, 종결과 재개까지 사건별 처리 이력으로 조회합니다.',
       ],
       verification: [
-        'Python 단위 테스트 219건과 Vue 프로덕션 빌드가 통과했습니다.',
-        'AWS 공개 화면 6개를 PC와 모바일에서 확인하고, 운영자 조치의 취소와 사유 기록 흐름을 다시 점검했습니다.',
-        '실시간 파이프라인은 3.15초에 완료됐으며 Neo4j 20노드, 28관계와 NEMI 문서 2건이 연결됐습니다.',
+        '인계 취소와 인수, 전달 실패 후 재시도, 조치 결과 확인, 종결과 재개를 수행하고 담당자와 상태, 처리 이력을 대조했습니다.',
+        '운영 화면에서 사건 전환과 근거 탐색 중 현장 표시를 확인하고, 이력 검색과 예지 분석 결과를 확인했습니다.',
       ],
+      verificationBoundaryLabel: '검증 환경',
       verificationBoundary:
-        '테스트 데이터에서는 추론 결과가 예상대로 나오는지 확인했습니다. 현장 데이터로 정량 평가하지 못해 실환경 정확도와 일반화 성능은 추가 검증이 필요합니다. AI4I와 C-MAPSS는 각각 참조 규칙과 시뮬레이션 기준값으로 사용했습니다.',
+        '시나리오와 재생 데이터로 기능을 검증했습니다. 현장 정확도와 실제 CCTV 수신, VMS 송출은 평가 범위에 포함하지 않았습니다. 예지 분석의 AI4I와 C-MAPSS는 참조 규칙과 시뮬레이션 기준값으로 사용했습니다.',
     },
-    role: '개인 프로젝트, 판단 근거 연동 구조와 NEO 추론 경계, FastAPI 운영 UI, AWS 배포 구현',
-    stack: ['C/C++', 'Python / FastAPI', 'Vue 3', 'Neo4j / Qdrant', 'Docker / AWS EC2'],
-    image: assetPath('images/project-neo-v2-dashboard.png'),
-    imageAlt: 'NEO 사건 판단과 운영자 조치 검토 화면',
+    stack: ['C/C++', 'Python / FastAPI', 'Vue 3 / TypeScript', 'Neo4j / Qdrant', 'Amazon Bedrock', 'Docker / AWS EC2'],
+    image: assetPath('images/project-neo-v2-dashboard.jpg'),
+    imageAlt: '현장을 유지한 채 NEO 판단과 담당자의 다음 조치를 확인하는 교통관제 화면',
     screenshots: [
       {
-        src: assetPath('images/project-neo-v2-dashboard.png'),
-        alt: 'NEO 사건 판단과 운영자 조치 검토 화면',
-        caption: '사건, 판단 근거, 현재 조치를 한 화면에서 검토',
+        src: assetPath('images/project-neo-v2-dashboard.jpg'),
+        alt: '현장 이미지, 판단 검토, 다음 조치를 함께 표시하는 NEO 운영 화면',
+        caption: '현장을 확인하면서 판단 근거와 다음 조치를 함께 검토',
       },
       {
         src: assetPath('images/project-neo-decision-pipeline-live.png'),
@@ -396,19 +410,19 @@ export const featuredProjects: FeaturedProject[] = [
         caption: '운영 화면에 표시되기 전, 같은 실행 ID로 규칙 추론, 문서 근거 검색과 Neo4j 계보를 연결',
       },
       {
-        src: assetPath('images/project-neo-v2-lineage.png'),
-        alt: 'NEO Neo4j 전체 판단 계보 화면',
-        caption: '관측 Fact부터 규칙과 판단까지 이어지는 Neo4j 계보',
+        src: assetPath('images/project-neo-v2-lineage.jpg'),
+        alt: '입력, 적용 규칙, 판단, 권고 조치와 채택 근거를 표시하는 Neo4j 전체 계보',
+        caption: '전체 계보에서 입력, 적용 규칙, 판단과 권고 조치의 연결 확인',
       },
       {
-        src: assetPath('images/project-neo-v2-predictive.png'),
-        alt: 'NEO 설비 예지와 이상 분석 화면',
-        caption: 'LSTM 잔차와 기준선을 거쳐 이상 신호를 NEO 판단으로 연결',
+        src: assetPath('images/project-neo-v2-predictive.jpg'),
+        alt: '특정 시점의 입력값과 LSTM 예측값, 차이를 툴팁으로 표시한 NEO 예지 분석 그래프',
+        caption: '입력값과 LSTM 예측값의 차이를 비교하고 NEO 판단 확인',
       },
       {
-        src: assetPath('images/project-neo-v2-logs.png'),
-        alt: 'NEO 판단과 조치 감사 이력 화면',
-        caption: '사건별 판단과 운영자 조치를 감사 ID로 재현',
+        src: assetPath('images/project-neo-v2-logs.jpg'),
+        alt: '선택 사건의 처리 시각, 조치 사유와 당시 판단 링크를 표시하는 처리 이력 화면',
+        caption: '사건별 처리 기록과 사유를 확인하고 당시 판단으로 이동',
       },
     ],
     terms: [
@@ -430,7 +444,7 @@ export const featuredProjects: FeaturedProject[] = [
       {
         term: 'NEMI',
         description:
-          '직접 만든 문서 근거 검색 모듈입니다. 판단 결과를 바꾸지 않고 관련 SOP와 정책 문서를 찾아 운영자 검토 화면에 제공합니다. Qdrant 벡터 검색을 사용하며, 단독 실행 시에는 어휘 기반 검색으로 전환됩니다.',
+          '직접 만든 문서 검색 모듈입니다. Amazon Bedrock의 Titan Text Embeddings V2로 1024차원 벡터를 만들고, Qdrant에서 공공 기준과 참고 문서를 검색합니다.',
       },
     ],
     screensTitle: '판단 근거와 운영 기록',
@@ -443,8 +457,8 @@ export const featuredProjects: FeaturedProject[] = [
         url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/blob/main/docs/deployment/AWS_EC2_DEPLOYMENT.md',
       },
       {
-        label: 'v2.0.0 릴리즈 기록',
-        url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/blob/main/docs/releases/NEO_V2.0.0.md',
+        label: 'v2.1.0 개선 기록',
+        url: 'https://github.com/hannip0461/NEO-Intelligent-ITS-Operator/releases/tag/v2.1.0',
       },
     ],
   },
@@ -456,12 +470,12 @@ export const featuredProjects: FeaturedProject[] = [
     title: 'HI-FIVE Smart Tolling + PdM PoC',
     period: '팀 프로젝트 (1차 2026.04.27~06.01, 2차 06.04~06.30)',
     claim: '현장 Edge AI로 차량 번호판을 인식하고, 망 장애 대응과 품질 저하 예측까지 연결한 스마트 톨링 시스템입니다.',
-    badge: 'Edge AI, 망 이중화, 예지보전',
+    badge: '현장 번호판 인식, 망 이중화, 인식 품질 이상 분석',
     summary:
       '1차에서는 영상 추론을 현장 Jetson에서 처리하고 결과만 중앙으로 보내며, 주망 장애 시 예비망으로 전환하도록 구성했습니다. 2차에서는 세 가지 분석 방식으로 즉시 이상부터 장기적인 품질 저하 흐름까지 확인했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '영상 추론을 중앙에서 처리하면 네트워크와 서버 부담이 커지고, 망 장애나 인식 품질 저하가 생기면 통행 결과의 신뢰도도 함께 낮아질 수 있었습니다.',
+      problem: '영상 전송에 따른 서버와 네트워크 부담을 줄이기 위해, 현장에서 번호판을 인식하고 결과만 전송하는 스마트 톨링 시스템을 만들었습니다. 망 장애와 인식 품질 저하에도 대응할 수 있도록 예비망 전환과 품질 분석을 연결했습니다.',
       solution: '현장 Edge에서 번호판을 인식해 결과 이벤트만 전송하고 주망과 예비망을 구성했습니다. 품질 지표는 Rule-Based, Isolation Forest, LSTM-AE로 나눠 분석했습니다.',
       result: 'Edge AI 통행 이벤트, 주망과 예비망 전환, 세 가지 분석 방식의 품질 탐지와 알림을 단계별 검증',
     },
@@ -614,7 +628,7 @@ export const featuredProjects: FeaturedProject[] = [
     proof: {
       problemLabel: '개요',
       problem:
-        '네트워크 재전송, 늦게 도착한 이벤트, 동시 요청이 겹치면 이어보기 위치, 최대 시청 위치, 완료 시각이 서로 다른 상태를 가리킬 수 있었습니다.',
+        '학습 기록이 재전송되거나 순서가 뒤바뀌어도 이어보기 위치와 수강 완료 상태가 잘못 갱신되지 않도록, 기록을 저장하고 진행 상태를 관리하는 API를 만들었습니다.',
       solution:
         '이벤트 원장을 먼저 기록한 뒤 진행 상태를 key-range lock으로 갱신하고, 두 작업을 같은 트랜잭션에서 commit했습니다. 중복 키는 rollback 후 payload hash를 다시 비교해 정상 중복과 충돌을 분리했습니다.',
       result:
@@ -674,7 +688,6 @@ export const featuredProjects: FeaturedProject[] = [
       verificationBoundary:
         '신뢰된 외부 플레이어 서버와 루프백 전용 Classic ASP 읽기 어댑터를 기준으로 검증했습니다. 리버스 프록시 배치, 운영 부하, 장기 토큰 운용은 추가 검증이 필요합니다.',
     },
-    role: '개인 프로젝트, API 계약과 SQL Server 트랜잭션, 동시성 제어, 테스트, IIS 호환 읽기 경계',
     stack: ['PHP 8.3', 'Slim 4', 'SQL Server 2022', 'PDO_SQLSRV', 'OpenAPI', 'Docker', 'Classic ASP'],
     image: assetPath('images/project-edusync-swagger.png'),
     imageAlt: 'EduSync Learning API OpenAPI 문서 화면',
@@ -726,7 +739,7 @@ export const featuredProjects: FeaturedProject[] = [
       '고객은 상품 탐색부터 옵션 선택, 장바구니와 주문까지 자연스럽게 이어갈 수 있도록 구성했습니다. 관리자는 상품, 재고, 주문과 회원을 한곳에서 관리하며, JWT 인증과 권한에 따라 화면과 기능을 구분했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '고객과 관리자에게 필요한 정보와 행동은 다르지만, 상품과 주문 상태는 같은 기준으로 이어져야 했습니다.',
+      problem: '고객의 가구 구매와 관리자의 재고 및 주문 처리를 하나의 서비스에서 이어갈 수 있도록, 구매 화면과 관리자 기능을 함께 갖춘 가구 쇼핑몰을 만들었습니다.',
       solution: 'Vue 3와 Pinia로 구매 흐름을 구성하고, JWT 인증과 권한에 따라 화면, 라우트, API 접근 범위를 나눴습니다.',
       result: '비회원, 회원, 관리자 구매 및 운영 흐름 브라우저 시나리오 59건 통과',
     },
@@ -848,7 +861,7 @@ export const featuredProjects: FeaturedProject[] = [
       '지역, 테마, 문화, 교통 정보를 같은 화면 구조로 정리하고, 회원가입, 로그인, 마이페이지, 여행 후기와 관리자 기능을 Spring MVC로 연결했습니다.',
     proof: {
       problemLabel: '개요',
-      problem: '인천의 관광 정보를 한곳에서 살펴보고 회원들이 여행 후기를 나눌 수 있는 서비스가 필요했습니다.',
+      problem: '인천의 관광 정보를 한곳에서 찾아보고 여행 경험도 나눌 수 있도록, 지역별 관광 안내와 회원, 여행 후기 게시판을 갖춘 관광 웹 서비스를 만들었습니다.',
       solution: '공통 레이아웃으로 관광 정보를 정리하고, Spring MVC와 PostgreSQL로 회원, 후기, 관리자 기능을 연결했습니다.',
       result: '관광 정보 탐색부터 후기 작성과 관리자 운영까지 주요 흐름 확인',
     },
@@ -985,7 +998,7 @@ export const capabilities: CapabilityGroup[] = [
     items: [
       { label: '규칙 추론 엔진', evidence: '모아데이타 실무 유지보수, NEO에서 ITS 관제 도메인에 적용' },
       { label: 'Ontology / Neo4j', evidence: 'NEO: 관측 Fact, 규칙, 판단 관계를 계보로 저장하고 재조회' },
-      { label: 'RAG / Qdrant', evidence: 'NEO 현재 구성: 96차원 해시 임베딩과 Qdrant 코사인 검색으로 판단과 분리한 근거 조회' },
+      { label: 'RAG / Qdrant', evidence: 'NEO: Bedrock Titan 1024차원 임베딩과 Qdrant 검색으로 규칙 판단과 분리한 문서 근거 조회' },
       { label: 'YOLO / CRNN-OCR', evidence: 'HI-FIVE: 차량 번호판 탐지와 문자 판독' },
     ],
   },

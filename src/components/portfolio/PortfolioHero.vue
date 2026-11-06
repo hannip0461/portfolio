@@ -40,7 +40,7 @@ const coreStack = ['C/C++ / Rule Engine', 'Java / Spring Boot', 'Python / FastAP
             <span>01</span>
             <div>
               <strong>NEO</strong>
-              <p>여러 관제 신호 검토 → 위험도와 대응 수준 조정</p>
+              <p>규칙 기반 위험 판단부터 담당자의 조치와 처리 완료까지</p>
             </div>
           </li>
           <li>
