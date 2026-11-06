@@ -858,7 +858,7 @@ export const featuredProjects: FeaturedProject[] = [
     claim: '지역과 테마별 관광 정보를 한곳에서 둘러보고 여행 후기를 나눌 수 있는 인천 관광 서비스입니다.',
     badge: 'Spring MVC, Thymeleaf, 권한 제어',
     summary:
-      '지역, 테마, 문화, 교통 정보를 같은 화면 구조로 정리하고, 회원가입, 로그인, 마이페이지, 여행 후기와 관리자 기능을 Spring MVC로 연결했습니다.',
+      '지역, 테마, 문화, 교통 정보를 공통 화면 구조로 정리했습니다. 팀에서는 Spring MVC로 회원, 여행 후기와 관리자 기능을 연결했습니다.',
     proof: {
       problemLabel: '개요',
       problem: '인천의 관광 정보를 한곳에서 찾아보고 여행 경험도 나눌 수 있도록, 지역별 관광 안내와 회원, 여행 후기 게시판을 갖춘 관광 웹 서비스를 만들었습니다.',
@@ -923,8 +923,8 @@ export const featuredProjects: FeaturedProject[] = [
       ],
       approach: [
         'Thymeleaf 공통 레이아웃으로 관광 카테고리를 같은 화면 구조에 담았습니다.',
-        'Spring MVC로 회원가입, 로그인, 마이페이지와 여행 후기 게시판을 구현했습니다.',
-        '회원과 관리자의 권한에 맞춰 이용할 수 있는 기능을 나눴습니다.',
+        '팀에서는 Spring MVC로 회원가입, 로그인, 마이페이지와 여행 후기 게시판을 구현했습니다.',
+        '화면에서는 회원과 관리자의 권한에 따라 메뉴와 기능을 구분했습니다.',
       ],
       result: [
         '관광 정보 탐색부터 여행 후기 작성과 관리자 운영까지 하나의 서비스 흐름으로 연결했습니다.',
@@ -971,14 +971,14 @@ export const experience: ExperienceItem[] = [
     period: '2024.11~2025.12',
     position: '현장 행정 및 출역 관리 (계약직)',
     detail:
-      '현대자동차 울산 도장공장에서 출역 인원과 근태 자료를 관리 자료로 정리하고, 자재 입출고와 안전 서류 정리를 보조했습니다.',
+      '현대자동차 울산 도장공장에서 출역 인원과 근태 자료를 정리하고, 자재 입출고와 안전 서류 정리를 보조했습니다.',
   },
   {
     company: '(주)모아데이타',
     period: '2021.07~2022.12',
     position: 'AI Lab 센터 (입사 당시 AI연구개발팀) | 매니저 (정규직)',
     detail:
-      'Windows와 Linux 환경에 맞춰 사내 솔루션과 헬스케어용 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 코드 흐름을 추적해 오류와 메모리 누수 가능성을 점검했습니다. Rule과 Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진 Fact로 변환해 연결했습니다.',
+      'Windows와 Linux 환경에서 사내 솔루션과 헬스케어용 C/C++ 기능을 단독으로 개발하고 유지보수했습니다. 규칙 추론 엔진의 코드 흐름을 추적해 오류와 메모리 누수 가능성을 점검했습니다.\n온톨로지와 Rule/Fact 지식베이스를 구축하고, MariaDB 데이터와 로그를 엔진 Fact로 변환해 연결했습니다.\n개발 업무 외에 논문 연구도 병행했습니다.',
   },
 ]
 
@@ -988,7 +988,7 @@ export const capabilities: CapabilityGroup[] = [
     items: [
       { label: 'C / C++', evidence: '모아데이타 실무: 규칙 추론 엔진 단독 유지보수, MariaDB 데이터를 엔진 Fact로 변환' },
       { label: 'Python / FastAPI', evidence: 'NEO, HI-FIVE: 관제 오케스트레이션, Edge Ingress, 품질 분석 API' },
-      { label: 'Java / Spring Boot', evidence: '가구, 인천, HI-FIVE: 주문, 관리자 API, 회원, 게시판 MVC, 통행 저장' },
+      { label: 'Java / Spring Boot', evidence: 'HI-FIVE: PdM API와 DB 연동 검증' },
       { label: '.NET / Microsoft Orleans', evidence: 'ASTRA: 플레이어별 명령 직렬화와 멱등 처리' },
       { label: 'PostgreSQL / MariaDB', evidence: 'ASTRA, HI-FIVE, 모아데이타: 원장, 감사, 멱등 응답, 통행, 품질 지표' },
     ],
@@ -1016,7 +1016,7 @@ export const educationItems: EducationItem[] = [
   {
     title: '[에스트래픽] 스마트 모빌리티 DX Academy',
     period: '2025.12.29~2026.07.02',
-    detail: '스마트 모빌리티와 ITS를 중심으로 풀스택 개발 과정을 이수했으며, 총 4회의 팀 프로젝트에서 팀장을 맡았습니다.',
+    detail: 'Java/Spring Boot, Vue, Python, SQL로 웹 개발을 배우고 YOLO/OCR 기반 영상 인식을 학습했습니다. Git/GitHub 협업과 Docker, AWS 배포도 실습했습니다.\n에스트래픽과 협업해 차량 번호판 인식과 통행 정보 처리를 연결한 스마트 톨링 프로젝트를 수행했습니다. 교육 중 총 4회의 팀 프로젝트에서 팀장을 맡았습니다.',
   },
   {
     title: '유원대학교 스마트IT학과',

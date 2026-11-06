@@ -48,7 +48,7 @@ const isArchitectureSelected = computed(
 )
 const isLightboxCropped = computed(() => Boolean(selectedScreenshot.value?.lightboxCrop))
 const resourceLinks = computed(() => {
-  const resources = props.project.resources?.filter((resource) => resource.kind !== 'demo') ?? []
+  const resources = props.project.resources ?? []
   if (resources.length) return resources
   if (props.project.link) return [{ label: props.project.linkLabel ?? '프로젝트 링크', url: props.project.link }]
   return []
@@ -156,6 +156,19 @@ onUnmounted(() => {
           <X :size="20" aria-hidden="true" />
         </button>
       </header>
+
+      <nav v-if="resourceLinks.length" class="project-modal-resources" aria-label="프로젝트 관련 자료">
+        <a
+          v-for="resource in resourceLinks"
+          :key="resource.url"
+          :href="resource.url"
+          :target="isExternalLink(resource.url) ? '_blank' : undefined"
+          :rel="isExternalLink(resource.url) ? 'noreferrer' : undefined"
+        >
+          {{ resource.label }}
+          <ArrowUpRight :size="15" aria-hidden="true" />
+        </a>
+      </nav>
 
       <section class="project-modal-hero" aria-label="프로젝트 핵심 요약">
         <figure v-if="heroScreenshot" class="project-modal-featured-media">
