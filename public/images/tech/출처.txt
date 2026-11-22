@@ -1,0 +1,14 @@
+기술 아이콘 출처
+
+Devicon v2.17.0: https://github.com/devicons/devicon/tree/v2.17.0
+MIT 라이선스 전문은 Devicon-LICENSE.txt에 있습니다.
+
+Simple Icons v14.15.0: https://github.com/simple-icons/simple-icons/tree/14.15.0
+.NET, Spring Boot, Spring Security, Elastic, JSON Web Tokens 아이콘에 사용했습니다.
+원본 컬렉션은 CC0-1.0으로 제공되며 각 아이콘에는 해당 브랜드의 색을 적용했습니다.
+
+SVG Logos (Iconify 배포본 @iconify-json/logos 1.2.9): https://github.com/gilbarbara/logos
+Qdrant, Pinia, Amazon EC2, Slim 아이콘에 사용했습니다. 컬렉션 라이선스는 CC0-1.0입니다.
+https://creativecommons.org/publicdomain/zero/1.0/
+
+상표와 로고는 각 권리자에게 귀속됩니다. 여기서는 사용 기술을 식별하는 용도로만 표시합니다.

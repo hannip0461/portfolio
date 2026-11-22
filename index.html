@@ -1,22 +1,65 @@
 <!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="백엔드 설계, AI 연동, 운영 검증 프로젝트를 정리한 김민진 개발자 포트폴리오" />
-    <link rel="canonical" href="https://hannip0461.github.io/portfolio/" />
-    <link rel="icon" type="image/png" href="%BASE_URL%images/brand-mj-mark.png?v=3" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="ko_KR" />
-    <meta property="og:title" content="김민진 | 응용 소프트웨어 개발자" />
-    <meta property="og:description" content="ASTRA, NEO, HI-FIVE를 중심으로 설계, 구현, 검증 과정을 정리한 프로젝트 포트폴리오" />
-    <meta property="og:url" content="https://hannip0461.github.io/portfolio/" />
-    <meta property="og:image" content="https://hannip0461.github.io/portfolio/images/profile-kim-minjin.png" />
-    <meta name="twitter:card" content="summary" />
-    <title>김민진 | 응용 소프트웨어 개발자</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' file:; script-src 'self' file:; img-src 'self' file: data:; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>김민진 포트폴리오</title>
+<meta name="description" content="김민진이 만든 개인 프로젝트와 팀 프로젝트에서 맡은 일, 설계 과정과 시험 결과를 소개합니다.">
+<link rel="canonical" href="https://hannip0461.github.io/portfolio/">
+<meta property="og:type" content="website"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="김민진 포트폴리오"><meta property="og:url" content="https://hannip0461.github.io/portfolio/"><meta property="og:image" content="https://hannip0461.github.io/portfolio/images/profile-kim-minjin.png"><meta name="twitter:card" content="summary">
+<link rel="icon" href="/images/brand-mj-mark.png"><link rel="stylesheet" href="/assets/base.css"><link rel="stylesheet" href="/assets/portfolio.css"><script src="/assets/navigation.js" defer></script><link rel="stylesheet" href="/assets/figure-view.css"><script src="/assets/figure-view.js" defer></script></head>
+<body class="cover-page"><a class="skip" href="#body-start">본문으로 건너뛰기</a><div id="wrapper"><main id="main"><div class="inner"><header id="header"><a href="index.html" class="logo" aria-label="김민진 포트폴리오 홈"><span>포트폴리오</span></a><nav class="utility" aria-label="외부 연락처"><a href="https://github.com/hannip0461" rel="noreferrer">GitHub</a><a href="mailto:kimmj646676@gmail.com">이메일</a></nav><details class="mobile-menu"><summary>목차</summary><nav aria-label="휴대폰 목차"><a href="index.html#about">소개</a><a href="index.html#projects">프로젝트</a><a href="index.html#presentations">팀 프로젝트 발표</a><a href="index.html#experience">경력과 교육</a><a href="index.html#skills">기술과 사용 경험</a><a href="index.html#contact">연락처</a><a class="menu-github" href="https://github.com/hannip0461" rel="noreferrer">개인 GitHub</a></nav></details></header><div id="body-start" tabindex="-1"></div>
+<section id="about" class="author-intro" aria-labelledby="author-name">
+<img class="author-portrait" src="/images/profile-kim-minjin.png" alt="" width="1254" height="1254" fetchpriority="high">
+<div><h1 id="author-name">김민진</h1><p class="author-note">새로운 걸 배우면 <span>어디에 써 볼 수 있을지부터 생각합니다.</span><br><span>해 보고 싶은 게 생기면</span> <span>아직 익숙하지 않은 분야라도</span> <span>작게 시작해 보면서 배웁니다.</span></p><nav aria-label="주요 내용"><a class="all-work" href="#projects">프로젝트</a><a class="featured-jump" href="#work-neo">NEO</a><a class="featured-jump" href="#work-astra">ASTRA</a><a href="#presentations">팀 프로젝트 발표</a><a href="#experience">경력과 교육</a></nav></div>
+</section>
+<section id="projects" aria-labelledby="projects-title"><header class="major"><h2 id="projects-title">프로젝트</h2></header><div class="work-index">
+<article class="work-entry" id="work-neo">
+<header><p class="work-kind">개인 프로젝트</p><h3><a href="project-neo.html">NEO 교통관제</a></h3><p class="work-purpose">도로에서 발생한 경보의 원인을 확인하는 관제 시스템</p></header>
+<p class="work-role">기존 추론 엔진에 교통 데이터를 연결하고 경보의 근거와 사건 처리 이력을 조회하는 화면을 만들었습니다.</p>
+<figure class="work-proof"><a class="work-original" href="images/project-neo-v2-lineage.jpg" aria-label="NEO 경보 판단 경로 크게 보기"><span class="work-window system-screen"><img src="/images/project-neo-v2-lineage.jpg" width="1600" height="1320" alt="터널 차로 차단과 영상 단절이 어떤 규칙을 거쳐 현장 확인 요청으로 이어졌는지 보여주는 그래프" fetchpriority="high"></span></a><figcaption>터널 경보를 선택하면 어떤 관측값과 규칙 때문에 현장 확인을 권고했는지 따라갈 수 있습니다.</figcaption></figure>
+</article>
+<article class="work-entry" id="work-astra">
+<header><p class="work-kind">개인 프로젝트</p><h3><a href="project-astra.html">ASTRA 게임 운영 서버</a></h3><p class="work-purpose">콘텐츠 배포와 플레이어 보상을 관리하는 서버</p></header>
+<p class="work-role">운영 서버와 관리자 화면을 만들고, 한 플레이어가 같은 보상을 여러 번 청구하는 경우를 시험했습니다.</p>
+<figure class="work-proof"><a class="work-original" href="images/project-astra-content-ops.png" aria-label="ASTRA 콘텐츠 배포와 롤백 화면 크게 보기"><span class="work-window system-screen"><img src="/images/project-astra-content-ops.png" width="1440" height="1000" alt="현재 배포한 콘텐츠와 새 배포 초안, 이전 버전으로 되돌리는 메뉴가 있는 관리자 화면"></span></a><figcaption>운영자는 현재 배포된 버전을 확인하고 문제가 생기면 이전 버전으로 되돌릴 수 있습니다. <a href="project-astra.html#reward-reclaim-result">보상 재청구 시험 결과</a></figcaption></figure>
+</article>
+<article class="work-entry" id="work-hifive">
+<header><p class="work-kind">에스트래픽 연계 팀 프로젝트</p><h3><a href="project-hifive.html">HI-FIVE 스마트 톨링</a></h3><p class="work-purpose">차량 번호판을 읽어 통행을 기록하는 시스템</p></header>
+<p class="work-role">팀장으로 차량 단말의 통행 기록을 서버로 보내는 통신을 맡았습니다.</p>
+<figure class="work-proof"><a class="work-original" href="images/project-hifive-dashboard.png" aria-label="HI-FIVE 관제 화면 크게 보기"><span class="work-window full-screen"><img src="/images/project-hifive-dashboard.png" width="1918" height="920" alt="두 차로의 차량 영상과 통행 기록, LTE 전환 알림이 표시된 관제 화면" loading="lazy"></span></a><figcaption>유선망을 끊은 뒤에도 서버는 LTE 예비망으로 통행 기록을 받았습니다. <a href="project-hifive.html#phase1">전송 시간 비교</a></figcaption></figure>
+</article>
+<article class="work-entry" id="work-edusync">
+<header><p class="work-kind">개인 프로젝트</p><h3><a href="project-edusync.html">EduSync 강의 이어보기</a></h3><p class="work-purpose">학습자가 마지막으로 본 위치를 기억하는 서비스</p></header>
+<p class="work-role">시청 이력과 현재 재생 위치를 따로 저장해, 늦게 온 기록과 사용자가 직접 되감은 기록을 구분했습니다.</p>
+<figure class="work-proof"><a class="work-original" href="images/project-edusync-swagger.png" aria-label="EduSync 학습 기록 API 화면 크게 보기"><span class="work-window api-preview"><img src="/images/project-edusync-swagger.png" width="1600" height="1400" alt="학습 이벤트 수신과 학습 진행 상태 조회 기능이 보이는 EduSync의 Swagger UI" loading="lazy"></span></a><figcaption>직접 되감은 뒤 이어보기 위치는 50초, 최장 시청 위치는 150초로 남았습니다. <a href="https://hannip0461.github.io/edusync-learning-api/demo-result.html" rel="noreferrer">HTTP 요청과 SQL Server 검증 결과</a></figcaption></figure>
+</article>
+<article class="work-entry" id="work-furniture">
+<header><p class="work-kind">팀 프로젝트</p><h3><a href="project-furniture.html">가구 쇼핑몰</a></h3><p class="work-purpose">가구 옵션 선택부터 주문까지 이어지는 온라인 상점</p></header>
+<p class="work-role"><span class="read-unit">팀장으로 구매 화면을 설계하고 Vue로 구현했습니다.</span> <span class="read-unit">고객용 화면과 관리자 메뉴의 최종 점검도 맡았습니다.</span></p>
+<figure class="work-proof"><a class="work-original" href="images/project-furniture-home.jpg" aria-label="가구 쇼핑몰 메인 화면 크게 보기"><span class="work-window full-screen"><img src="/images/project-furniture-home.jpg" width="1915" height="1077" alt="거실 사진 아래에 가구 카테고리와 추천 상품을 배치한 쇼핑몰 메인 화면" loading="lazy"></span></a><figcaption>옵션 선택부터 주문, 권한별 메뉴까지 브라우저에서 59개 시나리오를 점검했습니다.</figcaption></figure>
+</article>
+<article class="work-entry" id="work-incheon">
+<header><p class="work-kind">팀 프로젝트</p><h3><a href="project-incheon.html">인천 문화관광 서비스</a></h3><p class="work-purpose">관광지를 찾아보고 여행 후기를 나누는 사이트</p></header>
+<p class="work-role">팀장으로 공통 메뉴와 관광지 목록을 맡아, 어느 화면에서나 지역별 목록과 테마별 목록을 오갈 수 있게 했습니다.</p>
+<figure class="work-proof"><a class="work-original" href="images/project-incheon-home.jpg" aria-label="인천 문화관광 메인 화면 크게 보기"><span class="work-window full-screen"><img src="/images/project-incheon-home.jpg" width="1440" height="691" alt="야경을 배경으로 ‘인천에 상륙하다’가 보이는 메인 화면" loading="lazy"></span></a><figcaption>비회원으로 관광지를 찾고, 회원 계정으로 여행 후기를 남기는 과정을 확인했습니다.</figcaption></figure>
+</article>
+</div></section>
+<section id="presentations" aria-labelledby="presentation-title">
+<header class="major"><h2 id="presentation-title">팀 프로젝트 발표</h2></header>
+<article class="talk-feature" aria-labelledby="talk-hifive-title">
+<h3 id="talk-hifive-title">에스트래픽 본사에서 발표한 <span>HI-FIVE</span></h3>
+<p><span class="read-unit">에스트래픽과 함께한 스마트 톨링 프로젝트에서 팀장을 맡았습니다.</span> <span class="read-unit">본사 발표에서는 팀이 만든 시스템의 작동&nbsp;방식과 시험&nbsp;결과를 직접 소개했습니다.</span></p>
+<div class="talk-pair">
+<figure><a class="case-cover-image" href="images/talk-hifive-hq.jpg" aria-label="에스트래픽 본사 발표 사진 크게 보기"><img src="/images/talk-hifive-hq.jpg" width="1920" height="1080" loading="lazy" alt="마이크를 들고 유선망과 LTE 전송 성능 그래프 옆에서 발표하는 김민진"></a>
+<figcaption>본사 발표: 통신 방식별 시험 결과</figcaption></figure>
+<figure><a class="case-cover-image" href="images/talk-hifive-class.jpg" aria-label="HI-FIVE 교육장 발표 사진 크게 보기"><img src="/images/talk-hifive-class.jpg" width="1920" height="1080" loading="lazy" alt="원본 도로 영상과 차로별로 자른 영상을 나란히 띄우고 손으로 가리키는 김민진"></a>
+<figcaption>교육장 발표: 차량 번호판 인식 방식</figcaption></figure>
+</div>
+</article>
+<article class="talk-other" aria-labelledby="talk-furniture-title">
+<div><h3 id="talk-furniture-title">가구 쇼핑몰 팀 발표</h3>
+<p>시스템 아키텍처부터 사용자 스토리보드까지 발표했습니다.</p></div>
+<figure><a class="case-cover-image" href="images/talk-furniture-product.jpg" aria-label="가구 쇼핑몰 발표 사진 크게 보기"><img src="/images/talk-furniture-product.jpg" width="1920" height="1080" loading="lazy" alt="가구 쇼핑몰 팀 발표에서 상품 상세 화면을 청중에게 설명하는 김민진"></a></figure>
+</article>
+</section>
+<section id="experience"><header class="major"><h2>경력과 교육</h2></header><h3 class="group-label">경력</h3><dl class="timeline"><dt>2021.07~2022.12</dt><dd><h3>(주)모아데이타</h3><p class="meta">AI Lab 센터 (입사 당시 AI연구개발팀) | 매니저 (정규직)</p><p><span class="read-unit">규칙 추론 엔진의 C/C++ 기능을 개발하고 Windows와 Linux에서 유지보수했습니다.</span> <span class="read-unit">온톨로지와 Rule/Fact 지식베이스를 구성하고 MariaDB 데이터와 로그를 엔진 입력으로 변환했습니다.</span> <span class="read-unit">관련 논문을 조사하고 적용 가능성을 검토했습니다.</span></p></dd><dt>2024.11~2025.12</dt><dd><h3>대영전기</h3><p class="meta">현장 행정 및 출역 관리 (계약직)</p><p>현대자동차 울산 도장공장에서 출역 인원과 근태 자료를 정리하고, 자재 입출고와 안전 서류 정리를 보조했습니다.</p></dd></dl><h3 class="group-label">교육</h3><dl class="timeline"><dt>2025.12.29~2026.07.02</dt><dd><h3>[에스트래픽] 스마트&nbsp;모빌리티 DX&nbsp;Academy</h3><p><span class="read-unit">Java/Spring Boot, Vue, Python, SQL로 웹 개발을 배우고 YOLO/OCR 기반 영상 인식을 학습했습니다.</span> <span class="read-unit">Git/GitHub 협업과 Docker, AWS 배포도 실습했습니다.</span></p><p><span class="read-unit">에스트래픽과 협업해 차량 번호판 인식과 통행 정보 처리를 연결한 스마트 톨링 프로젝트를 수행했습니다.</span> <span class="read-unit">교육 중 총 4회의 팀 프로젝트에서 팀장을 맡았습니다.</span></p></dd><dt>2015.03~2022.02</dt><dd><h3>유원대학교 스마트IT학과</h3><p>학사 졸업, 학점 4.13 / 4.5</p><p>자료구조, 알고리즘, 데이터베이스 등 CS 기초부터 Android와 임베디드 시스템까지 학습하고, C/C++, Java, Python으로 과제와 프로젝트를 수행했습니다.</p></dd></dl></section>
+<section id="skills"><header class="major"><h2>기술과 사용 경험</h2></header><details open><summary>백엔드와 데이터</summary><dl class="skill-list"><dt><span class="tech-sign"><img src="/images/tech/c.svg" alt="" width="20" height="20">C</span> / <span class="tech-sign"><img src="/images/tech/cplusplus.svg" alt="" width="20" height="20">C++</span></dt><dd>(주)모아데이타 실무: 규칙 추론 엔진 단독 유지보수, MariaDB 데이터를 엔진 Fact로 변환</dd><dt><span class="tech-sign"><img src="/images/tech/python.svg" alt="" width="20" height="20">Python</span> / <span class="tech-sign"><img src="/images/tech/fastapi.svg" alt="" width="20" height="20">FastAPI</span></dt><dd>NEO에서는 관제 API를 구현했고, HI-FIVE에서는 장치가 보낸 통행 이벤트를 받는 서버를 개발했습니다.</dd><dt><span class="tech-sign"><img src="/images/tech/java.svg" alt="" width="20" height="20">Java</span> / <span class="tech-sign"><img src="/images/tech/springboot.svg" alt="" width="20" height="20">Spring Boot</span></dt><dd>HI-FIVE: PdM API와 DB 연동 검증</dd><dt><span class="tech-sign"><img src="/images/tech/dotnet.svg" alt="" width="20" height="20">.NET</span> / Microsoft Orleans</dt><dd>ASTRA: 플레이어별 명령 직렬화와 멱등 처리</dd><dt><span class="tech-sign"><img src="/images/tech/postgresql.svg" alt="" width="20" height="20">PostgreSQL</span> / <span class="tech-sign"><img src="/images/tech/mariadb.svg" alt="" width="20" height="20">MariaDB</span></dt><dd><span class="read-unit">ASTRA에서는 재화 변동과 요청별 응답을 저장했습니다.</span> <span class="read-unit">HI-FIVE에서는 통행 기록과 품질 지표를 다뤘고, (주)모아데이타에서는 MariaDB 데이터를 추론 입력으로 변환했습니다.</span></dd></dl></details><details open><summary>추론과 AI</summary><dl class="skill-list"><dt>규칙 추론 엔진</dt><dd>(주)모아데이타 실무 유지보수, NEO에서 ITS 관제 도메인에 적용</dd><dt>Ontology / <span class="tech-sign"><img src="/images/tech/neo4j.svg" alt="" width="20" height="20">Neo4j</span></dt><dd>NEO: 관측 Fact, 규칙, 판단 관계를 계보로 저장하고 재조회</dd><dt>RAG / <span class="tech-sign"><img src="/images/tech/qdrant-icon.svg" alt="" width="20" height="20">Qdrant</span></dt><dd>NEO: Bedrock Titan 1024차원 임베딩과 Qdrant 검색으로 규칙 판단과 분리한 문서 근거 조회</dd><dt>YOLO / CRNN-OCR</dt><dd>HI-FIVE: 차량 번호판 탐지와 문자 판독</dd></dl></details><details open><summary>프론트엔드와 운영 환경</summary><dl class="skill-list"><dt><span class="tech-sign"><img src="/images/tech/vuejs.svg" alt="" width="20" height="20">Vue 3</span> / <span class="tech-sign"><img src="/images/tech/typescript.svg" alt="" width="20" height="20">TypeScript</span></dt><dd>NEO의 관제 화면과 가구 쇼핑몰의 상품 탐색 및 구매 화면을 구현했습니다.</dd><dt><span class="tech-sign"><img src="/images/tech/docker.svg" alt="" width="20" height="20">Docker</span></dt><dd>ASTRA, NEO, EduSync, 가구: Compose 실행 환경과 이미지 발행</dd><dt><span class="tech-sign"><img src="/images/tech/opentelemetry.svg" alt="" width="20" height="20">OpenTelemetry</span> / <span class="tech-sign"><img src="/images/tech/elastic.svg" alt="" width="20" height="20">Elastic</span></dt><dd>ASTRA: API, TCP, DB, Worker 추적과 장애 지표 대시보드</dd></dl></details></section>
+<section id="contact"><header class="major"><h2>연락처</h2></header><p>이메일 <a href="mailto:kimmj646676@gmail.com">kimmj646676@gmail.com</a><br>GitHub <a href="https://github.com/hannip0461" rel="noreferrer">github.com/hannip0461</a></p></section>
+<footer class="page-footer"><span>김민진 / 포트폴리오</span><a class="page-top" href="#header" aria-label="TOP: 맨 위로">TOP</a></footer></div></main><aside id="sidebar" aria-label="포트폴리오 목차"><div class="inner"><nav id="menu" aria-label="본문 목차"><h2>목차</h2><ul><li><a href="index.html#about">소개</a></li><li><a href="index.html#projects">프로젝트</a></li><li><a href="index.html#presentations">팀 프로젝트 발표</a></li><li><a href="index.html#experience">경력과 교육</a></li><li><a href="index.html#skills">기술과 사용 경험</a></li><li><a href="index.html#contact">연락처</a></li></ul></nav><nav aria-label="프로젝트별 기록"><h2>프로젝트 기록</h2><ul class="links"><li><a href="project-neo.html">NEO 교통관제</a></li><li><a href="project-astra.html">ASTRA 게임 운영 서버</a></li><li><a href="project-hifive.html">HI-FIVE 스마트 톨링</a></li><li><a href="project-edusync.html">EduSync 강의 이어보기</a></li><li><a href="project-furniture.html">가구 쇼핑몰</a></li><li><a href="project-incheon.html">인천 문화관광 서비스</a></li></ul></nav></div></aside></div></body></html>
